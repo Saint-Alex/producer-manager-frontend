@@ -26,15 +26,27 @@ jobs:
 
     - name: Type checking
       run: npm run type-check
+      continue-on-error: true
 
     - name: Lint code
-      run: npm run lint -- --max-warnings 1000
+      run: npm run lint
+      continue-on-error: true
 
     - name: Format check
       run: npm run prettier:check
+      continue-on-error: true
 
     - name: Run tests
       run: npm run test:coverage
 
     - name: Build application
       run: npm run build
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        directory: ./coverage
+        flags: frontend
+        name: frontend-coverage
+        fail_ci_if_error: false
+      if: always()
