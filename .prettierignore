@@ -1,0 +1,64 @@
+# Prettier ignore file for Producer Manager Frontend
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package lock files (não formatar)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+*.min.js
+*.min.css
+
+# Documentation generated
+docs/
+
+# Test snapshots
+**/__snapshots__/
+
+# Webpack bundle analyzer
+bundle-analyzer-report.html
+
+# Storybook
+.storybook/
+storybook-static/

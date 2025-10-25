@@ -1,0 +1,84 @@
+name: Dependency Check
+
+on:
+  schedule:
+    - cron: '0 2 * * 1' # Every Monday at 2 AM UTC
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    name: Review Dependencies
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        fail-on-severity: high
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Check for outdated packages
+      run: npm outdated || true
+      
+    - name: Generate dependency report
+      run: |
+        echo "# Dependency Report" > dependency-report.md
+        echo "Generated on: $(date)" >> dependency-report.md
+        echo "" >> dependency-report.md
+        echo "## Outdated Packages" >> dependency-report.md
+        npm outdated --json > outdated.json || true
+        echo "\`\`\`json" >> dependency-report.md
+        cat outdated.json >> dependency-report.md
+        echo "\`\`\`" >> dependency-report.md
+        
+    - name: Upload dependency report
+      uses: actions/upload-artifact@v4
+      with:
+        name: dependency-report
+        path: dependency-report.md
+        retention-days: 30
+
+  license-check:
+    runs-on: ubuntu-latest
+    name: License Compliance
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install license checker
+      run: npm install -g license-checker
+      
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Check licenses
+      run: |
+        license-checker --summary > license-summary.txt
+        license-checker --csv > license-details.csv
+        
+    - name: Upload license reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: license-reports
+        path: |
+          license-summary.txt
+          license-details.csv
+        retention-days: 30
