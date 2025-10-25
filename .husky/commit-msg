@@ -1,9 +1,20 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
 
 echo "📝 Checking commit message format..."
 
-# Check commit message format with commitlint
+# Run commitlint
 npx --no-install commitlint --edit "$1"
 
-echo "✅ Commit message format is valid!"
+if [ $? -eq 0 ]; then
+    echo "✅ Commit message format is valid!"
+else
+    echo "❌ Commit message format is invalid!"
+    echo ""
+    echo "📋 Commit message must follow conventional commits format:"
+    echo "   <type>[optional scope]: <description>"
+    echo ""
+    echo "Valid types: feat, fix, docs, style, refactor, test, chore"
+    echo "Example: feat: add user authentication"
+    echo "         fix(api): resolve login endpoint error"
+    exit 1
+fi

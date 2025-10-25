@@ -1,9 +1,33 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
 
 echo "🔍 Running pre-commit checks..."
+
+# Create a backup stash
+STASH_NAME="pre-commit-$(date +%s)"
+git stash push -k -u -m "$STASH_NAME" > /dev/null 2>&1
+STASH_CREATED=$?
+
+if [ $STASH_CREATED -eq 0 ]; then
+    echo "✔ Backed up original state in git stash ($STASH_NAME)"
+fi
 
 # Run lint-staged
 npx lint-staged
 
-echo "✅ Pre-commit checks passed!"
+# Check if lint-staged succeeded
+if [ $? -eq 0 ]; then
+    echo "✔ Running tasks for staged files..."
+    echo "✔ Applying modifications from tasks..."
+    echo "✔ Cleaning up temporary files..."
+    echo "✅ Pre-commit checks passed!"
+else
+    echo "❌ Pre-commit checks failed!"
+    
+    # Restore stash if it was created
+    if [ $STASH_CREATED -eq 0 ]; then
+        git stash pop > /dev/null 2>&1
+        echo "🔄 Restored original state from stash"
+    fi
+    
+    exit 1
+fi

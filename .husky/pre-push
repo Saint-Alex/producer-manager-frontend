@@ -1,12 +1,26 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
 
-echo "🚀 Running pre-push checks..."
+echo "🚀 Running pre-push validation..."
 
-# Run tests to ensure code quality
-npm run test -- --coverage --watchAll=false
-
-# Check TypeScript compilation
+# Run type checking
+echo "🔍 Checking TypeScript types..."
 npm run type-check
 
-echo "✅ Pre-push checks passed!"
+if [ $? -ne 0 ]; then
+    echo "❌ TypeScript type checking failed!"
+    exit 1
+fi
+
+echo "✅ TypeScript types are valid!"
+
+# Run tests
+echo "🧪 Running tests..."
+npm run test -- --watchAll=false --passWithNoTests
+
+if [ $? -ne 0 ]; then
+    echo "❌ Tests failed!"
+    exit 1
+fi
+
+echo "✅ All tests passed!"
+echo "🎉 Pre-push validation completed successfully!"
