@@ -6,8 +6,6 @@ import {
 } from '../types/propriedadeRural';
 import { apiClient, apiConfig } from './api';
 
-const API_URL = 'http://localhost:3001/api';
-
 class PropriedadeRuralService {
   async getAll(): Promise<PropriedadeRural[]> {
     return apiClient.get<PropriedadeRural[]>(apiConfig.endpoints.properties);

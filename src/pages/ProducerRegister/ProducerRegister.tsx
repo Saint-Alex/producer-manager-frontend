@@ -73,7 +73,7 @@ const ProducerRegisterPage: React.FC = () => {
 
         for (const fazenda of formData.fazendas) {
           try {
-            const propriedadeResult = await dispatch(
+            await dispatch(
               createPropriedade({
                 produtorId,
                 nomeFazenda: fazenda.nomeFazenda,
@@ -85,7 +85,7 @@ const ProducerRegisterPage: React.FC = () => {
               })
             ).unwrap();
 
-            const propriedadeId = propriedadeResult.id;
+            // const propriedadeId = propriedadeResult.id;
 
             for (const safra of fazenda.safras) {
               if (safra.ano && safra.nome && safra.culturasPlantadas.length > 0) {

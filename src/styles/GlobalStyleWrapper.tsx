@@ -16,6 +16,7 @@ export const GlobalStyleWrapper: React.FC<GlobalStyleWrapperProps> = ({ children
   }
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { GlobalStyle } = require('./GlobalStyles');
     return (
       <div data-testid='theme-provider'>

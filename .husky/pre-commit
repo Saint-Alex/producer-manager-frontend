@@ -22,12 +22,12 @@ if [ $? -eq 0 ]; then
     echo "✅ Pre-commit checks passed!"
 else
     echo "❌ Pre-commit checks failed!"
-    
+
     # Restore stash if it was created
     if [ $STASH_CREATED -eq 0 ]; then
         git stash pop > /dev/null 2>&1
         echo "🔄 Restored original state from stash"
     fi
-    
+
     exit 1
 fi

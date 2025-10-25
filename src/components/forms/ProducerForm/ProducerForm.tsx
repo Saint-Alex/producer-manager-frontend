@@ -209,7 +209,7 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
               <p
                 style={{ color: '#666', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}
               >
-                Nenhuma fazenda adicionada. Clique em "Adicionar Fazenda" para começar.
+                Nenhuma fazenda adicionada. Clique em &quot;Adicionar Fazenda&quot; para começar.
               </p>
             ) : (
               formData.fazendas.map((fazenda, fazendaIndex) => (

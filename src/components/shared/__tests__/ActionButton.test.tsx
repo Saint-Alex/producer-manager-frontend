@@ -87,8 +87,9 @@ describe('ActionButton Component', () => {
     });
 
     it('should apply default styles for invalid variant', () => {
-      // @ts-ignore - Forçar variant inválida para testar default case
-      renderWithTheme(<ActionButton variant={'invalid' as any}>Invalid Variant</ActionButton>);
+      // Testing with unknown variant to ensure default styles
+      const invalidVariant = 'invalid' as const;
+      renderWithTheme(<ActionButton variant={invalidVariant as any}>Invalid Variant</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -123,8 +124,9 @@ describe('ActionButton Component', () => {
     });
 
     it('should apply default (medium) styles for invalid size', () => {
-      // @ts-ignore - Forçar size inválido para testar default case
-      renderWithTheme(<ActionButton size={'invalid' as any}>Invalid Size</ActionButton>);
+      // Testing with unknown size to ensure default styles
+      const invalidSize = 'invalid' as const;
+      renderWithTheme(<ActionButton size={invalidSize as any}>Invalid Size</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -704,7 +706,7 @@ describe('ActionButton Component', () => {
         'outlined-primary',
       ];
 
-      allVariants.forEach((variant, index) => {
+      allVariants.forEach((variant, _index) => {
         const { unmount } = renderWithTheme(
           <ActionButton variant={variant}>Variant {variant}</ActionButton>
         );
@@ -718,7 +720,7 @@ describe('ActionButton Component', () => {
     it('should ensure all size styles are rendered (coverage test)', () => {
       const allSizes: ActionButtonProps['size'][] = ['small', 'medium', 'large'];
 
-      allSizes.forEach((size, index) => {
+      allSizes.forEach((size, _index) => {
         const { unmount } = renderWithTheme(<ActionButton size={size}>Size {size}</ActionButton>);
 
         const button = screen.getByText(`Size ${size}`);

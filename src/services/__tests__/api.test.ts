@@ -208,7 +208,7 @@ describe('apiClient', () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
         headers: {
-          get: (header: string) => null,
+          get: (_header: string) => null,
         },
       });
 

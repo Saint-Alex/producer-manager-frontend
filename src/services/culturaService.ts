@@ -1,8 +1,6 @@
 import { CreateCulturaData, Cultura, UpdateCulturaData } from '../types/cultura';
 import { apiClient, apiConfig } from './api';
 
-const API_URL = 'http://localhost:3001/api';
-
 class CulturaService {
   async getAll(): Promise<Cultura[]> {
     return apiClient.get<Cultura[]>(apiConfig.endpoints.cultures);

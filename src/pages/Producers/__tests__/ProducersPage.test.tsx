@@ -95,7 +95,7 @@ const mockProducers = [
   },
 ];
 
-const reducerMock = (state = {}, action: any) => state;
+const reducerMock = (state = {}, _action: any) => state;
 
 const renderWithProviders = (ui: React.ReactElement, initialProducerState?: any) => {
   const store = configureStore({

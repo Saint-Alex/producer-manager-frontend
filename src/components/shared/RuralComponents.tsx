@@ -8,10 +8,10 @@ const float = keyframes`
   50% { transform: translateY(-6px); }
 `;
 
-const rotate = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
+// const rotate = keyframes`
+//   from { transform: rotate(0deg); }
+//   to { transform: rotate(360deg); }
+// `;
 
 // Container para ícones rurais
 export const RuralIconContainer = styled.div`

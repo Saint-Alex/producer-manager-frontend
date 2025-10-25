@@ -213,7 +213,7 @@ const PropriedadesPage: React.FC = () => {
                     {propriedadeSafras.length > 0 && `(${propriedadeSafras.length})`}
                   </h4>
                   <span style={{ fontSize: '0.9rem', color: '#666', fontStyle: 'italic' }}>
-                    Para editar safras, clique em "Editar" acima
+                    Para editar safras, clique em &quot;Editar&quot; acima
                   </span>
                 </div>
 
