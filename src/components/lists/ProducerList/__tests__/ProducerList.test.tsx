@@ -318,7 +318,7 @@ describe('ProducerList', () => {
 
       expect(screen.getByText('Minimal Producer')).toBeInTheDocument();
       expect(screen.getByText('000.000.000-00')).toBeInTheDocument();
-      expect(screen.getByText('31/12/2023')).toBeInTheDocument(); // Corrigido para data real
+      expect(screen.getByText('01/01/2024')).toBeInTheDocument(); // Correct Brazilian date format
     });
 
     test('handles very long producer names', () => {

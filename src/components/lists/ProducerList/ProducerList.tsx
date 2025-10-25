@@ -10,6 +10,13 @@ interface ProducerListProps {
   onViewProperties?: (id: string) => void;
 }
 
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  // Ajustar para timezone local para evitar problemas de UTC
+  const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+  return localDate.toLocaleDateString('pt-BR');
+};
+
 const ProducerList: React.FC<ProducerListProps> = ({
   producers,
   onEdit,
@@ -26,8 +33,7 @@ const ProducerList: React.FC<ProducerListProps> = ({
               <strong>CPF/CNPJ:</strong> {producer.cpfCnpj}
             </p>
             <p>
-              <strong>Cadastrado em:</strong>{' '}
-              {new Date(producer.createdAt).toLocaleDateString('pt-BR')}
+              <strong>Cadastrado em:</strong> {formatDate(producer.createdAt)}
             </p>
           </ProducerInfo>
 
