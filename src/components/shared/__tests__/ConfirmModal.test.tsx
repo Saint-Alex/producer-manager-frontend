@@ -118,8 +118,9 @@ describe('ConfirmModal', () => {
     });
 
     test('displays default warning icon for invalid variant', () => {
-      // @ts-ignore - Forçar variant inválida para testar default case
-      renderConfirmModal({ variant: 'invalid' as any });
+      // Testing with unknown variant to ensure default icon
+      const invalidVariant = 'invalid' as const;
+      renderConfirmModal({ variant: invalidVariant as any });
 
       expect(screen.getByText('⚠️')).toBeInTheDocument();
     });

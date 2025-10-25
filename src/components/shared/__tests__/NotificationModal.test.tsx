@@ -105,14 +105,15 @@ describe('NotificationModal', () => {
     });
 
     test('displays default info icon for unknown type', () => {
-      // @ts-ignore - Forçar tipo inválido para testar default case
-      renderNotificationModal({ type: 'unknown' as any });
+      // Testing with unknown type to ensure default icon
+      const unknownType = 'unknown' as const;
+      renderNotificationModal({ type: unknownType as any });
 
       expect(screen.getByText('ℹ️')).toBeInTheDocument();
     });
 
     test('displays default info icon for null/undefined type', () => {
-      // @ts-ignore - Testar default case
+      // Testing null case to ensure default icon
       renderNotificationModal({ type: null as any });
 
       expect(screen.getByText('ℹ️')).toBeInTheDocument();

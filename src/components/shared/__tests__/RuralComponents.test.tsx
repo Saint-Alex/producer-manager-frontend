@@ -80,8 +80,9 @@ describe('RuralComponents', () => {
     });
 
     it('should render default icon for unknown types and test getIconEmoji default case', () => {
-      // @ts-ignore - Testing runtime behavior with invalid icon to trigger default case
-      renderWithTheme(<RuralIcon icon='unknown' data-testid='unknown-icon' />);
+      // Testing runtime behavior with invalid icon to trigger default case
+      const unknownIcon = 'unknown' as const;
+      renderWithTheme(<RuralIcon icon={unknownIcon as any} data-testid='unknown-icon' />);
 
       const icon = screen.getByText('🌿');
       expect(icon).toBeInTheDocument();
@@ -306,12 +307,13 @@ describe('RuralComponents', () => {
     });
 
     it('should handle edge cases with invalid color props', () => {
-      // @ts-ignore - Testing runtime behavior with invalid color
+      // Testing runtime behavior with invalid color
+      const invalidColor = 'invalid' as const;
       renderWithTheme(
         <RuralStatComponent
           value='100'
           label='Invalid Color'
-          color={'invalid' as any}
+          color={invalidColor as any}
           data-testid='invalid-color'
         />
       );
@@ -618,13 +620,17 @@ describe('RuralComponents', () => {
 
   describe('Error Handling and Edge Cases', () => {
     it('should handle invalid prop values gracefully', () => {
-      // @ts-ignore - Testing runtime behavior with invalid props
+      // Testing runtime behavior with invalid props
+      const invalidIcon = 'invalid-icon' as const;
+      const invalidPosition = 'invalid-position' as const;
+      const invalidElevation = 'invalid-elevation' as const;
+      const invalidVariant = 'invalid-variant' as const;
       renderWithTheme(
         <div data-testid='error-handling'>
-          <RuralIcon icon={'invalid-icon' as any} />
-          <RuralDecorator position={'invalid-position' as any} />
-          <RuralCard elevation={'invalid-elevation' as any}>Content</RuralCard>
-          <NatureSection variant={'invalid-variant' as any}>Content</NatureSection>
+          <RuralIcon icon={invalidIcon as any} />
+          <RuralDecorator position={invalidPosition as any} />
+          <RuralCard elevation={invalidElevation as any}>Content</RuralCard>
+          <NatureSection variant={invalidVariant as any}>Content</NatureSection>
           <RuralTitle size={'invalid-size' as any}>Title</RuralTitle>
           <RuralStat $color={'invalid-color' as any}>Stat</RuralStat>
           <RuralStatValue $color={'invalid-color' as any}>Value</RuralStatValue>

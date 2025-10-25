@@ -55,6 +55,7 @@ jest.mock('react-router-dom', () => ({
   useParams: jest.fn(),
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { useParams } = require('react-router-dom');
 
 const mockedPropriedadeService = propriedadeRuralService as jest.Mocked<

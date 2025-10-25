@@ -224,6 +224,7 @@ describe('ProducerForm', () => {
       });
 
       // Verifica se o formatCPF foi chamado
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { formatCPF } = require('../../../../utils/validators');
       expect(formatCPF).toHaveBeenCalled();
     });
@@ -239,6 +240,7 @@ describe('ProducerForm', () => {
       });
 
       // Verifica se o formatCNPJ foi chamado
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const { formatCNPJ } = require('../../../../utils/validators');
       expect(formatCNPJ).toHaveBeenCalled();
     });
