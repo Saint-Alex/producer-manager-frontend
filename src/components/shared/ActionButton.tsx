@@ -4,7 +4,16 @@ import { theme } from '../../styles/theme';
 
 export interface ActionButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info' | 'outlined-danger' | 'outlined-secondary' | 'outlined-primary';
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'danger'
+    | 'success'
+    | 'warning'
+    | 'info'
+    | 'outlined-danger'
+    | 'outlined-secondary'
+    | 'outlined-primary';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   loading?: boolean;
@@ -19,7 +28,11 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
   switch (variant) {
     case 'primary':
       return css`
-        background: linear-gradient(135deg, ${theme.colors.primary.main}, ${theme.colors.primary.dark});
+        background: linear-gradient(
+          135deg,
+          ${theme.colors.primary.main},
+          ${theme.colors.primary.dark}
+        );
         color: white;
         border: 2px solid ${theme.colors.primary.main};
         position: relative;
@@ -32,12 +45,16 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
           transition: left 0.5s;
         }
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.primary.dark}, ${theme.colors.primary.main});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.primary.dark},
+            ${theme.colors.primary.main}
+          );
           border-color: ${theme.colors.primary.dark};
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -50,12 +67,20 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
 
     case 'secondary':
       return css`
-        background: linear-gradient(135deg, ${theme.colors.secondary.main}, ${theme.colors.secondary.dark});
+        background: linear-gradient(
+          135deg,
+          ${theme.colors.secondary.main},
+          ${theme.colors.secondary.dark}
+        );
         color: white;
         border: 2px solid ${theme.colors.secondary.main};
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.secondary.dark}, ${theme.colors.secondary.main});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.secondary.dark},
+            ${theme.colors.secondary.main}
+          );
           border-color: ${theme.colors.secondary.dark};
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -64,12 +89,20 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
 
     case 'danger':
       return css`
-        background: linear-gradient(135deg, ${theme.colors.danger.main}, ${theme.colors.danger.dark});
+        background: linear-gradient(
+          135deg,
+          ${theme.colors.danger.main},
+          ${theme.colors.danger.dark}
+        );
         color: white;
         border: 2px solid ${theme.colors.danger.main};
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.danger.dark}, ${theme.colors.danger.main});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.danger.dark},
+            ${theme.colors.danger.main}
+          );
           border-color: ${theme.colors.danger.dark};
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -78,12 +111,20 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
 
     case 'success':
       return css`
-        background: linear-gradient(135deg, ${theme.colors.success.main}, ${theme.colors.success.dark});
+        background: linear-gradient(
+          135deg,
+          ${theme.colors.success.main},
+          ${theme.colors.success.dark}
+        );
         color: white;
         border: 2px solid ${theme.colors.success.main};
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.success.dark}, ${theme.colors.success.main});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.success.dark},
+            ${theme.colors.success.main}
+          );
           border-color: ${theme.colors.success.dark};
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -92,12 +133,20 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
 
     case 'warning':
       return css`
-        background: linear-gradient(135deg, ${theme.colors.warning.main}, ${theme.colors.warning.dark});
+        background: linear-gradient(
+          135deg,
+          ${theme.colors.warning.main},
+          ${theme.colors.warning.dark}
+        );
         color: white;
         border: 2px solid ${theme.colors.warning.main};
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.warning.dark}, ${theme.colors.warning.main});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.warning.dark},
+            ${theme.colors.warning.main}
+          );
           border-color: ${theme.colors.warning.dark};
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -125,7 +174,11 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
         border: 2px solid ${theme.colors.danger.main};
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.danger.main}, ${theme.colors.danger.dark});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.danger.main},
+            ${theme.colors.danger.dark}
+          );
           color: white;
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -139,7 +192,11 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
         border: 2px solid ${theme.colors.secondary.main};
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.secondary.main}, ${theme.colors.secondary.dark});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.secondary.main},
+            ${theme.colors.secondary.dark}
+          );
           color: white;
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -153,7 +210,11 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
         border: 2px solid ${theme.colors.primary.main};
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.primary.main}, ${theme.colors.primary.dark});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.primary.main},
+            ${theme.colors.primary.dark}
+          );
           color: white;
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -162,12 +223,20 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
 
     default:
       return css`
-        background: linear-gradient(135deg, ${theme.colors.primary.main}, ${theme.colors.primary.dark});
+        background: linear-gradient(
+          135deg,
+          ${theme.colors.primary.main},
+          ${theme.colors.primary.dark}
+        );
         color: white;
         border: 2px solid ${theme.colors.primary.main};
 
         &:hover:not(:disabled) {
-          background: linear-gradient(135deg, ${theme.colors.primary.dark}, ${theme.colors.primary.main});
+          background: linear-gradient(
+            135deg,
+            ${theme.colors.primary.dark},
+            ${theme.colors.primary.main}
+          );
           border-color: ${theme.colors.primary.dark};
           transform: translateY(-2px);
           box-shadow: ${theme.shadows.md};
@@ -255,7 +324,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   }
 
   ${theme.mediaQueries.xs} {
-    width: ${({ $fullWidth }) => $fullWidth ? '100%' : 'auto'};
+    width: ${({ $fullWidth }) => ($fullWidth ? '100%' : 'auto')};
   }
 
   ${({ $variant }) => getVariantStyles($variant)}
@@ -335,9 +404,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
       {...buttonProps}
     >
       {loading && <LoadingSpinner />}
-      <ButtonContent $loading={loading}>
-        {children}
-      </ButtonContent>
+      <ButtonContent $loading={loading}>{children}</ButtonContent>
     </StyledButton>
   );
 };

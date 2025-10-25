@@ -31,13 +31,17 @@ describe('GlobalStyleWrapper', () => {
 
     it('should render with GlobalStyle in production when require succeeds', () => {
       // Mock successful require of GlobalStyles
-      jest.doMock('../GlobalStyles', () => ({
-        GlobalStyle: () => React.createElement('style', { 'data-testid': 'global-style' })
-      }), { virtual: true });
+      jest.doMock(
+        '../GlobalStyles',
+        () => ({
+          GlobalStyle: () => React.createElement('style', { 'data-testid': 'global-style' }),
+        }),
+        { virtual: true }
+      );
 
       const { container } = render(
         <GlobalStyleWrapper>
-          <div data-testid="child">Test Content</div>
+          <div data-testid='child'>Test Content</div>
         </GlobalStyleWrapper>
       );
 
@@ -46,13 +50,17 @@ describe('GlobalStyleWrapper', () => {
 
     it('should handle require error gracefully in production', () => {
       // Mock failed require of GlobalStyles
-      jest.doMock('../GlobalStyles', () => {
-        throw new Error('Module not found');
-      }, { virtual: true });
+      jest.doMock(
+        '../GlobalStyles',
+        () => {
+          throw new Error('Module not found');
+        },
+        { virtual: true }
+      );
 
       const { container } = render(
         <GlobalStyleWrapper>
-          <div data-testid="child">Test Content</div>
+          <div data-testid='child'>Test Content</div>
         </GlobalStyleWrapper>
       );
 
@@ -70,7 +78,7 @@ describe('GlobalStyleWrapper', () => {
     it('should render without GlobalStyle in test environment', () => {
       const { container } = render(
         <GlobalStyleWrapper>
-          <div data-testid="child">Test Content</div>
+          <div data-testid='child'>Test Content</div>
         </GlobalStyleWrapper>
       );
 
@@ -80,7 +88,7 @@ describe('GlobalStyleWrapper', () => {
     it('should render with children prop', () => {
       render(
         <GlobalStyleWrapper>
-          <div data-testid="test-child">Child Component</div>
+          <div data-testid='test-child'>Child Component</div>
         </GlobalStyleWrapper>
       );
 
@@ -109,13 +117,17 @@ describe('GlobalStyleWrapper', () => {
 
     it('should render with GlobalStyle in development when require succeeds', () => {
       // Mock successful require of GlobalStyles
-      jest.doMock('../GlobalStyles', () => ({
-        GlobalStyle: () => React.createElement('style', { 'data-testid': 'global-style-dev' })
-      }), { virtual: true });
+      jest.doMock(
+        '../GlobalStyles',
+        () => ({
+          GlobalStyle: () => React.createElement('style', { 'data-testid': 'global-style-dev' }),
+        }),
+        { virtual: true }
+      );
 
       const { container } = render(
         <GlobalStyleWrapper>
-          <div data-testid="child">Development Content</div>
+          <div data-testid='child'>Development Content</div>
         </GlobalStyleWrapper>
       );
 
@@ -124,13 +136,17 @@ describe('GlobalStyleWrapper', () => {
 
     it('should handle require error gracefully in development', () => {
       // Mock failed require of GlobalStyles with specific error
-      jest.doMock('../GlobalStyles', () => {
-        throw new Error('Cannot resolve module');
-      }, { virtual: true });
+      jest.doMock(
+        '../GlobalStyles',
+        () => {
+          throw new Error('Cannot resolve module');
+        },
+        { virtual: true }
+      );
 
       const { container } = render(
         <GlobalStyleWrapper>
-          <div data-testid="child">Development Content</div>
+          <div data-testid='child'>Development Content</div>
         </GlobalStyleWrapper>
       );
 
@@ -155,11 +171,11 @@ describe('GlobalStyleWrapper', () => {
     it('should handle complex children structure', () => {
       render(
         <GlobalStyleWrapper>
-          <div data-testid="parent">
-            <span data-testid="child-1">Child 1</span>
-            <span data-testid="child-2">Child 2</span>
-            <div data-testid="nested">
-              <p data-testid="nested-child">Nested Content</p>
+          <div data-testid='parent'>
+            <span data-testid='child-1'>Child 1</span>
+            <span data-testid='child-2'>Child 2</span>
+            <div data-testid='nested'>
+              <p data-testid='nested-child'>Nested Content</p>
             </div>
           </div>
         </GlobalStyleWrapper>
@@ -179,7 +195,7 @@ describe('GlobalStyleWrapper', () => {
       process.env.NODE_ENV = 'test';
       const { unmount: unmount1 } = render(
         <GlobalStyleWrapper>
-          <div data-testid="test-env">Test Environment</div>
+          <div data-testid='test-env'>Test Environment</div>
         </GlobalStyleWrapper>
       );
       expect(document.querySelector('[data-testid="test-env"]')).toBeInTheDocument();
@@ -187,26 +203,34 @@ describe('GlobalStyleWrapper', () => {
 
       // Test 2: NODE_ENV !== 'test' with successful require
       process.env.NODE_ENV = 'production';
-      jest.doMock('../GlobalStyles', () => ({
-        GlobalStyle: () => React.createElement('style')
-      }), { virtual: true });
+      jest.doMock(
+        '../GlobalStyles',
+        () => ({
+          GlobalStyle: () => React.createElement('style'),
+        }),
+        { virtual: true }
+      );
 
       const { unmount: unmount2 } = render(
         <GlobalStyleWrapper>
-          <div data-testid="prod-env-success">Production Success</div>
+          <div data-testid='prod-env-success'>Production Success</div>
         </GlobalStyleWrapper>
       );
       expect(document.querySelector('[data-testid="prod-env-success"]')).toBeInTheDocument();
       unmount2();
 
       // Test 3: NODE_ENV !== 'test' with failed require (catch block)
-      jest.doMock('../GlobalStyles', () => {
-        throw new Error('Require failed');
-      }, { virtual: true });
+      jest.doMock(
+        '../GlobalStyles',
+        () => {
+          throw new Error('Require failed');
+        },
+        { virtual: true }
+      );
 
       const { unmount: unmount3 } = render(
         <GlobalStyleWrapper>
-          <div data-testid="prod-env-error">Production Error</div>
+          <div data-testid='prod-env-error'>Production Error</div>
         </GlobalStyleWrapper>
       );
       expect(document.querySelector('[data-testid="prod-env-error"]')).toBeInTheDocument();

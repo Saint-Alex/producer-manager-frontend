@@ -13,7 +13,7 @@ import HomePage from '../HomePage';
 // Mock para @mui/x-charts
 jest.mock('@mui/x-charts/PieChart', () => ({
   PieChart: ({ series, height }: any) => (
-    <div data-testid="pie-chart" style={{ height }}>
+    <div data-testid='pie-chart' style={{ height }}>
       Mock PieChart - {series[0]?.data?.length || 0} items
     </div>
   ),
@@ -82,7 +82,9 @@ describe('HomePage', () => {
   test('renders HomePage title and description', () => {
     renderHomePage();
     expect(screen.getByText('Dashboard - Gestão Rural')).toBeInTheDocument();
-    expect(screen.getByText('Visão geral do sistema de gerenciamento de produtores rurais')).toBeInTheDocument();
+    expect(
+      screen.getByText('Visão geral do sistema de gerenciamento de produtores rurais')
+    ).toBeInTheDocument();
   });
 
   test('renders navigation buttons', () => {
@@ -162,7 +164,10 @@ describe('HomePage', () => {
 
     // Verifica estatísticas
     expect(screen.getByText(mockPropriedades.length.toString())).toBeInTheDocument();
-    const totalArea = mockPropriedades.reduce((total, prop) => total + parseFloat(prop.areaTotal.toString()), 0);
+    const totalArea = mockPropriedades.reduce(
+      (total, prop) => total + parseFloat(prop.areaTotal.toString()),
+      0
+    );
     expect(screen.getByText(Math.round(totalArea).toLocaleString('pt-BR'))).toBeInTheDocument();
   });
 
@@ -384,7 +389,12 @@ describe('HomePage', () => {
           cultivos: [
             {
               id: '1',
-              cultura: { id: '1', nome: 'Soja', createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
+              cultura: {
+                id: '1',
+                nome: 'Soja',
+                createdAt: '2024-01-01T00:00:00Z',
+                updatedAt: '2024-01-01T00:00:00Z',
+              },
               areaPlantada: 100,
               propriedadeRural: {} as any,
               safra: {} as any,
@@ -434,7 +444,12 @@ describe('HomePage', () => {
               cultivos: [
                 {
                   id: '1',
-                  cultura: { id: '1', nome: 'Soja', createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
+                  cultura: {
+                    id: '1',
+                    nome: 'Soja',
+                    createdAt: '2024-01-01T00:00:00Z',
+                    updatedAt: '2024-01-01T00:00:00Z',
+                  },
                   areaPlantada: 100,
                   propriedadeRural: {} as any,
                   safra: {} as any,
@@ -494,7 +509,12 @@ describe('HomePage', () => {
           cultivos: [
             {
               id: '1',
-              cultura: { id: '1', nome: 'Soja', createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
+              cultura: {
+                id: '1',
+                nome: 'Soja',
+                createdAt: '2024-01-01T00:00:00Z',
+                updatedAt: '2024-01-01T00:00:00Z',
+              },
               areaPlantada: 100,
               propriedadeRural: {} as any,
               safra: {} as any,
@@ -503,7 +523,12 @@ describe('HomePage', () => {
             },
             {
               id: '2',
-              cultura: { id: '2', nome: 'Milho', createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
+              cultura: {
+                id: '2',
+                nome: 'Milho',
+                createdAt: '2024-01-01T00:00:00Z',
+                updatedAt: '2024-01-01T00:00:00Z',
+              },
               areaPlantada: 50,
               propriedadeRural: {} as any,
               safra: {} as any,

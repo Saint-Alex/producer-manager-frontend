@@ -8,7 +8,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    '@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended', // Adiciona integração com Prettier
@@ -16,7 +16,7 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs', 'coverage', 'build'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'prettier'],
+  plugins: ['@typescript-eslint', 'react-refresh', 'prettier'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'react/react-in-jsx-scope': 'off',

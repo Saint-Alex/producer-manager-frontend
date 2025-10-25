@@ -10,7 +10,7 @@ jest.mock('../../../shared/ActionButton', () => ({
     <button onClick={onClick} data-variant={variant} data-size={size}>
       {children}
     </button>
-  )
+  ),
 }));
 
 const mockProducers: Producer[] = [
@@ -19,28 +19,28 @@ const mockProducers: Producer[] = [
     nome: 'João Silva',
     cpfCnpj: '123.456.789-00',
     createdAt: '2024-01-15T10:30:00Z',
-    updatedAt: '2024-01-15T10:30:00Z'
+    updatedAt: '2024-01-15T10:30:00Z',
   },
   {
     id: '2',
     nome: 'Fazenda ABC Ltda',
     cpfCnpj: '12.345.678/0001-90',
     createdAt: '2024-02-20T14:45:00Z',
-    updatedAt: '2024-02-20T14:45:00Z'
+    updatedAt: '2024-02-20T14:45:00Z',
   },
   {
     id: '3',
     nome: 'Maria Oliveira',
     cpfCnpj: '987.654.321-11',
     createdAt: '2024-03-10T08:15:00Z',
-    updatedAt: '2024-03-10T08:15:00Z'
-  }
+    updatedAt: '2024-03-10T08:15:00Z',
+  },
 ];
 
 const renderProducerList = (props = {}) => {
   const defaultProps = {
     producers: mockProducers,
-    ...props
+    ...props,
   };
 
   return render(
@@ -146,7 +146,7 @@ describe('ProducerList', () => {
       const mockHandlers = {
         onViewProperties: jest.fn(),
         onEdit: jest.fn(),
-        onDelete: jest.fn()
+        onDelete: jest.fn(),
       };
       renderProducerList(mockHandlers);
 
@@ -160,7 +160,7 @@ describe('ProducerList', () => {
       renderProducerList({
         onViewProperties: undefined,
         onEdit: undefined,
-        onDelete: undefined
+        onDelete: undefined,
       });
 
       expect(screen.queryByText('Ver Propriedades')).not.toBeInTheDocument();
@@ -233,7 +233,7 @@ describe('ProducerList', () => {
       const mockHandlers = {
         onViewProperties: jest.fn(),
         onEdit: jest.fn(),
-        onDelete: jest.fn()
+        onDelete: jest.fn(),
       };
       renderProducerList(mockHandlers);
 
@@ -265,8 +265,8 @@ describe('ProducerList', () => {
           nome: 'Test Producer',
           cpfCnpj: '123.456.789-00',
           createdAt: '2024-12-31T23:59:59Z', // Ano novo
-          updatedAt: '2024-12-31T23:59:59Z'
-        }
+          updatedAt: '2024-12-31T23:59:59Z',
+        },
       ];
 
       renderProducerList({ producers: producersWithDifferentDates });
@@ -280,7 +280,7 @@ describe('ProducerList', () => {
       renderProducerList({
         onViewProperties: jest.fn(),
         onEdit: jest.fn(),
-        onDelete: jest.fn()
+        onDelete: jest.fn(),
       });
 
       // Verifica estrutura para primeiro produtor
@@ -310,8 +310,8 @@ describe('ProducerList', () => {
           nome: 'Minimal Producer',
           cpfCnpj: '000.000.000-00',
           createdAt: '2024-01-01T00:00:00Z',
-          updatedAt: '2024-01-01T00:00:00Z'
-        }
+          updatedAt: '2024-01-01T00:00:00Z',
+        },
       ];
 
       renderProducerList({ producers: minimalProducer });
@@ -328,20 +328,24 @@ describe('ProducerList', () => {
           nome: 'Fazenda Agropecuária Sustentável do Vale do Paraíba com Tecnologia Avançada Ltda ME',
           cpfCnpj: '12.345.678/0001-90',
           createdAt: '2024-01-01T00:00:00Z',
-          updatedAt: '2024-01-01T00:00:00Z'
-        }
+          updatedAt: '2024-01-01T00:00:00Z',
+        },
       ];
 
       renderProducerList({ producers: longNameProducer });
 
-      expect(screen.getByText('Fazenda Agropecuária Sustentável do Vale do Paraíba com Tecnologia Avançada Ltda ME')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'Fazenda Agropecuária Sustentável do Vale do Paraíba com Tecnologia Avançada Ltda ME'
+        )
+      ).toBeInTheDocument();
     });
 
     test('handles single producer', () => {
       const singleProducer = [mockProducers[0]];
       renderProducerList({
         producers: singleProducer,
-        onViewProperties: jest.fn()
+        onViewProperties: jest.fn(),
       });
 
       expect(screen.getByText('João Silva')).toBeInTheDocument();
@@ -361,7 +365,7 @@ describe('ProducerList', () => {
     test('renders only Edit and Delete buttons when those handlers are provided', () => {
       renderProducerList({
         onEdit: jest.fn(),
-        onDelete: jest.fn()
+        onDelete: jest.fn(),
       });
 
       expect(screen.queryByText('Ver Propriedades')).not.toBeInTheDocument();
@@ -372,7 +376,7 @@ describe('ProducerList', () => {
     test('renders partial buttons based on provided handlers', () => {
       renderProducerList({
         onViewProperties: jest.fn(),
-        onDelete: jest.fn()
+        onDelete: jest.fn(),
         // onEdit não fornecido
       });
 

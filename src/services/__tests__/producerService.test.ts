@@ -148,10 +148,7 @@ describe('ProducerService', () => {
 
       const result = await producerService.update(producerId, updateData);
 
-      expect(mockApiClient.patch).toHaveBeenCalledWith(
-        `/api/produtores/${producerId}`,
-        updateData
-      );
+      expect(mockApiClient.patch).toHaveBeenCalledWith(`/api/produtores/${producerId}`, updateData);
       expect(result).toEqual(produtorAtualizado);
     });
 
@@ -261,9 +258,7 @@ describe('ProducerService', () => {
         search: 'Silva',
       });
 
-      expect(mockApiClient.get).toHaveBeenCalledWith(
-        '/api/produtores?page=1&limit=5&search=Silva'
-      );
+      expect(mockApiClient.get).toHaveBeenCalledWith('/api/produtores?page=1&limit=5&search=Silva');
       expect(result).toEqual([mockProducer]);
     });
 
@@ -279,9 +274,7 @@ describe('ProducerService', () => {
       const error = new Error('Erro na busca');
       mockApiClient.get.mockRejectedValueOnce(error);
 
-      await expect(producerService.search({ search: 'teste' })).rejects.toThrow(
-        'Erro na busca'
-      );
+      await expect(producerService.search({ search: 'teste' })).rejects.toThrow('Erro na busca');
     });
 
     it('deve lidar com caracteres especiais na busca', async () => {
@@ -289,9 +282,7 @@ describe('ProducerService', () => {
 
       await producerService.search({ search: 'João & Maria' });
 
-      expect(mockApiClient.get).toHaveBeenCalledWith(
-        '/api/produtores?search=Jo%C3%A3o+%26+Maria'
-      );
+      expect(mockApiClient.get).toHaveBeenCalledWith('/api/produtores?search=Jo%C3%A3o+%26+Maria');
     });
 
     it('deve ignorar parâmetros undefined', async () => {

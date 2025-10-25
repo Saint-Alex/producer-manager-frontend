@@ -1,11 +1,20 @@
-import { createSafra, deleteSafra, fetchSafrasByPropriedade, updateSafra } from '@/store/safraSlice';
+import {
+  createSafra,
+  deleteSafra,
+  fetchSafrasByPropriedade,
+  updateSafra,
+} from '@/store/safraSlice';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ActionButton, NotificationModal } from '../../components/shared';
 import { CULTURAS_COMUNS, ESTADOS_BRASILEIROS } from '../../constants';
 import { AppDispatch, RootState } from '../../store';
-import { createPropriedade, fetchPropriedadeById, updatePropriedade } from '../../store/propriedadeRuralSlice';
+import {
+  createPropriedade,
+  fetchPropriedadeById,
+  updatePropriedade,
+} from '../../store/propriedadeRuralSlice';
 import { PropriedadeRuralFormData } from '../../types/propriedadeRural';
 import { Safra, SafraFormData } from '../../types/safra';
 import {
@@ -19,7 +28,7 @@ import {
   PageContainer,
   PageHeader,
   PageTitle,
-  SectionTitle
+  SectionTitle,
 } from './FazendaForm.styled';
 
 const FazendaForm: React.FC = () => {
@@ -27,7 +36,9 @@ const FazendaForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { currentPropriedade, loading: propriedadeLoading } = useSelector((state: RootState) => state.propriedades);
+  const { currentPropriedade, loading: propriedadeLoading } = useSelector(
+    (state: RootState) => state.propriedades
+  );
   const { safras, loading: safrasLoading } = useSelector((state: RootState) => state.safras);
 
   const [fazendaData, setFazendaData] = useState<PropriedadeRuralFormData>({
@@ -36,13 +47,13 @@ const FazendaForm: React.FC = () => {
     estado: '',
     areaTotal: '',
     areaAgricultavel: '',
-    areaVegetacao: ''
+    areaVegetacao: '',
   });
 
   const [safraData, setSafraData] = useState<SafraFormData>({
     ano: '',
     nome: '',
-    culturasPlantadas: []
+    culturasPlantadas: [],
   });
 
   const [isAddingSafra, setIsAddingSafra] = useState(false);
@@ -77,7 +88,7 @@ const FazendaForm: React.FC = () => {
         estado: currentPropriedade.estado,
         areaTotal: String(currentPropriedade.areaTotal),
         areaAgricultavel: String(currentPropriedade.areaAgricultavel),
-        areaVegetacao: String(currentPropriedade.areaVegetacao)
+        areaVegetacao: String(currentPropriedade.areaVegetacao),
       });
     }
   }, [currentPropriedade, isEditing]);
@@ -100,7 +111,7 @@ const FazendaForm: React.FC = () => {
 
     setFazendaData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -130,7 +141,11 @@ const FazendaForm: React.FC = () => {
     const areaVegetacao = parseFloat(fazendaData.areaVegetacao) || 0;
 
     if (areaAgricultavel + areaVegetacao > areaTotal) {
-      showNotification('error', 'Erro de Validação', 'A soma da área agricultável e vegetação não pode ser maior que a área total');
+      showNotification(
+        'error',
+        'Erro de Validação',
+        'A soma da área agricultável e vegetação não pode ser maior que a área total'
+      );
       return false;
     }
 
@@ -142,17 +157,21 @@ const FazendaForm: React.FC = () => {
 
     try {
       if (isEditing && propriedadeId) {
-        await dispatch(updatePropriedade({
-          id: propriedadeId,
-          data: fazendaData
-        })).unwrap();
+        await dispatch(
+          updatePropriedade({
+            id: propriedadeId,
+            data: fazendaData,
+          })
+        ).unwrap();
 
         showNotification('success', 'Fazenda Atualizada', 'Fazenda foi atualizada com sucesso!');
       } else {
-        await dispatch(createPropriedade({
-          ...fazendaData,
-          produtorId: produtorId!
-        })).unwrap();
+        await dispatch(
+          createPropriedade({
+            ...fazendaData,
+            produtorId: produtorId!,
+          })
+        ).unwrap();
 
         if (produtorId) {
           navigate(`/propriedades/${produtorId}`);
@@ -185,7 +204,7 @@ const FazendaForm: React.FC = () => {
     setSafraData({
       ano: safra.ano.toString(),
       nome: safra.nome,
-      culturasPlantadas: safra.cultivos?.map(c => c.cultura?.nome || '') || []
+      culturasPlantadas: safra.cultivos?.map(c => c.cultura?.nome || '') || [],
     });
     setEditingSafraId(safra.id);
   };
@@ -194,7 +213,7 @@ const FazendaForm: React.FC = () => {
     const { name, value } = e.target;
     setSafraData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -202,7 +221,7 @@ const FazendaForm: React.FC = () => {
     if (cultura && !safraData.culturasPlantadas.includes(cultura)) {
       setSafraData(prev => ({
         ...prev,
-        culturasPlantadas: [...prev.culturasPlantadas, cultura]
+        culturasPlantadas: [...prev.culturasPlantadas, cultura],
       }));
     }
   };
@@ -210,7 +229,7 @@ const FazendaForm: React.FC = () => {
   const handleRemoveCultura = (cultura: string) => {
     setSafraData(prev => ({
       ...prev,
-      culturasPlantadas: prev.culturasPlantadas.filter(c => c !== cultura)
+      culturasPlantadas: prev.culturasPlantadas.filter(c => c !== cultura),
     }));
   };
 
@@ -221,7 +240,11 @@ const FazendaForm: React.FC = () => {
     }
 
     if (!safraData.ano || !safraData.nome || safraData.culturasPlantadas.length === 0) {
-      showNotification('error', 'Erro', 'Preencha todos os campos da safra e adicione pelo menos uma cultura.');
+      showNotification(
+        'error',
+        'Erro',
+        'Preencha todos os campos da safra e adicione pelo menos uma cultura.'
+      );
       return;
     }
 
@@ -232,10 +255,12 @@ const FazendaForm: React.FC = () => {
       };
 
       if (editingSafraId) {
-        await dispatch(updateSafra({
-          id: editingSafraId,
-          data: safraDataToSave
-        })).unwrap();
+        await dispatch(
+          updateSafra({
+            id: editingSafraId,
+            data: safraDataToSave,
+          })
+        ).unwrap();
         showNotification('success', 'Safra Atualizada', 'Safra foi atualizada com sucesso!');
       } else {
         await dispatch(createSafra(safraDataToSave)).unwrap();
@@ -275,12 +300,8 @@ const FazendaForm: React.FC = () => {
     <>
       <PageContainer>
         <PageHeader>
-          <BackButton onClick={handleCancel}>
-            ← Voltar
-          </BackButton>
-          <PageTitle>
-            {isEditing ? 'Editar Fazenda' : 'Cadastrar Nova Fazenda'}
-          </PageTitle>
+          <BackButton onClick={handleCancel}>← Voltar</BackButton>
+          <PageTitle>{isEditing ? 'Editar Fazenda' : 'Cadastrar Nova Fazenda'}</PageTitle>
         </PageHeader>
 
         <FormContainer>
@@ -288,37 +309,37 @@ const FazendaForm: React.FC = () => {
             <SectionTitle>Dados da Fazenda</SectionTitle>
 
             <FormGroup>
-              <Label htmlFor="nomeFazenda">Nome da Fazenda *</Label>
+              <Label htmlFor='nomeFazenda'>Nome da Fazenda *</Label>
               <Input
-                id="nomeFazenda"
-                name="nomeFazenda"
-                type="text"
+                id='nomeFazenda'
+                name='nomeFazenda'
+                type='text'
                 value={fazendaData.nomeFazenda || ''}
                 onChange={handleInputChange}
-                placeholder="Ex: Fazenda Santa Maria"
+                placeholder='Ex: Fazenda Santa Maria'
                 required
               />
             </FormGroup>
 
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
               <FormGroup>
-                <Label htmlFor="cidade">Cidade *</Label>
+                <Label htmlFor='cidade'>Cidade *</Label>
                 <Input
-                  id="cidade"
-                  name="cidade"
-                  type="text"
+                  id='cidade'
+                  name='cidade'
+                  type='text'
                   value={fazendaData.cidade || ''}
                   onChange={handleInputChange}
-                  placeholder="Ex: Sorriso"
+                  placeholder='Ex: Sorriso'
                   required
                 />
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="estado">Estado *</Label>
+                <Label htmlFor='estado'>Estado *</Label>
                 <select
-                  id="estado"
-                  name="estado"
+                  id='estado'
+                  name='estado'
                   value={fazendaData.estado || ''}
                   onChange={handleInputChange}
                   style={{
@@ -327,12 +348,12 @@ const FazendaForm: React.FC = () => {
                     border: '1px solid #ced4da',
                     borderRadius: '4px',
                     fontSize: '1rem',
-                    backgroundColor: 'white'
+                    backgroundColor: 'white',
                   }}
                   required
                 >
-                  <option value="">Selecione o estado</option>
-                  {ESTADOS_BRASILEIROS.map((estado) => (
+                  <option value=''>Selecione o estado</option>
+                  {ESTADOS_BRASILEIROS.map(estado => (
                     <option key={estado.value} value={estado.value}>
                       {estado.label}
                     </option>
@@ -343,45 +364,45 @@ const FazendaForm: React.FC = () => {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
               <FormGroup>
-                <Label htmlFor="areaTotal">Área Total (ha) *</Label>
+                <Label htmlFor='areaTotal'>Área Total (ha) *</Label>
                 <Input
-                  id="areaTotal"
-                  name="areaTotal"
-                  type="number"
+                  id='areaTotal'
+                  name='areaTotal'
+                  type='number'
                   value={fazendaData.areaTotal || ''}
                   onChange={handleInputChange}
-                  placeholder="0"
-                  min="0"
-                  step="0.01"
+                  placeholder='0'
+                  min='0'
+                  step='0.01'
                   required
                 />
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="areaAgricultavel">Área Agricultável (ha)</Label>
+                <Label htmlFor='areaAgricultavel'>Área Agricultável (ha)</Label>
                 <Input
-                  id="areaAgricultavel"
-                  name="areaAgricultavel"
-                  type="number"
+                  id='areaAgricultavel'
+                  name='areaAgricultavel'
+                  type='number'
                   value={fazendaData.areaAgricultavel || ''}
                   onChange={handleInputChange}
-                  placeholder="0"
-                  min="0"
-                  step="0.01"
+                  placeholder='0'
+                  min='0'
+                  step='0.01'
                 />
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="areaVegetacao">Área de Vegetação (ha)</Label>
+                <Label htmlFor='areaVegetacao'>Área de Vegetação (ha)</Label>
                 <Input
-                  id="areaVegetacao"
-                  name="areaVegetacao"
-                  type="number"
+                  id='areaVegetacao'
+                  name='areaVegetacao'
+                  type='number'
                   value={fazendaData.areaVegetacao || ''}
                   onChange={handleInputChange}
-                  placeholder="0"
-                  min="0"
-                  step="0.01"
+                  placeholder='0'
+                  min='0'
+                  step='0.01'
                 />
               </FormGroup>
             </div>
@@ -389,10 +410,17 @@ const FazendaForm: React.FC = () => {
 
           {isEditing && (
             <FormSection>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '1rem',
+                }}
+              >
                 <SectionTitle>Safras da Fazenda</SectionTitle>
                 <ActionButton
-                  variant="outlined-primary"
+                  variant='outlined-primary'
                   onClick={handleAddSafra}
                   disabled={safrasLoading}
                 >
@@ -401,43 +429,59 @@ const FazendaForm: React.FC = () => {
               </div>
 
               {isAddingSafra && (
-                <div style={{
-                  padding: '1.5rem',
-                  border: '1px solid #e0e0e0',
-                  borderRadius: '8px',
-                  marginBottom: '1rem',
-                  backgroundColor: '#f8f9fa'
-                }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <div
+                  style={{
+                    padding: '1.5rem',
+                    border: '1px solid #e0e0e0',
+                    borderRadius: '8px',
+                    marginBottom: '1rem',
+                    backgroundColor: '#f8f9fa',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '1.5rem',
+                    }}
+                  >
                     <h4 style={{ margin: 0, color: '#495057' }}>
                       {editingSafraId ? 'Editar Safra' : 'Adicionar Nova Safra'}
                     </h4>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 2fr',
+                      gap: '1rem',
+                      marginBottom: '1.5rem',
+                    }}
+                  >
                     <FormGroup style={{ margin: 0 }}>
-                      <Label htmlFor="safraAno">Ano *</Label>
+                      <Label htmlFor='safraAno'>Ano *</Label>
                       <Input
-                        id="safraAno"
-                        name="ano"
-                        type="number"
+                        id='safraAno'
+                        name='ano'
+                        type='number'
                         value={safraData.ano}
                         onChange={handleSafraInputChange}
-                        placeholder="2024"
-                        min="2000"
-                        max="2030"
+                        placeholder='2024'
+                        min='2000'
+                        max='2030'
                         required
                       />
                     </FormGroup>
                     <FormGroup style={{ margin: 0 }}>
-                      <Label htmlFor="safraNome">Nome da Safra *</Label>
+                      <Label htmlFor='safraNome'>Nome da Safra *</Label>
                       <Input
-                        id="safraNome"
-                        name="nome"
-                        type="text"
+                        id='safraNome'
+                        name='nome'
+                        type='text'
                         value={safraData.nome}
                         onChange={handleSafraInputChange}
-                        placeholder="Ex: Safra Verão 2024"
+                        placeholder='Ex: Safra Verão 2024'
                         required
                       />
                     </FormGroup>
@@ -448,7 +492,7 @@ const FazendaForm: React.FC = () => {
 
                     <div style={{ marginBottom: '1rem' }}>
                       <select
-                        aria-label="Selecione uma cultura"
+                        aria-label='Selecione uma cultura'
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                           const cultura = e.target.value;
                           if (cultura) {
@@ -462,24 +506,30 @@ const FazendaForm: React.FC = () => {
                           border: '1px solid #ced4da',
                           borderRadius: '4px',
                           fontSize: '1rem',
-                          backgroundColor: 'white'
+                          backgroundColor: 'white',
                         }}
                       >
-                        <option value="">Selecione uma cultura para adicionar</option>
-                        {CULTURAS_COMUNS
-                          .filter(cultura => !safraData.culturasPlantadas.includes(cultura))
-                          .map((cultura) => (
-                            <option key={cultura} value={cultura}>
-                              {cultura}
-                            </option>
-                          ))
-                        }
+                        <option value=''>Selecione uma cultura para adicionar</option>
+                        {CULTURAS_COMUNS.filter(
+                          cultura => !safraData.culturasPlantadas.includes(cultura)
+                        ).map(cultura => (
+                          <option key={cultura} value={cultura}>
+                            {cultura}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
                     {safraData.culturasPlantadas.length > 0 ? (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
-                        {safraData.culturasPlantadas.map((cultura) => (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          gap: '0.5rem',
+                          marginBottom: '1rem',
+                        }}
+                      >
+                        {safraData.culturasPlantadas.map(cultura => (
                           <div
                             key={cultura}
                             style={{
@@ -490,12 +540,12 @@ const FazendaForm: React.FC = () => {
                               fontSize: '0.9rem',
                               display: 'flex',
                               alignItems: 'center',
-                              gap: '0.5rem'
+                              gap: '0.5rem',
                             }}
                           >
                             {cultura}
                             <button
-                              type="button"
+                              type='button'
                               onClick={() => handleRemoveCultura(cultura)}
                               style={{
                                 background: 'none',
@@ -505,7 +555,7 @@ const FazendaForm: React.FC = () => {
                                 fontSize: '1.2rem',
                                 lineHeight: '1',
                                 padding: '0',
-                                marginLeft: '0.25rem'
+                                marginLeft: '0.25rem',
                               }}
                               title={`Remover ${cultura}`}
                             >
@@ -515,12 +565,14 @@ const FazendaForm: React.FC = () => {
                         ))}
                       </div>
                     ) : (
-                      <p style={{
-                        fontSize: '0.9rem',
-                        color: '#666',
-                        fontStyle: 'italic',
-                        margin: '0.5rem 0 1rem 0'
-                      }}>
+                      <p
+                        style={{
+                          fontSize: '0.9rem',
+                          color: '#666',
+                          fontStyle: 'italic',
+                          margin: '0.5rem 0 1rem 0',
+                        }}
+                      >
                         Nenhuma cultura selecionada
                       </p>
                     )}
@@ -528,18 +580,18 @@ const FazendaForm: React.FC = () => {
 
                   <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
                     <ActionButton
-                      variant="secondary"
+                      variant='secondary'
                       onClick={handleCancelSafra}
                       disabled={safrasLoading}
                     >
                       Cancelar
                     </ActionButton>
                     <ActionButton
-                      variant="primary"
+                      variant='primary'
                       onClick={handleSaveSafra}
                       disabled={safrasLoading}
                     >
-                      {safrasLoading ? 'Salvando...' : (editingSafraId ? 'Atualizar' : 'Adicionar')}
+                      {safrasLoading ? 'Salvando...' : editingSafraId ? 'Atualizar' : 'Adicionar'}
                     </ActionButton>
                   </div>
                 </div>
@@ -548,13 +600,13 @@ const FazendaForm: React.FC = () => {
               <div>
                 {safrasLoading ? (
                   <p>Carregando safras...</p>
-                ) : (!safras || safras.length === 0) ? (
+                ) : !safras || safras.length === 0 ? (
                   <p style={{ color: '#666', fontStyle: 'italic' }}>
                     Nenhuma safra cadastrada para esta fazenda.
                   </p>
                 ) : (
                   <div style={{ display: 'grid', gap: '0.5rem' }}>
-                    {(safras || []).map((safra) => (
+                    {(safras || []).map(safra => (
                       <div
                         key={safra.id}
                         style={{
@@ -564,7 +616,7 @@ const FazendaForm: React.FC = () => {
                           padding: '0.75rem',
                           border: '1px solid #e0e0e0',
                           borderRadius: '4px',
-                          backgroundColor: 'white'
+                          backgroundColor: 'white',
                         }}
                       >
                         <div>
@@ -572,18 +624,18 @@ const FazendaForm: React.FC = () => {
                         </div>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                           <ActionButton
-                            variant="outlined-secondary"
+                            variant='outlined-secondary'
                             onClick={() => handleEditSafra(safra)}
                             disabled={safrasLoading || isAddingSafra}
-                            size="small"
+                            size='small'
                           >
                             Editar
                           </ActionButton>
                           <ActionButton
-                            variant="outlined-danger"
+                            variant='outlined-danger'
                             onClick={() => handleDeleteSafra(safra.id)}
                             disabled={safrasLoading || isAddingSafra}
-                            size="small"
+                            size='small'
                           >
                             Excluir
                           </ActionButton>
@@ -599,17 +651,13 @@ const FazendaForm: React.FC = () => {
           <FormSection>
             <ButtonGroup>
               <ActionButton
-                variant="outlined-secondary"
+                variant='outlined-secondary'
                 onClick={handleCancel}
                 disabled={propriedadeLoading}
               >
                 Cancelar
               </ActionButton>
-              <ActionButton
-                variant="primary"
-                onClick={handleSave}
-                loading={propriedadeLoading}
-              >
+              <ActionButton variant='primary' onClick={handleSave} loading={propriedadeLoading}>
                 {isEditing ? 'Atualizar Fazenda' : 'Salvar Fazenda'}
               </ActionButton>
             </ButtonGroup>

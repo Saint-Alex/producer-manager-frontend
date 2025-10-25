@@ -5,11 +5,7 @@ import App from '../App';
 import { store } from '../store';
 
 const renderWithRedux = (component: React.ReactElement) => {
-  return render(
-    <Provider store={store}>
-      {component}
-    </Provider>
-  );
+  return render(<Provider store={store}>{component}</Provider>);
 };
 
 describe('App', () => {

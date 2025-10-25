@@ -2,9 +2,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import {
-  ActionButton,
-} from '../../components/shared';
+import { ActionButton } from '../../components/shared';
 import { AppDispatch, RootState } from '../../store';
 import { fetchPropriedades } from '../../store/propriedadeRuralSlice';
 import { fetchSafras } from '../../store/safraSlice';
@@ -21,9 +19,7 @@ import {
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { propriedades } = useSelector(
-    (state: RootState) => state.propriedades
-  );
+  const { propriedades } = useSelector((state: RootState) => state.propriedades);
   const { safras } = useSelector((state: RootState) => state.safras);
 
   useEffect(() => {
@@ -32,10 +28,13 @@ const HomePage: React.FC = () => {
   }, [dispatch]);
 
   const getEstadosData = () => {
-    const estadosCount = propriedades.reduce((acc, prop) => {
-      acc[prop.estado] = (acc[prop.estado] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const estadosCount = propriedades.reduce(
+      (acc, prop) => {
+        acc[prop.estado] = (acc[prop.estado] || 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return Object.entries(estadosCount).map(([estado, count], index) => ({
       id: index,
@@ -45,15 +44,18 @@ const HomePage: React.FC = () => {
   };
 
   const getCulturasData = () => {
-    const culturasCount = safras.reduce((acc, safra) => {
-      if (safra.cultivos) {
-        safra.cultivos.forEach((cultivo) => {
-          const cultura = cultivo.cultura?.nome || 'Não especificada';
-          acc[cultura] = (acc[cultura] || 0) + 1;
-        });
-      }
-      return acc;
-    }, {} as Record<string, number>);
+    const culturasCount = safras.reduce(
+      (acc, safra) => {
+        if (safra.cultivos) {
+          safra.cultivos.forEach(cultivo => {
+            const cultura = cultivo.cultura?.nome || 'Não especificada';
+            acc[cultura] = (acc[cultura] || 0) + 1;
+          });
+        }
+        return acc;
+      },
+      {} as Record<string, number>
+    );
 
     return Object.entries(culturasCount)
       .filter(([_, count]) => count > 0)
@@ -97,22 +99,13 @@ const HomePage: React.FC = () => {
         </HomeDescription>
 
         <ButtonContainer>
-          <ActionButton
-            variant='primary'
-            onClick={() => navigate('/producers')}
-          >
+          <ActionButton variant='primary' onClick={() => navigate('/producers')}>
             Gerenciar Produtores
           </ActionButton>
-          <ActionButton
-            variant='secondary'
-            onClick={() => navigate('/culturas')}
-          >
+          <ActionButton variant='secondary' onClick={() => navigate('/culturas')}>
             Gerenciar Culturas
           </ActionButton>
-          <ActionButton
-            variant='outlined-primary'
-            onClick={() => navigate('/producer-register')}
-          >
+          <ActionButton variant='outlined-primary' onClick={() => navigate('/producer-register')}>
             + Novo Produtor
           </ActionButton>
         </ButtonContainer>
@@ -172,9 +165,12 @@ const HomePage: React.FC = () => {
                   color: '#388e3c',
                 }}
               >
-                {Math.round(propriedades
-                  .reduce((total, prop) => total + parseFloat(prop.areaTotal.toString()), 0))
-                  .toLocaleString('pt-BR')}
+                {Math.round(
+                  propriedades.reduce(
+                    (total, prop) => total + parseFloat(prop.areaTotal.toString()),
+                    0
+                  )
+                ).toLocaleString('pt-BR')}
               </div>
               <div
                 style={{
@@ -223,7 +219,7 @@ const HomePage: React.FC = () => {
                   series={[
                     {
                       data: getEstadosData(),
-                      arcLabel: (item) => item.value > 0 ? `${item.value}` : '',
+                      arcLabel: item => (item.value > 0 ? `${item.value}` : ''),
                       arcLabelMinAngle: 20,
                       arcLabelRadius: '60%',
                     },
@@ -284,7 +280,7 @@ const HomePage: React.FC = () => {
                   series={[
                     {
                       data: getCulturasData(),
-                      arcLabel: (item) => item.value > 0 ? `${item.value}` : '',
+                      arcLabel: item => (item.value > 0 ? `${item.value}` : ''),
                       arcLabelMinAngle: 20,
                       arcLabelRadius: '60%',
                     },
@@ -340,12 +336,12 @@ const HomePage: React.FC = () => {
               >
                 Uso do Solo (Hectares)
               </h4>
-              {getUsoSoloData().every((item) => item.value > 0) ? (
+              {getUsoSoloData().every(item => item.value > 0) ? (
                 <PieChart
                   series={[
                     {
                       data: getUsoSoloData(),
-                      arcLabel: (item) => {
+                      arcLabel: item => {
                         if (item.value === 0) return '';
                         return item.value < 1000
                           ? `${item.value.toFixed(1)}`

@@ -1,10 +1,4 @@
-import {
-  validateCPF,
-  validateCNPJ,
-  formatCPF,
-  formatCNPJ,
-  generateId,
-} from '../validators';
+import { validateCPF, validateCNPJ, formatCPF, formatCNPJ, generateId } from '../validators';
 
 describe('Validators', () => {
   describe('validateCPF', () => {

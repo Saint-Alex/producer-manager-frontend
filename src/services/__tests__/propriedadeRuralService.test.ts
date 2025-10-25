@@ -1,8 +1,8 @@
 import {
-    CreatePropriedadeData,
-    PropriedadeRural,
-    PropriedadeRuralFormData,
-    UpdatePropriedadeData,
+  CreatePropriedadeData,
+  PropriedadeRural,
+  PropriedadeRuralFormData,
+  UpdatePropriedadeData,
 } from '../../types/propriedadeRural';
 import { apiClient } from '../api';
 import { propriedadeRuralService } from '../propriedadeRuralService';
@@ -93,9 +93,7 @@ describe('PropriedadeRuralService', () => {
 
       const result = await propriedadeRuralService.getByProdutor(produtorId);
 
-      expect(mockApiClient.get).toHaveBeenCalledWith(
-        `/api/propriedades?produtorId=${produtorId}`
-      );
+      expect(mockApiClient.get).toHaveBeenCalledWith(`/api/propriedades?produtorId=${produtorId}`);
       expect(result).toEqual(mockPropriedades);
     });
 
@@ -171,9 +169,7 @@ describe('PropriedadeRuralService', () => {
       const error = new Error('Dados inválidos');
       mockApiClient.post.mockRejectedValueOnce(error);
 
-      await expect(propriedadeRuralService.create(createData)).rejects.toThrow(
-        'Dados inválidos'
-      );
+      await expect(propriedadeRuralService.create(createData)).rejects.toThrow('Dados inválidos');
     });
 
     it('deve validar soma das áreas', async () => {

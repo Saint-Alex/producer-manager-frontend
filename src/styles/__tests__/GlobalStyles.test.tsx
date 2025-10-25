@@ -9,7 +9,7 @@ import {
   GlobalStyle,
   LoadingSpinner,
   SuccessMessage,
-  Title
+  Title,
 } from '../GlobalStyles';
 import { theme } from '../theme';
 
@@ -25,7 +25,7 @@ const renderWithTheme = (component: React.ReactElement) => {
 describe('GlobalStyles Components', () => {
   describe('GlobalStyle', () => {
     it('deve aplicar estilos globais', () => {
-      const { container } = renderWithTheme(<div data-testid="global-test" />);
+      const { container } = renderWithTheme(<div data-testid='global-test' />);
 
       // Verifica se o GlobalStyle é renderizado (não causa erro)
       expect(container).toBeInTheDocument();
@@ -34,41 +34,31 @@ describe('GlobalStyles Components', () => {
 
   describe('Container', () => {
     it('deve renderizar container', () => {
-      const { container } = renderWithTheme(
-        <Container data-testid="container">Content</Container>
-      );
+      const { container } = renderWithTheme(<Container data-testid='container'>Content</Container>);
       expect(container.firstChild).toBeInTheDocument();
     });
 
     it('deve renderizar conteúdo interno', () => {
-      const { getByText } = renderWithTheme(
-        <Container>Container Content</Container>
-      );
+      const { getByText } = renderWithTheme(<Container>Container Content</Container>);
       expect(getByText('Container Content')).toBeInTheDocument();
     });
   });
 
   describe('Card', () => {
     it('deve renderizar card', () => {
-      const { container } = renderWithTheme(
-        <Card data-testid="card">Card Content</Card>
-      );
+      const { container } = renderWithTheme(<Card data-testid='card'>Card Content</Card>);
       expect(container.firstChild).toBeInTheDocument();
     });
 
     it('deve renderizar conteúdo do card', () => {
-      const { getByText } = renderWithTheme(
-        <Card>Card Content Test</Card>
-      );
+      const { getByText } = renderWithTheme(<Card>Card Content Test</Card>);
       expect(getByText('Card Content Test')).toBeInTheDocument();
     });
   });
 
   describe('Title', () => {
     it('deve renderizar título como h1', () => {
-      const { getByText } = renderWithTheme(
-        <Title>Page Title</Title>
-      );
+      const { getByText } = renderWithTheme(<Title>Page Title</Title>);
       const title = getByText('Page Title');
 
       expect(title).toBeInTheDocument();
@@ -77,42 +67,32 @@ describe('GlobalStyles Components', () => {
 
     it('deve ter o texto especificado', () => {
       const titleText = 'Sistema de Gestão Rural';
-      const { getByText } = renderWithTheme(
-        <Title>{titleText}</Title>
-      );
+      const { getByText } = renderWithTheme(<Title>{titleText}</Title>);
       expect(getByText(titleText)).toBeInTheDocument();
     });
   });
 
   describe('Button', () => {
     it('deve renderizar botão', () => {
-      const { getByRole } = renderWithTheme(
-        <Button>Click Me</Button>
-      );
+      const { getByRole } = renderWithTheme(<Button>Click Me</Button>);
       const button = getByRole('button');
       expect(button).toBeInTheDocument();
     });
 
     it('deve ter texto do botão', () => {
-      const { getByText } = renderWithTheme(
-        <Button>Save Changes</Button>
-      );
+      const { getByText } = renderWithTheme(<Button>Save Changes</Button>);
       expect(getByText('Save Changes')).toBeInTheDocument();
     });
 
     it('deve estar desabilitado quando disabled', () => {
-      const { getByRole } = renderWithTheme(
-        <Button disabled>Disabled Button</Button>
-      );
+      const { getByRole } = renderWithTheme(<Button disabled>Disabled Button</Button>);
       const button = getByRole('button');
       expect(button).toBeDisabled();
     });
 
     it('deve ser clicável quando habilitado', () => {
       const handleClick = jest.fn();
-      const { getByText } = renderWithTheme(
-        <Button onClick={handleClick}>Clickable</Button>
-      );
+      const { getByText } = renderWithTheme(<Button onClick={handleClick}>Clickable</Button>);
       const button = getByText('Clickable');
 
       button.click();
@@ -122,9 +102,7 @@ describe('GlobalStyles Components', () => {
 
   describe('LoadingSpinner', () => {
     it('deve renderizar spinner de carregamento', () => {
-      const { container } = renderWithTheme(
-        <LoadingSpinner data-testid="spinner" />
-      );
+      const { container } = renderWithTheme(<LoadingSpinner data-testid='spinner' />);
       expect(container.firstChild).toBeInTheDocument();
     });
 
@@ -139,18 +117,14 @@ describe('GlobalStyles Components', () => {
 
   describe('ErrorMessage', () => {
     it('deve renderizar mensagem de erro', () => {
-      const { getByText } = renderWithTheme(
-        <ErrorMessage>Erro ao processar dados</ErrorMessage>
-      );
+      const { getByText } = renderWithTheme(<ErrorMessage>Erro ao processar dados</ErrorMessage>);
       const message = getByText('Erro ao processar dados');
       expect(message).toBeInTheDocument();
     });
 
     it('deve exibir texto de erro customizado', () => {
       const errorText = 'Falha na conexão com o servidor';
-      const { getByText } = renderWithTheme(
-        <ErrorMessage>{errorText}</ErrorMessage>
-      );
+      const { getByText } = renderWithTheme(<ErrorMessage>{errorText}</ErrorMessage>);
       expect(getByText(errorText)).toBeInTheDocument();
     });
   });
@@ -166,9 +140,7 @@ describe('GlobalStyles Components', () => {
 
     it('deve exibir texto de sucesso customizado', () => {
       const successText = 'Dados salvos com sucesso!';
-      const { getByText } = renderWithTheme(
-        <SuccessMessage>{successText}</SuccessMessage>
-      );
+      const { getByText } = renderWithTheme(<SuccessMessage>{successText}</SuccessMessage>);
       expect(getByText(successText)).toBeInTheDocument();
     });
   });
@@ -287,7 +259,9 @@ describe('GlobalStyles Components', () => {
         </Card>
       );
 
-      expect(container.querySelector('[data-testid="spinner"]') || container.firstChild).toBeInTheDocument();
+      expect(
+        container.querySelector('[data-testid="spinner"]') || container.firstChild
+      ).toBeInTheDocument();
       expect(getByText('Erro durante carregamento')).toBeInTheDocument();
       expect(getByText('Carregamento concluído')).toBeInTheDocument();
     });

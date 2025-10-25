@@ -101,9 +101,7 @@ describe('CulturaService', () => {
 
       const result = await culturaService.getBySafra(safraId);
 
-      expect(mockApiClient.get).toHaveBeenCalledWith(
-        `/api/culturas?safraId=${safraId}`
-      );
+      expect(mockApiClient.get).toHaveBeenCalledWith(`/api/culturas?safraId=${safraId}`);
       expect(result).toEqual(mockCulturas);
     });
 
@@ -119,9 +117,7 @@ describe('CulturaService', () => {
       const error = new Error('Safra não encontrada');
       mockApiClient.get.mockRejectedValueOnce(error);
 
-      await expect(culturaService.getBySafra(safraId)).rejects.toThrow(
-        'Safra não encontrada'
-      );
+      await expect(culturaService.getBySafra(safraId)).rejects.toThrow('Safra não encontrada');
     });
   });
 
@@ -141,9 +137,7 @@ describe('CulturaService', () => {
       const error = new Error('Cultura não encontrada');
       mockApiClient.get.mockRejectedValueOnce(error);
 
-      await expect(culturaService.getById('inexistente')).rejects.toThrow(
-        'Cultura não encontrada'
-      );
+      await expect(culturaService.getById('inexistente')).rejects.toThrow('Cultura não encontrada');
     });
 
     it('deve lidar com ID vazio', async () => {
@@ -201,10 +195,7 @@ describe('CulturaService', () => {
 
       const result = await culturaService.update(culturaId, updateData);
 
-      expect(mockApiClient.patch).toHaveBeenCalledWith(
-        `/api/culturas/${culturaId}`,
-        updateData
-      );
+      expect(mockApiClient.patch).toHaveBeenCalledWith(`/api/culturas/${culturaId}`, updateData);
       expect(result).toEqual(culturaAtualizada);
     });
 
@@ -224,10 +215,7 @@ describe('CulturaService', () => {
 
       const result = await culturaService.update(culturaId, updateParcial);
 
-      expect(mockApiClient.patch).toHaveBeenCalledWith(
-        `/api/culturas/${culturaId}`,
-        updateParcial
-      );
+      expect(mockApiClient.patch).toHaveBeenCalledWith(`/api/culturas/${culturaId}`, updateParcial);
       expect(result).toEqual(culturaAtualizada);
     });
 
@@ -235,9 +223,7 @@ describe('CulturaService', () => {
       const error = new Error('Nome já existe');
       mockApiClient.patch.mockRejectedValueOnce(error);
 
-      await expect(culturaService.update(culturaId, updateData)).rejects.toThrow(
-        'Nome já existe'
-      );
+      await expect(culturaService.update(culturaId, updateData)).rejects.toThrow('Nome já existe');
     });
   });
 
@@ -256,9 +242,7 @@ describe('CulturaService', () => {
       const error = new Error('Cultura não encontrada');
       mockApiClient.delete.mockRejectedValueOnce(error);
 
-      await expect(culturaService.delete('inexistente')).rejects.toThrow(
-        'Cultura não encontrada'
-      );
+      await expect(culturaService.delete('inexistente')).rejects.toThrow('Cultura não encontrada');
     });
 
     it('deve lidar com ID vazio', async () => {
@@ -289,9 +273,9 @@ describe('CulturaService', () => {
       const timeoutError = new Error('Request timeout');
       mockApiClient.post.mockRejectedValueOnce(timeoutError);
 
-      await expect(
-        culturaService.create({ nome: 'Test', descricao: 'Test' })
-      ).rejects.toThrow('Request timeout');
+      await expect(culturaService.create({ nome: 'Test', descricao: 'Test' })).rejects.toThrow(
+        'Request timeout'
+      );
     });
 
     it('deve propagar erros de servidor (500)', async () => {

@@ -10,7 +10,7 @@ const renderNotificationModal = (props: Partial<NotificationModalProps> = {}) =>
     message: 'Test message',
     type: 'info',
     onClose: jest.fn(),
-    ...props
+    ...props,
   };
 
   return render(
@@ -47,7 +47,7 @@ describe('NotificationModal', () => {
     test('displays correct title and message', () => {
       renderNotificationModal({
         title: 'Custom Title',
-        message: 'Custom message content'
+        message: 'Custom message content',
       });
 
       expect(screen.getByText('Custom Title')).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe('NotificationModal', () => {
 
     test('renders HTML content in message with dangerouslySetInnerHTML', () => {
       renderNotificationModal({
-        message: '<strong>Bold text</strong> and <em>italic text</em>'
+        message: '<strong>Bold text</strong> and <em>italic text</em>',
       });
 
       // Verifica que o conteúdo HTML foi renderizado (sem verificar innerHTML)
@@ -135,7 +135,9 @@ describe('NotificationModal', () => {
       renderNotificationModal({ onClose: mockOnClose });
 
       // Buscar o overlay (elemento pai)
-      const overlay = screen.getByText('Test Title').closest('[class*="NotificationOverlay"]')?.parentElement;
+      const overlay = screen
+        .getByText('Test Title')
+        .closest('[class*="NotificationOverlay"]')?.parentElement;
       if (overlay) {
         fireEvent.click(overlay);
         expect(mockOnClose).toHaveBeenCalledTimes(1);
@@ -168,7 +170,7 @@ describe('NotificationModal', () => {
           target: overlay,
           currentTarget: overlay,
           preventDefault: jest.fn(),
-          stopPropagation: jest.fn()
+          stopPropagation: jest.fn(),
         } as any;
 
         fireEvent.click(overlay, mockEvent);
@@ -190,7 +192,7 @@ describe('NotificationModal', () => {
           target: titleElement,
           currentTarget: overlay,
           preventDefault: jest.fn(),
-          stopPropagation: jest.fn()
+          stopPropagation: jest.fn(),
         } as any;
 
         fireEvent.click(overlay, mockEvent);
@@ -207,7 +209,7 @@ describe('NotificationModal', () => {
         title: 'Success!',
         message: 'Operation completed successfully',
         buttonText: 'Great!',
-        onClose: mockOnClose
+        onClose: mockOnClose,
       });
 
       expect(screen.getByText('✅')).toBeInTheDocument();
@@ -226,7 +228,7 @@ describe('NotificationModal', () => {
         title: 'Error Occurred',
         message: 'Something went wrong',
         buttonText: 'Try Again',
-        onClose: mockOnClose
+        onClose: mockOnClose,
       });
 
       expect(screen.getByText('❌')).toBeInTheDocument();
@@ -240,7 +242,7 @@ describe('NotificationModal', () => {
         type: 'warning',
         title: 'Warning',
         message: 'Please be careful',
-        buttonText: 'Understood'
+        buttonText: 'Understood',
       });
 
       expect(screen.getByText('⚠️')).toBeInTheDocument();
@@ -254,7 +256,7 @@ describe('NotificationModal', () => {
         type: 'info',
         title: 'Information',
         message: 'Here is some useful info',
-        buttonText: 'Got it'
+        buttonText: 'Got it',
       });
 
       expect(screen.getByText('ℹ️')).toBeInTheDocument();
@@ -268,7 +270,7 @@ describe('NotificationModal', () => {
     test('handles empty title and message', () => {
       renderNotificationModal({
         title: '',
-        message: ''
+        message: '',
       });
 
       expect(screen.getByText('ℹ️')).toBeInTheDocument();
@@ -277,7 +279,7 @@ describe('NotificationModal', () => {
 
     test('handles complex HTML in message', () => {
       renderNotificationModal({
-        message: '<div><p>Paragraph 1</p><ul><li>Item 1</li><li>Item 2</li></ul></div>'
+        message: '<div><p>Paragraph 1</p><ul><li>Item 1</li><li>Item 2</li></ul></div>',
       });
 
       expect(screen.getByText('Paragraph 1')).toBeInTheDocument();
@@ -287,11 +289,12 @@ describe('NotificationModal', () => {
 
     test('handles very long text content', () => {
       const longTitle = 'This is a very long title that might wrap to multiple lines';
-      const longMessage = 'This is an extremely long message that contains a lot of information and might need to be wrapped or scrolled within the modal container for proper display';
+      const longMessage =
+        'This is an extremely long message that contains a lot of information and might need to be wrapped or scrolled within the modal container for proper display';
 
       renderNotificationModal({
         title: longTitle,
-        message: longMessage
+        message: longMessage,
       });
 
       expect(screen.getByText(longTitle)).toBeInTheDocument();
@@ -302,7 +305,7 @@ describe('NotificationModal', () => {
       renderNotificationModal({
         title: 'Special: @#$%^&*()_+{}|:"<>?',
         message: 'Message with ñ, á, é, í, ó, ú, ç, and emojis 🎉🚀💖',
-        buttonText: 'Clique aqui! 👆'
+        buttonText: 'Clique aqui! 👆',
       });
 
       expect(screen.getByText('Special: @#$%^&*()_+{}|:"<>?')).toBeInTheDocument();
@@ -319,9 +322,9 @@ describe('NotificationModal', () => {
         <ThemeProvider theme={theme}>
           <NotificationModal
             isOpen={false}
-            title="Test Title"
-            message="Test message"
-            type="info"
+            title='Test Title'
+            message='Test message'
+            type='info'
             onClose={jest.fn()}
           />
         </ThemeProvider>
@@ -333,9 +336,9 @@ describe('NotificationModal', () => {
         <ThemeProvider theme={theme}>
           <NotificationModal
             isOpen={true}
-            title="Test Title"
-            message="Test message"
-            type="info"
+            title='Test Title'
+            message='Test message'
+            type='info'
             onClose={jest.fn()}
           />
         </ThemeProvider>

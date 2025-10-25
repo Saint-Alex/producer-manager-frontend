@@ -32,8 +32,8 @@ jest.mock('../../../services/propriedadeRuralService', () => ({
       areaAgricultavel: Number(formData.areaAgricultavel),
       areaVegetacao: Number(formData.areaVegetacao),
       produtorIds,
-    }))
-  }
+    })),
+  },
 }));
 
 jest.mock('../../../services/safraService', () => ({
@@ -43,8 +43,8 @@ jest.mock('../../../services/safraService', () => ({
     update: jest.fn(),
     delete: jest.fn(),
     getAll: jest.fn(),
-    getById: jest.fn()
-  }
+    getById: jest.fn(),
+  },
 }));
 
 // Mock do react-router-dom
@@ -52,12 +52,14 @@ const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => mockNavigate,
-  useParams: jest.fn()
+  useParams: jest.fn(),
 }));
 
 const { useParams } = require('react-router-dom');
 
-const mockedPropriedadeService = propriedadeRuralService as jest.Mocked<typeof propriedadeRuralService>;
+const mockedPropriedadeService = propriedadeRuralService as jest.Mocked<
+  typeof propriedadeRuralService
+>;
 const mockedSafraService = safraService as jest.Mocked<typeof safraService>;
 
 // Helper para criar store de teste
@@ -73,29 +75,30 @@ const createTestStore = (initialState: any = {}) => {
         currentPropriedade: null,
         loading: false,
         error: null,
-        ...initialState?.propriedades
+        ...initialState?.propriedades,
       },
       safras: {
         safras: [],
         currentSafra: null,
         loading: false,
         error: null,
-        ...initialState?.safras
-      }
-    }
+        ...initialState?.safras,
+      },
+    },
   });
 };
 
 // Helper para renderizar com providers
-const renderWithProviders = (component: React.ReactElement, options: { initialState?: any } = {}) => {
+const renderWithProviders = (
+  component: React.ReactElement,
+  options: { initialState?: any } = {}
+) => {
   const store = createTestStore(options.initialState);
 
   return render(
     <Provider store={store}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          {component}
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{component}</ThemeProvider>
       </BrowserRouter>
     </Provider>
   );
@@ -111,7 +114,7 @@ const mockFazenda = {
   areaAgricultavel: 800,
   areaVegetacao: 200,
   createdAt: '2024-01-01T00:00:00Z',
-  updatedAt: '2024-01-01T00:00:00Z'
+  updatedAt: '2024-01-01T00:00:00Z',
 };
 
 const mockSafra = {
@@ -119,7 +122,7 @@ const mockSafra = {
   nome: 'Safra Teste',
   ano: 2024,
   createdAt: '2024-01-01T00:00:00Z',
-  updatedAt: '2024-01-01T00:00:00Z'
+  updatedAt: '2024-01-01T00:00:00Z',
 };
 
 describe('FazendaForm - Comprehensive Branch Coverage', () => {
@@ -233,7 +236,7 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
           areaTotal: 100,
           areaAgricultavel: 80,
           areaVegetacao: 20,
-          produtorIds: ['producer1']
+          produtorIds: ['producer1'],
         });
       });
     });
@@ -283,7 +286,7 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
           estado: 'MT',
           areaTotal: 1000,
           areaAgricultavel: 800,
-          areaVegetacao: 200
+          areaVegetacao: 200,
         });
       });
     });
@@ -305,7 +308,7 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
     });
 
     it('deve mostrar "Carregando safras..." enquanto carrega', async () => {
-      mockedSafraService.getByPropriedade.mockImplementation(() => new Promise(() => { }));
+      mockedSafraService.getByPropriedade.mockImplementation(() => new Promise(() => {}));
       renderWithProviders(<FazendaForm />);
 
       await waitFor(() => {
@@ -428,7 +431,7 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
       await waitFor(() => {
         expect(mockedSafraService.create).toHaveBeenCalledWith({
           nome: 'Safra Teste',
-          ano: 2024
+          ano: 2024,
         });
       });
     });
@@ -444,24 +447,27 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
           propriedades: [mockFazenda],
           currentPropriedade: mockFazenda,
           loading: false,
-          error: null
+          error: null,
         },
         safras: {
           safras: [mockSafra],
           loading: false,
-          error: null
-        }
+          error: null,
+        },
       });
 
       render(
         <Provider store={store}>
           <MemoryRouter initialEntries={['/fazenda/edit/1']}>
             <Routes>
-              <Route path="/fazenda/edit/:propriedadeId" element={
-                <ThemeProvider theme={theme}>
-                  <FazendaForm />
-                </ThemeProvider>
-              } />
+              <Route
+                path='/fazenda/edit/:propriedadeId'
+                element={
+                  <ThemeProvider theme={theme}>
+                    <FazendaForm />
+                  </ThemeProvider>
+                }
+              />
             </Routes>
           </MemoryRouter>
         </Provider>
@@ -579,7 +585,9 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
 
       await waitFor(() => {
         expect(screen.getByText('Erro')).toBeInTheDocument();
-        expect(screen.getByText('Preencha todos os campos da safra e adicione pelo menos uma cultura.')).toBeInTheDocument();
+        expect(
+          screen.getByText('Preencha todos os campos da safra e adicione pelo menos uma cultura.')
+        ).toBeInTheDocument();
       });
     });
   });

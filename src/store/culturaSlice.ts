@@ -106,20 +106,20 @@ const culturaSlice = createSlice({
   name: 'cultura',
   initialState,
   reducers: {
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
-    clearCurrentCultura: (state) => {
+    clearCurrentCultura: state => {
       state.currentCultura = null;
     },
     setCurrentCultura: (state, action: PayloadAction<Cultura>) => {
       state.currentCultura = action.payload;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Fetch all culturas
-      .addCase(fetchCulturas.pending, (state) => {
+      .addCase(fetchCulturas.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -133,7 +133,7 @@ const culturaSlice = createSlice({
       })
 
       // Fetch culturas by propriedade
-      .addCase(fetchCulturasByPropriedade.pending, (state) => {
+      .addCase(fetchCulturasByPropriedade.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -147,7 +147,7 @@ const culturaSlice = createSlice({
       })
 
       // Fetch culturas by safra
-      .addCase(fetchCulturasBySafra.pending, (state) => {
+      .addCase(fetchCulturasBySafra.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -161,7 +161,7 @@ const culturaSlice = createSlice({
       })
 
       // Fetch cultura by id
-      .addCase(fetchCulturaById.pending, (state) => {
+      .addCase(fetchCulturaById.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -175,7 +175,7 @@ const culturaSlice = createSlice({
       })
 
       // Create cultura
-      .addCase(createCultura.pending, (state) => {
+      .addCase(createCultura.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -189,7 +189,7 @@ const culturaSlice = createSlice({
       })
 
       // Update cultura
-      .addCase(updateCultura.pending, (state) => {
+      .addCase(updateCultura.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -209,7 +209,7 @@ const culturaSlice = createSlice({
       })
 
       // Delete cultura
-      .addCase(deleteCultura.pending, (state) => {
+      .addCase(deleteCultura.pending, state => {
         state.loading = true;
         state.error = null;
       })

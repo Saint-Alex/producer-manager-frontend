@@ -14,7 +14,7 @@ import {
   FormTitle,
   Input,
   Label,
-  SectionTitle
+  SectionTitle,
 } from './ProducerForm.styled';
 
 interface ProducerFormProps {
@@ -30,12 +30,12 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
   onCancel,
   initialData,
   isLoading = false,
-  isEditMode = false
+  isEditMode = false,
 }) => {
   const [formData, setFormData] = useState<ProducerFormData>({
     cpfCnpj: '',
     nome: '',
-    fazendas: []
+    fazendas: [],
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -45,7 +45,7 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
       setFormData({
         cpfCnpj: initialData.cpfCnpj || '',
         nome: initialData.nome || '',
-        fazendas: initialData.fazendas || []
+        fazendas: initialData.fazendas || [],
       });
     }
   }, [initialData]);
@@ -102,7 +102,7 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
 
     setFormData(prev => ({
       ...prev,
-      [field]: formattedValue
+      [field]: formattedValue,
     }));
 
     if (errors[field]) {
@@ -118,37 +118,39 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
       areaTotal: 0,
       areaAgricultavel: 0,
       areaVegetacao: 0,
-      safras: []
+      safras: [],
     };
 
     setFormData(prev => ({
       ...prev,
-      fazendas: [...prev.fazendas, newFazenda]
+      fazendas: [...prev.fazendas, newFazenda],
     }));
   };
 
   const handleRemoveFazenda = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      fazendas: prev.fazendas.filter((_, i) => i !== index)
+      fazendas: prev.fazendas.filter((_, i) => i !== index),
     }));
   };
 
-  const handleFazendaChange = (fazendaIndex: number, field: keyof Omit<FazendaWithSafras, 'safras'>, value: string) => {
+  const handleFazendaChange = (
+    fazendaIndex: number,
+    field: keyof Omit<FazendaWithSafras, 'safras'>,
+    value: string
+  ) => {
     setFormData(prev => ({
       ...prev,
       fazendas: prev.fazendas.map((fazenda, index) =>
         index === fazendaIndex ? { ...fazenda, [field]: value } : fazenda
-      )
+      ),
     }));
   };
 
   return (
     <FormContainer>
       <FormCard>
-        <FormTitle>
-          {isEditMode ? 'Editar Produtor' : 'Cadastrar Produtor'}
-        </FormTitle>
+        <FormTitle>{isEditMode ? 'Editar Produtor' : 'Cadastrar Produtor'}</FormTitle>
 
         <form onSubmit={handleSubmit}>
           <FormSection>
@@ -158,10 +160,10 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
               <FormGroup>
                 <Label>CPF/CNPJ *</Label>
                 <Input
-                  type="text"
+                  type='text'
                   value={formData.cpfCnpj}
-                  onChange={(e) => handleInputChange('cpfCnpj', e.target.value)}
-                  placeholder="000.000.000-00 ou 00.000.000/0000-00"
+                  onChange={e => handleInputChange('cpfCnpj', e.target.value)}
+                  placeholder='000.000.000-00 ou 00.000.000/0000-00'
                   $hasError={!!errors.cpfCnpj}
                   maxLength={18}
                 />
@@ -171,10 +173,10 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
               <FormGroup>
                 <Label>Nome do Produtor *</Label>
                 <Input
-                  type="text"
+                  type='text'
                   value={formData.nome}
-                  onChange={(e) => handleInputChange('nome', e.target.value)}
-                  placeholder="Nome completo do produtor"
+                  onChange={e => handleInputChange('nome', e.target.value)}
+                  placeholder='Nome completo do produtor'
                   $hasError={!!errors.nome}
                 />
                 {errors.nome && <ErrorMessage>{errors.nome}</ErrorMessage>}
@@ -183,21 +185,30 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
           </FormSection>
 
           <FormSection>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '1rem',
+              }}
+            >
               <SectionTitle>Fazendas do Produtor</SectionTitle>
               <ActionButton
-                type="button"
-                variant="outlined-primary"
+                type='button'
+                variant='outlined-primary'
                 onClick={handleAddFazenda}
                 disabled={isLoading}
-                size="small"
+                size='small'
               >
                 + Adicionar Fazenda
               </ActionButton>
             </div>
 
             {formData.fazendas.length === 0 ? (
-              <p style={{ color: '#666', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}>
+              <p
+                style={{ color: '#666', fontStyle: 'italic', textAlign: 'center', padding: '1rem' }}
+              >
                 Nenhuma fazenda adicionada. Clique em "Adicionar Fazenda" para começar.
               </p>
             ) : (
@@ -210,19 +221,24 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                     padding: '1.5rem',
                     marginBottom: '1rem',
                     backgroundColor: '#f9f9f9',
-                    position: 'relative'
+                    position: 'relative',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <h4 style={{ margin: 0, color: '#495057' }}>
-                      Fazenda {fazendaIndex + 1}
-                    </h4>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '1rem',
+                    }}
+                  >
+                    <h4 style={{ margin: 0, color: '#495057' }}>Fazenda {fazendaIndex + 1}</h4>
                     <ActionButton
-                      type="button"
-                      variant="outlined-danger"
+                      type='button'
+                      variant='outlined-danger'
                       onClick={() => handleRemoveFazenda(fazendaIndex)}
                       disabled={isLoading}
-                      size="small"
+                      size='small'
                     >
                       Remover Fazenda
                     </ActionButton>
@@ -232,10 +248,12 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                     <FormGroup>
                       <Label>Nome da Fazenda *</Label>
                       <Input
-                        type="text"
+                        type='text'
                         value={fazenda.nomeFazenda}
-                        onChange={(e) => handleFazendaChange(fazendaIndex, 'nomeFazenda', e.target.value)}
-                        placeholder="Ex: Fazenda Santa Maria"
+                        onChange={e =>
+                          handleFazendaChange(fazendaIndex, 'nomeFazenda', e.target.value)
+                        }
+                        placeholder='Ex: Fazenda Santa Maria'
                       />
                     </FormGroup>
                   </FormRow>
@@ -244,29 +262,29 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                     <FormGroup>
                       <Label>Cidade *</Label>
                       <Input
-                        type="text"
+                        type='text'
                         value={fazenda.cidade}
-                        onChange={(e) => handleFazendaChange(fazendaIndex, 'cidade', e.target.value)}
-                        placeholder="Ex: Sorriso"
+                        onChange={e => handleFazendaChange(fazendaIndex, 'cidade', e.target.value)}
+                        placeholder='Ex: Sorriso'
                       />
                     </FormGroup>
                     <FormGroup>
                       <Label>Estado *</Label>
                       <select
                         value={fazenda.estado}
-                        onChange={(e) => handleFazendaChange(fazendaIndex, 'estado', e.target.value)}
+                        onChange={e => handleFazendaChange(fazendaIndex, 'estado', e.target.value)}
                         style={{
                           width: '100%',
                           padding: '0.75rem',
                           border: '1px solid #ced4da',
                           borderRadius: '4px',
                           fontSize: '1rem',
-                          backgroundColor: 'white'
+                          backgroundColor: 'white',
                         }}
                         required
                       >
-                        <option value="">Selecione o estado</option>
-                        {ESTADOS_BRASILEIROS.map((estado) => (
+                        <option value=''>Selecione o estado</option>
+                        {ESTADOS_BRASILEIROS.map(estado => (
                           <option key={estado.value} value={estado.value}>
                             {estado.label}
                           </option>
@@ -279,40 +297,61 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                     <FormGroup>
                       <Label>Área Total (ha) *</Label>
                       <Input
-                        type="number"
+                        type='number'
                         value={fazenda.areaTotal}
-                        onChange={(e) => handleFazendaChange(fazendaIndex, 'areaTotal', e.target.value)}
-                        placeholder="0"
-                        min="0"
-                        step="0.01"
+                        onChange={e =>
+                          handleFazendaChange(fazendaIndex, 'areaTotal', e.target.value)
+                        }
+                        placeholder='0'
+                        min='0'
+                        step='0.01'
                       />
                     </FormGroup>
                     <FormGroup>
                       <Label>Área Agricultável (ha)</Label>
                       <Input
-                        type="number"
+                        type='number'
                         value={fazenda.areaAgricultavel}
-                        onChange={(e) => handleFazendaChange(fazendaIndex, 'areaAgricultavel', e.target.value)}
-                        placeholder="0"
-                        min="0"
-                        step="0.01"
+                        onChange={e =>
+                          handleFazendaChange(fazendaIndex, 'areaAgricultavel', e.target.value)
+                        }
+                        placeholder='0'
+                        min='0'
+                        step='0.01'
                       />
                     </FormGroup>
                     <FormGroup>
                       <Label>Área de Vegetação (ha)</Label>
                       <Input
-                        type="number"
+                        type='number'
                         value={fazenda.areaVegetacao}
-                        onChange={(e) => handleFazendaChange(fazendaIndex, 'areaVegetacao', e.target.value)}
-                        placeholder="0"
-                        min="0"
-                        step="0.01"
+                        onChange={e =>
+                          handleFazendaChange(fazendaIndex, 'areaVegetacao', e.target.value)
+                        }
+                        placeholder='0'
+                        min='0'
+                        step='0.01'
                       />
                     </FormGroup>
                   </FormRow>
 
-                  <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #e9ecef' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <div
+                    style={{
+                      marginTop: '1.5rem',
+                      padding: '1rem',
+                      backgroundColor: 'white',
+                      borderRadius: '4px',
+                      border: '1px solid #e9ecef',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '1rem',
+                      }}
+                    >
                       <h5 style={{ margin: 0, color: '#495057' }}>Safras desta Fazenda</h5>
                       <span style={{ fontSize: '0.9rem', color: '#666', fontStyle: 'italic' }}>
                         Para editar safras, acesse a página de Propriedades
@@ -320,7 +359,14 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                     </div>
 
                     {fazenda.safras.length === 0 ? (
-                      <p style={{ color: '#666', fontStyle: 'italic', textAlign: 'center', margin: '0.5rem 0' }}>
+                      <p
+                        style={{
+                          color: '#666',
+                          fontStyle: 'italic',
+                          textAlign: 'center',
+                          margin: '0.5rem 0',
+                        }}
+                      >
                         Nenhuma safra cadastrada para esta fazenda.
                       </p>
                     ) : (
@@ -332,17 +378,30 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                               padding: '1rem',
                               border: '1px solid #dee2e6',
                               borderRadius: '4px',
-                              backgroundColor: '#f8f9fa'
+                              backgroundColor: '#f8f9fa',
                             }}
                           >
                             <div style={{ marginBottom: '0.5rem' }}>
-                              <strong style={{ color: '#495057' }}>{safra.nome || `Safra ${safraIndex + 1}`}</strong>
-                              {safra.ano && <span style={{ color: '#666', marginLeft: '0.5rem' }}>- Ano: {safra.ano}</span>}
+                              <strong style={{ color: '#495057' }}>
+                                {safra.nome || `Safra ${safraIndex + 1}`}
+                              </strong>
+                              {safra.ano && (
+                                <span style={{ color: '#666', marginLeft: '0.5rem' }}>
+                                  - Ano: {safra.ano}
+                                </span>
+                              )}
                             </div>
 
                             {safra.culturasPlantadas && safra.culturasPlantadas.length > 0 ? (
                               <div>
-                                <span style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem', display: 'block' }}>
+                                <span
+                                  style={{
+                                    fontSize: '0.9rem',
+                                    color: '#666',
+                                    marginBottom: '0.5rem',
+                                    display: 'block',
+                                  }}
+                                >
                                   Culturas:
                                 </span>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -355,7 +414,7 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                                         border: '1px solid #4caf50',
                                         borderRadius: '12px',
                                         fontSize: '0.8rem',
-                                        color: '#2e7d32'
+                                        color: '#2e7d32',
                                       }}
                                     >
                                       {cultura}
@@ -364,7 +423,9 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                                 </div>
                               </div>
                             ) : (
-                              <span style={{ fontSize: '0.9rem', color: '#999', fontStyle: 'italic' }}>
+                              <span
+                                style={{ fontSize: '0.9rem', color: '#999', fontStyle: 'italic' }}
+                              >
                                 Nenhuma cultura cadastrada
                               </span>
                             )}
@@ -379,19 +440,11 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
           </FormSection>
 
           <ButtonContainer>
-            <ActionButton
-              variant="secondary"
-              onClick={onCancel}
-              disabled={isLoading}
-            >
+            <ActionButton variant='secondary' onClick={onCancel} disabled={isLoading}>
               Cancelar
             </ActionButton>
 
-            <ActionButton
-              type="submit"
-              variant="primary"
-              disabled={isLoading}
-            >
+            <ActionButton type='submit' variant='primary' disabled={isLoading}>
               {isLoading ? 'Salvando...' : isEditMode ? 'Atualizar' : 'Cadastrar'}
             </ActionButton>
           </ButtonContainer>

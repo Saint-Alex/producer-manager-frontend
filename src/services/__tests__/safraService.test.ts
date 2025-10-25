@@ -86,9 +86,7 @@ describe('SafraService', () => {
       const error = new Error('Safra não encontrada');
       mockApiClient.get.mockRejectedValueOnce(error);
 
-      await expect(safraService.getById('inexistente')).rejects.toThrow(
-        'Safra não encontrada'
-      );
+      await expect(safraService.getById('inexistente')).rejects.toThrow('Safra não encontrada');
     });
 
     it('deve lidar com ID vazio', async () => {
@@ -152,9 +150,7 @@ describe('SafraService', () => {
 
       const result = await safraService.getByPropriedade(propriedadeId);
 
-      expect(mockApiClient.get).toHaveBeenCalledWith(
-        `/api/safras?propriedadeId=${propriedadeId}`
-      );
+      expect(mockApiClient.get).toHaveBeenCalledWith(`/api/safras?propriedadeId=${propriedadeId}`);
       expect(result).toEqual(mockSafras);
     });
 
@@ -204,9 +200,7 @@ describe('SafraService', () => {
       const error = new Error('Nome é obrigatório');
       mockApiClient.post.mockRejectedValueOnce(error);
 
-      await expect(safraService.create(dadosIncompletos)).rejects.toThrow(
-        'Nome é obrigatório'
-      );
+      await expect(safraService.create(dadosIncompletos)).rejects.toThrow('Nome é obrigatório');
     });
 
     it('deve validar ano duplicado', async () => {
@@ -242,10 +236,7 @@ describe('SafraService', () => {
 
       const result = await safraService.update(safraId, updateData);
 
-      expect(mockApiClient.patch).toHaveBeenCalledWith(
-        `/api/safras/${safraId}`,
-        updateData
-      );
+      expect(mockApiClient.patch).toHaveBeenCalledWith(`/api/safras/${safraId}`, updateData);
       expect(result).toEqual(safraAtualizada);
     });
 
@@ -265,10 +256,7 @@ describe('SafraService', () => {
 
       const result = await safraService.update(safraId, updateParcial);
 
-      expect(mockApiClient.patch).toHaveBeenCalledWith(
-        `/api/safras/${safraId}`,
-        updateParcial
-      );
+      expect(mockApiClient.patch).toHaveBeenCalledWith(`/api/safras/${safraId}`, updateParcial);
       expect(result).toEqual(safraAtualizada);
     });
 
@@ -297,9 +285,7 @@ describe('SafraService', () => {
       const error = new Error('Safra não encontrada');
       mockApiClient.delete.mockRejectedValueOnce(error);
 
-      await expect(safraService.delete('inexistente')).rejects.toThrow(
-        'Safra não encontrada'
-      );
+      await expect(safraService.delete('inexistente')).rejects.toThrow('Safra não encontrada');
     });
 
     it('deve lidar com ID vazio', async () => {

@@ -9,9 +9,7 @@ import Header from '../Header';
 const renderWithRouter = (component: React.ReactNode, initialEntries = ['/']) => {
   return render(
     <MemoryRouter initialEntries={initialEntries}>
-      <ThemeProvider theme={theme}>
-        {component}
-      </ThemeProvider>
+      <ThemeProvider theme={theme}>{component}</ThemeProvider>
     </MemoryRouter>
   );
 };
@@ -19,9 +17,7 @@ const renderWithRouter = (component: React.ReactNode, initialEntries = ['/']) =>
 const renderWithBrowserRouter = (component: React.ReactNode) => {
   return render(
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        {component}
-      </ThemeProvider>
+      <ThemeProvider theme={theme}>{component}</ThemeProvider>
     </BrowserRouter>
   );
 };
@@ -58,8 +54,14 @@ describe('Header Component', () => {
       renderWithRouter(<Header />);
 
       expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute('href', '/');
-      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute('href', '/producers');
-      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute('href', '/culturas');
+      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute(
+        'href',
+        '/producers'
+      );
+      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute(
+        'href',
+        '/culturas'
+      );
     });
 
     it('should highlight active dashboard link when on home page', () => {
@@ -174,10 +176,22 @@ describe('Header Component', () => {
     it('should have proper ARIA labels', () => {
       renderWithRouter(<Header />);
 
-      expect(screen.getByRole('button', { name: /abrir menu/i })).toHaveAttribute('aria-label', 'Abrir menu');
-      expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute('aria-label', 'Ir para Dashboard');
-      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute('aria-label', 'Ir para Produtores');
-      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute('aria-label', 'Ir para Culturas');
+      expect(screen.getByRole('button', { name: /abrir menu/i })).toHaveAttribute(
+        'aria-label',
+        'Abrir menu'
+      );
+      expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute(
+        'aria-label',
+        'Ir para Dashboard'
+      );
+      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute(
+        'aria-label',
+        'Ir para Produtores'
+      );
+      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute(
+        'aria-label',
+        'Ir para Culturas'
+      );
     });
 
     it('should update aria-label when mobile menu state changes', () => {
@@ -186,7 +200,10 @@ describe('Header Component', () => {
       const mobileButton = screen.getByRole('button', { name: /abrir menu/i });
 
       fireEvent.click(mobileButton);
-      expect(screen.getByRole('button', { name: /fechar menu/i })).toHaveAttribute('aria-label', 'Fechar menu');
+      expect(screen.getByRole('button', { name: /fechar menu/i })).toHaveAttribute(
+        'aria-label',
+        'Fechar menu'
+      );
     });
 
     it('should have proper heading structure', () => {
@@ -237,7 +254,7 @@ describe('Header Component', () => {
       expect(dashboardLink).toHaveAttribute('data-active', 'true');
     });
 
-    it('should test non-root path matching branch (path !== \'/\' && location.pathname.startsWith(path))', () => {
+    it("should test non-root path matching branch (path !== '/' && location.pathname.startsWith(path))", () => {
       // Test producers path matching
       renderWithRouter(<Header />, ['/producers/some-id']);
       const producersLink = screen.getByRole('link', { name: /ir para produtores/i });
@@ -312,7 +329,10 @@ describe('Header Component', () => {
       expect(mobileButton).toHaveAttribute('aria-label', 'Abrir menu'); // closed state
 
       fireEvent.click(mobileButton);
-      expect(screen.getByRole('button', { name: /fechar menu/i })).toHaveAttribute('aria-label', 'Fechar menu'); // open state
+      expect(screen.getByRole('button', { name: /fechar menu/i })).toHaveAttribute(
+        'aria-label',
+        'Fechar menu'
+      ); // open state
     });
 
     it('should test all navigation links to ensure full isActive coverage', () => {
@@ -320,23 +340,50 @@ describe('Header Component', () => {
 
       // Dashboard on root
       const { unmount: unmount1 } = renderWithRouter(<Header />, ['/']);
-      expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute('data-active', 'true');
-      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute('data-active', 'false');
-      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute('data-active', 'false');
+      expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute(
+        'data-active',
+        'true'
+      );
+      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute(
+        'data-active',
+        'false'
+      );
+      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute(
+        'data-active',
+        'false'
+      );
       unmount1();
 
       // Producers page
       const { unmount: unmount2 } = renderWithRouter(<Header />, ['/producers']);
-      expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute('data-active', 'false');
-      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute('data-active', 'true');
-      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute('data-active', 'false');
+      expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute(
+        'data-active',
+        'false'
+      );
+      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute(
+        'data-active',
+        'true'
+      );
+      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute(
+        'data-active',
+        'false'
+      );
       unmount2();
 
       // Cultures page
       renderWithRouter(<Header />, ['/culturas']);
-      expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute('data-active', 'false');
-      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute('data-active', 'false');
-      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute('data-active', 'true');
+      expect(screen.getByRole('link', { name: /ir para dashboard/i })).toHaveAttribute(
+        'data-active',
+        'false'
+      );
+      expect(screen.getByRole('link', { name: /ir para produtores/i })).toHaveAttribute(
+        'data-active',
+        'false'
+      );
+      expect(screen.getByRole('link', { name: /ir para culturas/i })).toHaveAttribute(
+        'data-active',
+        'true'
+      );
     });
 
     it('should test edge cases for isActive function coverage', () => {

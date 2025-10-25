@@ -6,17 +6,13 @@ import { theme } from '../../../styles/theme';
 import { ActionButton, ActionButtonProps } from '../ActionButton';
 
 const renderWithTheme = (component: React.ReactNode) => {
-  return render(
-    <ThemeProvider theme={theme}>
-      {component}
-    </ThemeProvider>
-  );
+  return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
 };
 
 describe('ActionButton Coverage Tests', () => {
   describe('Branch Coverage for getVariantStyles', () => {
     it('should execute all branches in getVariantStyles function', () => {
-      const variants: (ActionButtonProps['variant'])[] = [
+      const variants: ActionButtonProps['variant'][] = [
         'primary',
         'secondary',
         'danger',
@@ -28,14 +24,12 @@ describe('ActionButton Coverage Tests', () => {
         'outlined-primary',
         undefined, // Para testar o default case
         null as any, // Para testar o default case
-        'invalid' as any // Para testar o default case
+        'invalid' as any, // Para testar o default case
       ];
 
-      variants.forEach((variant) => {
+      variants.forEach(variant => {
         const { unmount } = renderWithTheme(
-          <ActionButton variant={variant}>
-            Test {variant || 'default'}
-          </ActionButton>
+          <ActionButton variant={variant}>Test {variant || 'default'}</ActionButton>
         );
 
         // Força a renderização do componente styled
@@ -49,7 +43,7 @@ describe('ActionButton Coverage Tests', () => {
     it('should render primary variant with all conditions', () => {
       // Renderiza o componente para forçar a execução do CSS
       const { container } = renderWithTheme(
-        <ActionButton variant="primary">Primary Test</ActionButton>
+        <ActionButton variant='primary'>Primary Test</ActionButton>
       );
 
       // Verifica se o styled component foi renderizado
@@ -62,7 +56,7 @@ describe('ActionButton Coverage Tests', () => {
 
     it('should render secondary variant with all conditions', () => {
       const { container } = renderWithTheme(
-        <ActionButton variant="secondary">Secondary Test</ActionButton>
+        <ActionButton variant='secondary'>Secondary Test</ActionButton>
       );
 
       const button = container.querySelector('button');
@@ -71,7 +65,7 @@ describe('ActionButton Coverage Tests', () => {
 
     it('should render danger variant with all conditions', () => {
       const { container } = renderWithTheme(
-        <ActionButton variant="danger">Danger Test</ActionButton>
+        <ActionButton variant='danger'>Danger Test</ActionButton>
       );
 
       const button = container.querySelector('button');
@@ -80,7 +74,7 @@ describe('ActionButton Coverage Tests', () => {
 
     it('should render success variant with all conditions', () => {
       const { container } = renderWithTheme(
-        <ActionButton variant="success">Success Test</ActionButton>
+        <ActionButton variant='success'>Success Test</ActionButton>
       );
 
       const button = container.querySelector('button');
@@ -89,7 +83,7 @@ describe('ActionButton Coverage Tests', () => {
 
     it('should render warning variant with all conditions', () => {
       const { container } = renderWithTheme(
-        <ActionButton variant="warning">Warning Test</ActionButton>
+        <ActionButton variant='warning'>Warning Test</ActionButton>
       );
 
       const button = container.querySelector('button');
@@ -97,9 +91,7 @@ describe('ActionButton Coverage Tests', () => {
     });
 
     it('should render info variant with all conditions', () => {
-      const { container } = renderWithTheme(
-        <ActionButton variant="info">Info Test</ActionButton>
-      );
+      const { container } = renderWithTheme(<ActionButton variant='info'>Info Test</ActionButton>);
 
       const button = container.querySelector('button');
       expect(button).toBeInTheDocument();
@@ -107,7 +99,7 @@ describe('ActionButton Coverage Tests', () => {
 
     it('should render outlined-danger variant with all conditions', () => {
       const { container } = renderWithTheme(
-        <ActionButton variant="outlined-danger">Outlined Danger Test</ActionButton>
+        <ActionButton variant='outlined-danger'>Outlined Danger Test</ActionButton>
       );
 
       const button = container.querySelector('button');
@@ -116,7 +108,7 @@ describe('ActionButton Coverage Tests', () => {
 
     it('should render outlined-secondary variant with all conditions', () => {
       const { container } = renderWithTheme(
-        <ActionButton variant="outlined-secondary">Outlined Secondary Test</ActionButton>
+        <ActionButton variant='outlined-secondary'>Outlined Secondary Test</ActionButton>
       );
 
       const button = container.querySelector('button');
@@ -125,7 +117,7 @@ describe('ActionButton Coverage Tests', () => {
 
     it('should render outlined-primary variant with all conditions', () => {
       const { container } = renderWithTheme(
-        <ActionButton variant="outlined-primary">Outlined Primary Test</ActionButton>
+        <ActionButton variant='outlined-primary'>Outlined Primary Test</ActionButton>
       );
 
       const button = container.querySelector('button');
@@ -153,20 +145,18 @@ describe('ActionButton Coverage Tests', () => {
 
   describe('Branch Coverage for getSizeStyles', () => {
     it('should execute all branches in getSizeStyles function', () => {
-      const sizes: (ActionButtonProps['size'])[] = [
+      const sizes: ActionButtonProps['size'][] = [
         'small',
         'medium',
         'large',
         undefined, // Para testar o default case
         null as any, // Para testar o default case
-        'invalid' as any // Para testar o default case
+        'invalid' as any, // Para testar o default case
       ];
 
-      sizes.forEach((size) => {
+      sizes.forEach(size => {
         const { unmount } = renderWithTheme(
-          <ActionButton size={size}>
-            Test {size || 'default'}
-          </ActionButton>
+          <ActionButton size={size}>Test {size || 'default'}</ActionButton>
         );
 
         const button = document.querySelector('button');
@@ -177,27 +167,21 @@ describe('ActionButton Coverage Tests', () => {
     });
 
     it('should render small size with all conditions', () => {
-      const { container } = renderWithTheme(
-        <ActionButton size="small">Small Test</ActionButton>
-      );
+      const { container } = renderWithTheme(<ActionButton size='small'>Small Test</ActionButton>);
 
       const button = container.querySelector('button');
       expect(button).toBeInTheDocument();
     });
 
     it('should render large size with all conditions', () => {
-      const { container } = renderWithTheme(
-        <ActionButton size="large">Large Test</ActionButton>
-      );
+      const { container } = renderWithTheme(<ActionButton size='large'>Large Test</ActionButton>);
 
       const button = container.querySelector('button');
       expect(button).toBeInTheDocument();
     });
 
     it('should render medium size explicitly', () => {
-      const { container } = renderWithTheme(
-        <ActionButton size="medium">Medium Test</ActionButton>
-      );
+      const { container } = renderWithTheme(<ActionButton size='medium'>Medium Test</ActionButton>);
 
       const button = container.querySelector('button');
       expect(button).toBeInTheDocument();
@@ -304,13 +288,20 @@ describe('ActionButton Coverage Tests', () => {
   describe('All Combinations for Maximum Coverage', () => {
     it('should test all variant and size combinations', () => {
       const variants: ActionButtonProps['variant'][] = [
-        'primary', 'secondary', 'danger', 'success', 'warning', 'info',
-        'outlined-danger', 'outlined-secondary', 'outlined-primary'
+        'primary',
+        'secondary',
+        'danger',
+        'success',
+        'warning',
+        'info',
+        'outlined-danger',
+        'outlined-secondary',
+        'outlined-primary',
       ];
       const sizes: ActionButtonProps['size'][] = ['small', 'medium', 'large'];
 
-      variants.forEach((variant) => {
-        sizes.forEach((size) => {
+      variants.forEach(variant => {
+        sizes.forEach(size => {
           const { unmount } = renderWithTheme(
             <ActionButton variant={variant} size={size}>
               {variant}-{size}
@@ -334,7 +325,7 @@ describe('ActionButton Coverage Tests', () => {
         { loading: false, fullWidth: true, disabled: true },
         { loading: false, fullWidth: true, disabled: false },
         { loading: false, fullWidth: false, disabled: true },
-        { loading: false, fullWidth: false, disabled: false }
+        { loading: false, fullWidth: false, disabled: false },
       ];
 
       booleanCombinations.forEach((combo, index) => {
@@ -368,15 +359,12 @@ describe('ActionButton Coverage Tests', () => {
         { variant: null as any, size: null as any },
         { variant: undefined, size: undefined },
         { variant: 'invalid' as any, size: 'invalid' as any },
-        { variant: '', size: '' }
+        { variant: '', size: '' },
       ];
 
       edgeCases.forEach((edgeCase, index) => {
         const { unmount } = renderWithTheme(
-          <ActionButton
-            variant={edgeCase.variant}
-            size={edgeCase.size}
-          >
+          <ActionButton variant={edgeCase.variant} size={edgeCase.size}>
             Edge Case {index}
           </ActionButton>
         );
@@ -396,26 +384,26 @@ describe('ActionButton Coverage Tests', () => {
           $variant: 'primary' as const,
           $size: 'small' as const,
           $loading: true,
-          $fullWidth: true
+          $fullWidth: true,
         },
         {
           $variant: 'secondary' as const,
           $size: 'medium' as const,
           $loading: false,
-          $fullWidth: false
+          $fullWidth: false,
         },
         {
           $variant: 'danger' as const,
           $size: 'large' as const,
           $loading: true,
-          $fullWidth: false
+          $fullWidth: false,
         },
         {
           $variant: undefined,
           $size: undefined,
           $loading: false,
-          $fullWidth: true
-        }
+          $fullWidth: true,
+        },
       ];
 
       propsCombinations.forEach((props, index) => {
@@ -485,16 +473,23 @@ describe('ActionButton Coverage Tests', () => {
     it('should ensure getVariantStyles function is called for all cases', () => {
       // Força a execução de todas as branches do switch case
       const allVariants = [
-        'primary', 'secondary', 'danger', 'success', 'warning', 'info',
-        'outlined-danger', 'outlined-secondary', 'outlined-primary',
-        undefined, null, 'invalid'
+        'primary',
+        'secondary',
+        'danger',
+        'success',
+        'warning',
+        'info',
+        'outlined-danger',
+        'outlined-secondary',
+        'outlined-primary',
+        undefined,
+        null,
+        'invalid',
       ];
 
       allVariants.forEach((variant, index) => {
         const { unmount } = renderWithTheme(
-          <ActionButton variant={variant as any}>
-            Variant Function Test {index}
-          </ActionButton>
+          <ActionButton variant={variant as any}>Variant Function Test {index}</ActionButton>
         );
 
         // Força a renderização e criação do styled component
@@ -511,9 +506,7 @@ describe('ActionButton Coverage Tests', () => {
 
       allSizes.forEach((size, index) => {
         const { unmount } = renderWithTheme(
-          <ActionButton size={size as any}>
-            Size Function Test {index}
-          </ActionButton>
+          <ActionButton size={size as any}>Size Function Test {index}</ActionButton>
         );
 
         // Força a renderização e criação do styled component
@@ -528,14 +521,12 @@ describe('ActionButton Coverage Tests', () => {
       // Testa todos os caminhos condicionais dentro do componente funcional
       const testCases = [
         { loading: true, hasSpinner: true },
-        { loading: false, hasSpinner: false }
+        { loading: false, hasSpinner: false },
       ];
 
-      testCases.forEach((testCase) => {
+      testCases.forEach(testCase => {
         const { container } = renderWithTheme(
-          <ActionButton loading={testCase.loading}>
-            Functional Component Test
-          </ActionButton>
+          <ActionButton loading={testCase.loading}>Functional Component Test</ActionButton>
         );
 
         const button = container.querySelector('button');
@@ -592,7 +583,7 @@ describe('ActionButton Coverage Tests', () => {
         { disabled: true, loading: false, expectedDisabled: true },
         { disabled: false, loading: true, expectedDisabled: true },
         { disabled: true, loading: true, expectedDisabled: true },
-        { disabled: false, loading: false, expectedDisabled: false }
+        { disabled: false, loading: false, expectedDisabled: false },
       ];
 
       testCases.forEach((testCase, index) => {
@@ -620,7 +611,7 @@ describe('ActionButton Coverage Tests', () => {
     it('should test mobile media query conditions in variants', () => {
       // Testa se as media queries são aplicadas (mesmo que não possamos testar visualmente)
       const { container } = renderWithTheme(
-        <ActionButton variant="primary">Mobile Media Query Test</ActionButton>
+        <ActionButton variant='primary'>Mobile Media Query Test</ActionButton>
       );
 
       const button = container.querySelector('button');
@@ -630,7 +621,7 @@ describe('ActionButton Coverage Tests', () => {
     it('should test mobile media query conditions in sizes', () => {
       const sizes: ActionButtonProps['size'][] = ['small', 'medium', 'large'];
 
-      sizes.forEach((size) => {
+      sizes.forEach(size => {
         const { unmount } = renderWithTheme(
           <ActionButton size={size}>Mobile Size {size}</ActionButton>
         );
@@ -655,12 +646,20 @@ describe('ActionButton Coverage Tests', () => {
   describe('Complete Branch Coverage Validation', () => {
     it('should execute every possible code path', () => {
       // Matriz completa de todas as combinações possíveis
-      const variants: (ActionButtonProps['variant'])[] = [
-        'primary', 'secondary', 'danger', 'success', 'warning', 'info',
-        'outlined-danger', 'outlined-secondary', 'outlined-primary', undefined
+      const variants: ActionButtonProps['variant'][] = [
+        'primary',
+        'secondary',
+        'danger',
+        'success',
+        'warning',
+        'info',
+        'outlined-danger',
+        'outlined-secondary',
+        'outlined-primary',
+        undefined,
       ];
 
-      const sizes: (ActionButtonProps['size'])[] = ['small', 'medium', 'large', undefined];
+      const sizes: ActionButtonProps['size'][] = ['small', 'medium', 'large', undefined];
 
       const booleanValues = [true, false];
 
@@ -707,7 +706,17 @@ describe('ActionButton Coverage Tests', () => {
 
   // Testes adicionais para maximizar cobertura de branches
   describe('Additional Branch Coverage Tests', () => {
-    const variants = ['primary', 'secondary', 'danger', 'success', 'warning', 'info', 'outlined-danger', 'outlined-secondary', 'outlined-primary'] as const;
+    const variants = [
+      'primary',
+      'secondary',
+      'danger',
+      'success',
+      'warning',
+      'info',
+      'outlined-danger',
+      'outlined-secondary',
+      'outlined-primary',
+    ] as const;
     const sizes = ['small', 'medium', 'large'] as const;
 
     // Teste para maximizar a cobertura das funções utilitárias
@@ -768,9 +777,7 @@ describe('ActionButton Coverage Tests', () => {
 
       // Caso 3: Normal + onClick (deve executar)
       const { container: container3 } = renderWithTheme(
-        <ActionButton onClick={mockOnClick}>
-          Normal Test
-        </ActionButton>
+        <ActionButton onClick={mockOnClick}>Normal Test</ActionButton>
       );
 
       const button3 = container3.querySelector('button');
@@ -780,15 +787,11 @@ describe('ActionButton Coverage Tests', () => {
 
       // Caso 4: FullWidth true e false
       const { container: container4 } = renderWithTheme(
-        <ActionButton fullWidth={true}>
-          Full Width True
-        </ActionButton>
+        <ActionButton fullWidth={true}>Full Width True</ActionButton>
       );
 
       const { container: container5 } = renderWithTheme(
-        <ActionButton fullWidth={false}>
-          Full Width False
-        </ActionButton>
+        <ActionButton fullWidth={false}>Full Width False</ActionButton>
       );
 
       const button4 = container4.querySelector('button');
@@ -802,30 +805,22 @@ describe('ActionButton Coverage Tests', () => {
     test('covers all conditional rendering branches', () => {
       // Branch: loading spinner visível
       const { container: container1 } = renderWithTheme(
-        <ActionButton loading={true}>
-          With Spinner
-        </ActionButton>
+        <ActionButton loading={true}>With Spinner</ActionButton>
       );
 
       // Branch: loading spinner oculto
       const { container: container2 } = renderWithTheme(
-        <ActionButton loading={false}>
-          Without Spinner
-        </ActionButton>
+        <ActionButton loading={false}>Without Spinner</ActionButton>
       );
 
       // Branch: children renderizado normalmente
       const { container: container3 } = renderWithTheme(
-        <ActionButton>
-          Normal Children
-        </ActionButton>
+        <ActionButton>Normal Children</ActionButton>
       );
 
       // Branch: componente com conteúdo vazio mas com aria-label
       const { container: container4 } = renderWithTheme(
-        <ActionButton aria-label="No children">
-          {''}
-        </ActionButton>
+        <ActionButton aria-label='No children'>{''}</ActionButton>
       );
 
       const button1 = container1.querySelector('button');
@@ -854,13 +849,11 @@ describe('ActionButton Coverage Tests', () => {
         onClick: jest.fn(),
         className: 'custom-class',
         'data-testid': 'test-button',
-        'aria-label': 'Test button'
+        'aria-label': 'Test button',
       };
 
       const { container } = renderWithTheme(
-        <ActionButton {...allProps}>
-          All Props Button
-        </ActionButton>
+        <ActionButton {...allProps}>All Props Button</ActionButton>
       );
 
       const button = container.querySelector('[data-testid="test-button"]');
@@ -903,15 +896,11 @@ describe('ActionButton Coverage Tests', () => {
     test('covers all switch statement branches including defaults', () => {
       // Força casos que podem não estar cobertos
       const { container: container1 } = renderWithTheme(
-        <ActionButton variant={'unknown' as any}>
-          Unknown Variant
-        </ActionButton>
+        <ActionButton variant={'unknown' as any}>Unknown Variant</ActionButton>
       );
 
       const { container: container2 } = renderWithTheme(
-        <ActionButton size={'unknown' as any}>
-          Unknown Size
-        </ActionButton>
+        <ActionButton size={'unknown' as any}>Unknown Size</ActionButton>
       );
 
       // Verifica se os elementos foram renderizados (com fallback)

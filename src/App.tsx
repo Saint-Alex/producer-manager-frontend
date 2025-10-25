@@ -17,14 +17,14 @@ const App: React.FC = () => {
         <Router>
           <Header />
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/producers" element={<ProducersPage />} />
-            <Route path="/culturas" element={<CulturesPage />} />
-            <Route path="/producer-register" element={<ProducerRegisterPage />} />
-            <Route path="/producer-edit/:id" element={<ProducerRegisterPage />} />
-            <Route path="/propriedades/:produtorId" element={<PropriedadesPage />} />
-            <Route path="/fazenda-register/:produtorId" element={<FazendaForm />} />
-            <Route path="/fazenda-edit/:produtorId/:propriedadeId" element={<FazendaForm />} />
+            <Route path='/' element={<HomePage />} />
+            <Route path='/producers' element={<ProducersPage />} />
+            <Route path='/culturas' element={<CulturesPage />} />
+            <Route path='/producer-register' element={<ProducerRegisterPage />} />
+            <Route path='/producer-edit/:id' element={<ProducerRegisterPage />} />
+            <Route path='/propriedades/:produtorId' element={<PropriedadesPage />} />
+            <Route path='/fazenda-register/:produtorId' element={<FazendaForm />} />
+            <Route path='/fazenda-edit/:produtorId/:propriedadeId' element={<FazendaForm />} />
           </Routes>
         </Router>
       </GlobalStyleWrapper>

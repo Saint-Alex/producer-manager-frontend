@@ -31,15 +31,15 @@ jest.mock('../../../services/producerService', () => ({
         city: 'São Paulo',
         state: 'SP',
         createdAt: '2024-01-01T00:00:00.000Z',
-        updatedAt: '2024-01-01T00:00:00.000Z'
-      }
+        updatedAt: '2024-01-01T00:00:00.000Z',
+      },
     ]),
     getById: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
     search: jest.fn(),
-  }
+  },
 }));
 
 jest.mock('../../../services/propriedadeRuralService', () => ({
@@ -56,15 +56,15 @@ jest.mock('../../../services/propriedadeRuralService', () => ({
         areaVegetacao: 20,
         produtorId: 'producer-1',
         createdAt: '2024-01-01T00:00:00.000Z',
-        updatedAt: '2024-01-01T00:00:00.000Z'
-      }
+        updatedAt: '2024-01-01T00:00:00.000Z',
+      },
     ]),
     getById: jest.fn(),
     create: jest.fn(),
     update: jest.fn(),
     delete: jest.fn().mockResolvedValue(undefined),
     convertFormToCreateData: jest.fn(),
-  }
+  },
 }));
 
 jest.mock('../../../services/safraService', () => ({
@@ -91,7 +91,7 @@ jest.mock('../../../services/safraService', () => ({
               ciclo: 120,
               descricao: 'Cultura de soja',
               createdAt: '2024-01-01T00:00:00.000Z',
-              updatedAt: '2024-01-01T00:00:00.000Z'
+              updatedAt: '2024-01-01T00:00:00.000Z',
             },
             propriedadeRural: {
               id: 'prop-1',
@@ -103,7 +103,7 @@ jest.mock('../../../services/safraService', () => ({
               areaVegetacao: 20,
               produtorId: 'producer-1',
               createdAt: '2024-01-01T00:00:00.000Z',
-              updatedAt: '2024-01-01T00:00:00.000Z'
+              updatedAt: '2024-01-01T00:00:00.000Z',
             },
             safra: {} as any,
             areaPlantada: 50,
@@ -112,15 +112,15 @@ jest.mock('../../../services/safraService', () => ({
             dataColheita: '2024-05-15',
             observacoes: 'Teste',
             createdAt: '2024-01-01T00:00:00.000Z',
-            updatedAt: '2024-01-01T00:00:00.000Z'
-          }
-        ]
-      }
+            updatedAt: '2024-01-01T00:00:00.000Z',
+          },
+        ],
+      },
     ]),
     create: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
-  }
+  },
 }));
 
 const renderWithProviders = (
@@ -130,9 +130,7 @@ const renderWithProviders = (
   return render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[route]}>
-        <ThemeProvider theme={theme}>
-          {component}
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{component}</ThemeProvider>
       </MemoryRouter>
     </Provider>
   );
@@ -190,9 +188,12 @@ describe('PropriedadesPage', () => {
     it('deve exibir informações básicas da propriedade após carregamento', async () => {
       renderWithProviders(<PropriedadesPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
       expect(screen.getByText('Campinas - SP')).toBeInTheDocument();
       expect(screen.getByText('100 ha')).toBeInTheDocument();
@@ -203,9 +204,12 @@ describe('PropriedadesPage', () => {
     it('deve exibir botões de ação', async () => {
       renderWithProviders(<PropriedadesPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
       expect(screen.getByRole('button', { name: /editar/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /deletar/i })).toBeInTheDocument();
@@ -214,9 +218,12 @@ describe('PropriedadesPage', () => {
     it('deve mostrar seção de safras', async () => {
       renderWithProviders(<PropriedadesPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
       expect(screen.getByText(/Safras da Fazenda/)).toBeInTheDocument();
     });
@@ -227,9 +234,12 @@ describe('PropriedadesPage', () => {
       const user = userEvent.setup();
       renderWithProviders(<PropriedadesPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
       const deletarButton = screen.getByRole('button', { name: /deletar/i });
       await user.click(deletarButton);
@@ -243,9 +253,12 @@ describe('PropriedadesPage', () => {
       const user = userEvent.setup();
       renderWithProviders(<PropriedadesPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
       const deletarButton = screen.getByRole('button', { name: /deletar/i });
       await user.click(deletarButton);
@@ -276,9 +289,12 @@ describe('PropriedadesPage', () => {
       const user = userEvent.setup();
       renderWithProviders(<PropriedadesPage />);
 
-      await waitFor(() => {
-        expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByText('Fazenda Teste')).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
       const editarButton = screen.getByRole('button', { name: /editar/i });
       await user.click(editarButton);
@@ -307,30 +323,24 @@ describe('PropriedadesPage', () => {
 
   describe('Styled Components', () => {
     const renderWithTheme = (component: React.ReactElement) => {
-      return render(
-        <ThemeProvider theme={theme}>
-          {component}
-        </ThemeProvider>
-      );
+      return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
     };
 
     describe('PageContainer', () => {
       it('deve renderizar sem erros', () => {
-        const { container } = renderWithTheme(<div data-testid="page-container" />);
+        const { container } = renderWithTheme(<div data-testid='page-container' />);
         expect(container.firstChild).toBeInTheDocument();
       });
 
       it('deve renderizar conteúdo interno', () => {
-        const { getByText } = renderWithTheme(
-          <div>Conteúdo da página</div>
-        );
+        const { getByText } = renderWithTheme(<div>Conteúdo da página</div>);
         expect(getByText('Conteúdo da página')).toBeInTheDocument();
       });
     });
 
     describe('PageHeader', () => {
       it('deve renderizar sem erros', () => {
-        const { container } = renderWithTheme(<div data-testid="page-header" />);
+        const { container } = renderWithTheme(<div data-testid='page-header' />);
         expect(container.firstChild).toBeInTheDocument();
       });
 
@@ -348,7 +358,7 @@ describe('PropriedadesPage', () => {
 
     describe('BackButton', () => {
       it('deve renderizar como botão', () => {
-        const { getByRole } = renderWithTheme(<button data-testid="back-button">Voltar</button>);
+        const { getByRole } = renderWithTheme(<button data-testid='back-button'>Voltar</button>);
         expect(getByRole('button')).toBeInTheDocument();
       });
 
@@ -380,28 +390,24 @@ describe('PropriedadesPage', () => {
 
     describe('ContentSection', () => {
       it('deve renderizar sem erros', () => {
-        const { container } = renderWithTheme(<section data-testid="content-section" />);
+        const { container } = renderWithTheme(<section data-testid='content-section' />);
         expect(container.firstChild).toBeInTheDocument();
       });
 
       it('deve renderizar conteúdo filho', () => {
-        const { getByText } = renderWithTheme(
-          <section>Conteúdo da seção</section>
-        );
+        const { getByText } = renderWithTheme(<section>Conteúdo da seção</section>);
         expect(getByText('Conteúdo da seção')).toBeInTheDocument();
       });
     });
 
     describe('PropriedadeCard', () => {
       it('deve renderizar card', () => {
-        const { container } = renderWithTheme(<div data-testid="propriedade-card" />);
+        const { container } = renderWithTheme(<div data-testid='propriedade-card' />);
         expect(container.firstChild).toBeInTheDocument();
       });
 
       it('deve ter conteúdo interno', () => {
-        const { getByText } = renderWithTheme(
-          <div>Card da propriedade</div>
-        );
+        const { getByText } = renderWithTheme(<div>Card da propriedade</div>);
         expect(getByText('Card da propriedade')).toBeInTheDocument();
       });
     });
@@ -456,9 +462,7 @@ describe('PropriedadesPage', () => {
 
     describe('PropriedadeActions', () => {
       it('deve renderizar ações', () => {
-        const { container } = renderWithTheme(
-          <div data-testid="propriedade-actions" />
-        );
+        const { container } = renderWithTheme(<div data-testid='propriedade-actions' />);
         expect(container.firstChild).toBeInTheDocument();
       });
 
@@ -489,48 +493,36 @@ describe('PropriedadesPage', () => {
 
     describe('LoadingMessage', () => {
       it('deve renderizar mensagem de carregamento', () => {
-        const { getByText } = renderWithTheme(
-          <div>Carregando propriedades...</div>
-        );
+        const { getByText } = renderWithTheme(<div>Carregando propriedades...</div>);
         expect(getByText('Carregando propriedades...')).toBeInTheDocument();
       });
 
       it('deve renderizar mensagem personalizada', () => {
-        const { getByText } = renderWithTheme(
-          <div>Buscando dados...</div>
-        );
+        const { getByText } = renderWithTheme(<div>Buscando dados...</div>);
         expect(getByText('Buscando dados...')).toBeInTheDocument();
       });
     });
 
     describe('ErrorMessage', () => {
       it('deve renderizar mensagem de erro', () => {
-        const { getByText } = renderWithTheme(
-          <div>Erro ao carregar dados</div>
-        );
+        const { getByText } = renderWithTheme(<div>Erro ao carregar dados</div>);
         expect(getByText('Erro ao carregar dados')).toBeInTheDocument();
       });
 
       it('deve renderizar erro personalizado', () => {
-        const { getByText } = renderWithTheme(
-          <div>Falha na conexão com o servidor</div>
-        );
+        const { getByText } = renderWithTheme(<div>Falha na conexão com o servidor</div>);
         expect(getByText('Falha na conexão com o servidor')).toBeInTheDocument();
       });
     });
 
     describe('EmptyMessage', () => {
       it('deve renderizar mensagem vazia', () => {
-        const { getByText } = renderWithTheme(
-          <div>Nenhuma propriedade encontrada</div>
-        );
+        const { getByText } = renderWithTheme(<div>Nenhuma propriedade encontrada</div>);
         expect(getByText('Nenhuma propriedade encontrada')).toBeInTheDocument();
       });
 
       it('deve renderizar mensagem personalizada', () => {
-        const { getByText } = renderWithTheme(
-          <div>Sem dados para exibir</div>
-        );
+        const { getByText } = renderWithTheme(<div>Sem dados para exibir</div>);
         expect(getByText('Sem dados para exibir')).toBeInTheDocument();
       });
     });
@@ -594,9 +586,7 @@ describe('PropriedadesPage', () => {
       });
 
       it('deve renderizar estado vazio', () => {
-        const { getByText } = renderWithTheme(
-          <div>Nenhuma propriedade cadastrada</div>
-        );
+        const { getByText } = renderWithTheme(<div>Nenhuma propriedade cadastrada</div>);
         expect(getByText('Nenhuma propriedade cadastrada')).toBeInTheDocument();
       });
     });

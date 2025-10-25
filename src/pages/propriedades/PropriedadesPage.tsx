@@ -108,28 +108,38 @@ const PropriedadesPage: React.FC = () => {
 
   const getPropriedadeSafras = (propriedadeId: string) => {
     return safras.filter(safra =>
-      safra.cultivos?.some(cultivo =>
-        cultivo.propriedadeRural?.id === propriedadeId
-      )
+      safra.cultivos?.some(cultivo => cultivo.propriedadeRural?.id === propriedadeId)
     );
   };
 
   const renderPropriedades = () => {
     if (loading) {
-      return <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>Carregando propriedades...</div>;
+      return (
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+          Carregando propriedades...
+        </div>
+      );
     }
 
     if (error) {
-      return <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>Erro ao carregar propriedades: {error}</div>;
+      return (
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#dc3545' }}>
+          Erro ao carregar propriedades: {error}
+        </div>
+      );
     }
 
     if (propriedades.length === 0) {
-      return <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>Nenhuma fazenda cadastrada para este produtor ainda.</div>;
+      return (
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+          Nenhuma fazenda cadastrada para este produtor ainda.
+        </div>
+      );
     }
 
     return (
       <>
-        {propriedades.map((propriedade) => {
+        {propriedades.map(propriedade => {
           const propriedadeSafras = getPropriedadeSafras(propriedade.id);
 
           return (
@@ -141,7 +151,7 @@ const PropriedadesPage: React.FC = () => {
                 padding: '1.5rem',
                 marginBottom: '1rem',
                 backgroundColor: 'white',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
               }}
             >
               <h3 style={{ margin: '0 0 1rem 0', color: '#495057' }}>{propriedade.nomeFazenda}</h3>
@@ -181,21 +191,26 @@ const PropriedadesPage: React.FC = () => {
                 </ActionButton>
               </div>
 
-              <div style={{
-                marginTop: '1rem',
-                padding: '1rem',
-                backgroundColor: '#f8f9fa',
-                borderRadius: '4px',
-                border: '1px solid #e9ecef'
-              }}>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '1rem'
-                }}>
+              <div
+                style={{
+                  marginTop: '1rem',
+                  padding: '1rem',
+                  backgroundColor: '#f8f9fa',
+                  borderRadius: '4px',
+                  border: '1px solid #e9ecef',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '1rem',
+                  }}
+                >
                   <h4 style={{ margin: 0, color: '#495057' }}>
-                    Safras da Fazenda {propriedadeSafras.length > 0 && `(${propriedadeSafras.length})`}
+                    Safras da Fazenda{' '}
+                    {propriedadeSafras.length > 0 && `(${propriedadeSafras.length})`}
                   </h4>
                   <span style={{ fontSize: '0.9rem', color: '#666', fontStyle: 'italic' }}>
                     Para editar safras, clique em "Editar" acima
@@ -210,24 +225,33 @@ const PropriedadesPage: React.FC = () => {
                   </p>
                 ) : (
                   <div style={{ display: 'grid', gap: '0.5rem' }}>
-                    {propriedadeSafras.map((safra) => (
+                    {propriedadeSafras.map(safra => (
                       <div
                         key={safra.id}
                         style={{
                           padding: '0.75rem',
                           border: '1px solid #dee2e6',
                           borderRadius: '4px',
-                          backgroundColor: 'white'
+                          backgroundColor: 'white',
                         }}
                       >
                         <div style={{ marginBottom: '0.5rem' }}>
                           <strong style={{ color: '#495057' }}>{safra.nome}</strong>
-                          <span style={{ color: '#666', marginLeft: '0.5rem' }}>- Ano: {safra.ano}</span>
+                          <span style={{ color: '#666', marginLeft: '0.5rem' }}>
+                            - Ano: {safra.ano}
+                          </span>
                         </div>
 
                         {safra.cultivos && safra.cultivos.length > 0 ? (
                           <div>
-                            <span style={{ fontSize: '0.9rem', color: '#666', marginBottom: '0.5rem', display: 'block' }}>
+                            <span
+                              style={{
+                                fontSize: '0.9rem',
+                                color: '#666',
+                                marginBottom: '0.5rem',
+                                display: 'block',
+                              }}
+                            >
                               Culturas:
                             </span>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -240,7 +264,7 @@ const PropriedadesPage: React.FC = () => {
                                     border: '1px solid #4caf50',
                                     borderRadius: '12px',
                                     fontSize: '0.8rem',
-                                    color: '#2e7d32'
+                                    color: '#2e7d32',
                                   }}
                                 >
                                   {cultivo.cultura?.nome || 'Não especificada'}
@@ -268,7 +292,14 @@ const PropriedadesPage: React.FC = () => {
   return (
     <>
       <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '2rem',
+          }}
+        >
           <button
             onClick={() => navigate('/')}
             style={{
@@ -277,7 +308,7 @@ const PropriedadesPage: React.FC = () => {
               color: '#0066cc',
               cursor: 'pointer',
               fontSize: '1rem',
-              textDecoration: 'underline'
+              textDecoration: 'underline',
             }}
           >
             ← Voltar
@@ -286,16 +317,14 @@ const PropriedadesPage: React.FC = () => {
             Fazendas de {currentProducer?.nome || 'Carregando...'}
           </h1>
           <ActionButton
-            variant="primary"
+            variant='primary'
             onClick={() => navigate(`/fazenda-register/${produtorId}`)}
           >
             Cadastrar Nova Fazenda
           </ActionButton>
         </div>
 
-        <div>
-          {renderPropriedades()}
-        </div>
+        <div>{renderPropriedades()}</div>
       </div>
 
       <ConfirmModal

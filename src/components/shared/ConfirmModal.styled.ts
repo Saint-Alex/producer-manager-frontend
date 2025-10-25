@@ -65,7 +65,11 @@ export const ModalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: ${theme.spacing.lg} ${theme.spacing.xl} ${theme.spacing.md};
-  background: linear-gradient(135deg, ${theme.colors.background.accent}, ${theme.colors.neutral[50]});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.background.accent},
+    ${theme.colors.neutral[50]}
+  );
   border-bottom: 2px solid ${theme.colors.border.light};
 `;
 
@@ -174,7 +178,11 @@ export const ModalActions = styled.div`
   gap: ${theme.spacing.md};
   padding: ${theme.spacing.md} ${theme.spacing.xl} ${theme.spacing.xl};
   justify-content: center;
-  background: linear-gradient(135deg, ${theme.colors.background.accent}, ${theme.colors.neutral[50]});
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.background.accent},
+    ${theme.colors.neutral[50]}
+  );
   border-top: 2px solid ${theme.colors.border.light};
 `;
 

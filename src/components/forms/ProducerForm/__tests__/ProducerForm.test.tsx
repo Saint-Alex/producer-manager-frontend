@@ -21,15 +21,11 @@ jest.mock('../../../../utils/validators', () => ({
     return value;
   }),
   validateCPF: jest.fn((cpf: string) => cpf === '12345678901'), // CPF válido para teste
-  validateCNPJ: jest.fn((cnpj: string) => cnpj === '12345678000195') // CNPJ válido para teste
+  validateCNPJ: jest.fn((cnpj: string) => cnpj === '12345678000195'), // CNPJ válido para teste
 }));
 
 const renderWithTheme = (component: React.ReactElement) => {
-  return render(
-    <ThemeProvider theme={theme}>
-      {component}
-    </ThemeProvider>
-  );
+  return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
 };
 
 describe('ProducerForm', () => {
@@ -42,14 +38,16 @@ describe('ProducerForm', () => {
 
   const defaultProps = {
     onSubmit: mockOnSubmit,
-    onCancel: mockOnCancel
+    onCancel: mockOnCancel,
   };
 
   describe('Renderização inicial', () => {
     it('deve renderizar o formulário com todos os campos obrigatórios', () => {
       renderWithTheme(<ProducerForm {...defaultProps} />);
 
-      expect(screen.getByPlaceholderText(/000\.000\.000-00 ou 00\.000\.000\/0000-00/i)).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText(/000\.000\.000-00 ou 00\.000\.000\/0000-00/i)
+      ).toBeInTheDocument();
       expect(screen.getByPlaceholderText(/Nome completo do produtor/i)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /cadastrar/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /cancelar/i })).toBeInTheDocument();
@@ -207,7 +205,9 @@ describe('ProducerForm', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByText('CPF deve ter 11 dígitos ou CNPJ deve ter 14 dígitos')).toBeInTheDocument();
+        expect(
+          screen.getByText('CPF deve ter 11 dígitos ou CNPJ deve ter 14 dígitos')
+        ).toBeInTheDocument();
       });
     });
   });
@@ -327,7 +327,7 @@ describe('ProducerForm', () => {
         expect(mockOnSubmit).toHaveBeenCalledWith({
           cpfCnpj: '123.456.789-01',
           nome: 'João Silva',
-          fazendas: []
+          fazendas: [],
         });
       });
     });
@@ -350,7 +350,7 @@ describe('ProducerForm', () => {
     it('deve preencher formulário com dados iniciais', () => {
       const initialData: Partial<ProducerFormData> = {
         cpfCnpj: '123.456.789-01',
-        nome: 'João Silva'
+        nome: 'João Silva',
       };
 
       renderWithTheme(<ProducerForm {...defaultProps} initialData={initialData} />);
@@ -484,28 +484,32 @@ describe('ProducerForm', () => {
   describe('Casos extremos', () => {
     it('deve lidar com dados iniciais parciais', () => {
       const initialData: Partial<ProducerFormData> = {
-        nome: 'João Silva'
+        nome: 'João Silva',
       };
 
       renderWithTheme(<ProducerForm {...defaultProps} initialData={initialData} />);
 
       expect(screen.getByDisplayValue('João Silva')).toBeInTheDocument();
-      expect(screen.getByPlaceholderText(/000\.000\.000-00 ou 00\.000\.000\/0000-00/i)).toHaveValue('');
+      expect(screen.getByPlaceholderText(/000\.000\.000-00 ou 00\.000\.000\/0000-00/i)).toHaveValue(
+        ''
+      );
     });
 
     it('deve lidar com fazendas nos dados iniciais', () => {
       const initialData: Partial<ProducerFormData> = {
         cpfCnpj: '123.456.789-01',
         nome: 'João Silva',
-        fazendas: [{
-          nomeFazenda: 'Fazenda Inicial',
-          cidade: 'São Paulo',
-          estado: 'SP',
-          areaTotal: 100,
-          areaAgricultavel: 80,
-          areaVegetacao: 20,
-          safras: []
-        }]
+        fazendas: [
+          {
+            nomeFazenda: 'Fazenda Inicial',
+            cidade: 'São Paulo',
+            estado: 'SP',
+            areaTotal: 100,
+            areaAgricultavel: 80,
+            areaVegetacao: 20,
+            safras: [],
+          },
+        ],
       };
 
       renderWithTheme(<ProducerForm {...defaultProps} initialData={initialData} />);
@@ -563,21 +567,23 @@ describe('ProducerForm', () => {
       const initialData: Partial<ProducerFormData> = {
         cpfCnpj: '123.456.789-01',
         nome: 'João Silva',
-        fazendas: [{
-          nomeFazenda: 'Fazenda com Safras',
-          cidade: 'Sorriso',
-          estado: 'MT',
-          areaTotal: 1000,
-          areaAgricultavel: 800,
-          areaVegetacao: 200,
-          safras: [
-            {
-              nome: 'Safra Verão 2024',
-              ano: 2024,
-              culturasPlantadas: ['Soja', 'Milho']
-            }
-          ]
-        }]
+        fazendas: [
+          {
+            nomeFazenda: 'Fazenda com Safras',
+            cidade: 'Sorriso',
+            estado: 'MT',
+            areaTotal: 1000,
+            areaAgricultavel: 800,
+            areaVegetacao: 200,
+            safras: [
+              {
+                nome: 'Safra Verão 2024',
+                ano: 2024,
+                culturasPlantadas: ['Soja', 'Milho'],
+              },
+            ],
+          },
+        ],
       };
 
       renderWithTheme(<ProducerForm {...defaultProps} initialData={initialData} />);
@@ -592,21 +598,23 @@ describe('ProducerForm', () => {
       const initialData: Partial<ProducerFormData> = {
         cpfCnpj: '123.456.789-01',
         nome: 'João Silva',
-        fazendas: [{
-          nomeFazenda: 'Fazenda Teste',
-          cidade: 'Teste',
-          estado: 'SP',
-          areaTotal: 100,
-          areaAgricultavel: 80,
-          areaVegetacao: 20,
-          safras: [
-            {
-              nome: '',
-              ano: 2024,
-              culturasPlantadas: ['Soja']
-            }
-          ]
-        }]
+        fazendas: [
+          {
+            nomeFazenda: 'Fazenda Teste',
+            cidade: 'Teste',
+            estado: 'SP',
+            areaTotal: 100,
+            areaAgricultavel: 80,
+            areaVegetacao: 20,
+            safras: [
+              {
+                nome: '',
+                ano: 2024,
+                culturasPlantadas: ['Soja'],
+              },
+            ],
+          },
+        ],
       };
 
       renderWithTheme(<ProducerForm {...defaultProps} initialData={initialData} />);
@@ -618,21 +626,23 @@ describe('ProducerForm', () => {
       const initialData: Partial<ProducerFormData> = {
         cpfCnpj: '123.456.789-01',
         nome: 'João Silva',
-        fazendas: [{
-          nomeFazenda: 'Fazenda Teste',
-          cidade: 'Teste',
-          estado: 'SP',
-          areaTotal: 100,
-          areaAgricultavel: 80,
-          areaVegetacao: 20,
-          safras: [
-            {
-              nome: 'Safra Sem Ano',
-              ano: 0, // Ano 0 para simular ausência
-              culturasPlantadas: ['Café']
-            }
-          ]
-        }]
+        fazendas: [
+          {
+            nomeFazenda: 'Fazenda Teste',
+            cidade: 'Teste',
+            estado: 'SP',
+            areaTotal: 100,
+            areaAgricultavel: 80,
+            areaVegetacao: 20,
+            safras: [
+              {
+                nome: 'Safra Sem Ano',
+                ano: 0, // Ano 0 para simular ausência
+                culturasPlantadas: ['Café'],
+              },
+            ],
+          },
+        ],
       };
 
       renderWithTheme(<ProducerForm {...defaultProps} initialData={initialData} />);
@@ -645,21 +655,23 @@ describe('ProducerForm', () => {
       const initialData: Partial<ProducerFormData> = {
         cpfCnpj: '123.456.789-01',
         nome: 'João Silva',
-        fazendas: [{
-          nomeFazenda: 'Fazenda Teste',
-          cidade: 'Teste',
-          estado: 'SP',
-          areaTotal: 100,
-          areaAgricultavel: 80,
-          areaVegetacao: 20,
-          safras: [
-            {
-              nome: 'Safra Sem Culturas',
-              ano: 2024,
-              culturasPlantadas: []
-            }
-          ]
-        }]
+        fazendas: [
+          {
+            nomeFazenda: 'Fazenda Teste',
+            cidade: 'Teste',
+            estado: 'SP',
+            areaTotal: 100,
+            areaAgricultavel: 80,
+            areaVegetacao: 20,
+            safras: [
+              {
+                nome: 'Safra Sem Culturas',
+                ano: 2024,
+                culturasPlantadas: [],
+              },
+            ],
+          },
+        ],
       };
 
       renderWithTheme(<ProducerForm {...defaultProps} initialData={initialData} />);
@@ -680,7 +692,7 @@ describe('ProducerForm', () => {
             areaTotal: 100,
             areaAgricultavel: 80,
             areaVegetacao: 20,
-            safras: []
+            safras: [],
           },
           {
             nomeFazenda: 'Fazenda 2',
@@ -689,9 +701,9 @@ describe('ProducerForm', () => {
             areaTotal: 200,
             areaAgricultavel: 150,
             areaVegetacao: 50,
-            safras: []
-          }
-        ]
+            safras: [],
+          },
+        ],
       };
 
       renderWithTheme(<ProducerForm {...defaultProps} initialData={initialData} />);

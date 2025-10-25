@@ -2,7 +2,7 @@ const React = require('react');
 
 // Create a proper mock function that can handle both strings and components
 function styledFactory(tag) {
-  return function(...args) {
+  return function (...args) {
     const Component = ({ children, ...otherProps }) => {
       const filteredProps = Object.keys(otherProps).reduce((acc, key) => {
         if (!key.startsWith('$')) {
@@ -54,7 +54,7 @@ styled.main = styledFactory('main');
 styled.aside = styledFactory('aside');
 styled.footer = styledFactory('footer');
 
-styled.createGlobalStyle = (template) => {
+styled.createGlobalStyle = template => {
   return () => null;
 };
 

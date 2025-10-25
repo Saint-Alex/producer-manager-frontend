@@ -18,66 +18,62 @@ import {
 } from '../RuralComponents';
 
 const renderWithTheme = (component: React.ReactNode) => {
-  return render(
-    <ThemeProvider theme={theme}>
-      {component}
-    </ThemeProvider>
-  );
+  return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
 };
 
 describe('RuralComponents', () => {
   describe('RuralIcon Component - getIconEmoji Function Tests', () => {
     it('should render farm icon correctly and test getIconEmoji farm case', () => {
-      renderWithTheme(<RuralIcon icon="farm" data-testid="farm-icon" />);
+      renderWithTheme(<RuralIcon icon='farm' data-testid='farm-icon' />);
 
       const icon = screen.getByText('🏡');
       expect(icon).toBeInTheDocument();
     });
 
     it('should render plant icon correctly and test getIconEmoji plant case', () => {
-      renderWithTheme(<RuralIcon icon="plant" data-testid="plant-icon" />);
+      renderWithTheme(<RuralIcon icon='plant' data-testid='plant-icon' />);
 
       const icon = screen.getByText('🌱');
       expect(icon).toBeInTheDocument();
     });
 
     it('should render harvest icon correctly and test getIconEmoji harvest case', () => {
-      renderWithTheme(<RuralIcon icon="harvest" data-testid="harvest-icon" />);
+      renderWithTheme(<RuralIcon icon='harvest' data-testid='harvest-icon' />);
 
       const icon = screen.getByText('🌾');
       expect(icon).toBeInTheDocument();
     });
 
     it('should render tractor icon correctly and test getIconEmoji tractor case', () => {
-      renderWithTheme(<RuralIcon icon="tractor" data-testid="tractor-icon" />);
+      renderWithTheme(<RuralIcon icon='tractor' data-testid='tractor-icon' />);
 
       const icon = screen.getByText('🚜');
       expect(icon).toBeInTheDocument();
     });
 
     it('should render seed icon correctly and test getIconEmoji seed case', () => {
-      renderWithTheme(<RuralIcon icon="seed" data-testid="seed-icon" />);
+      renderWithTheme(<RuralIcon icon='seed' data-testid='seed-icon' />);
 
       const icon = screen.getByText('🌰');
       expect(icon).toBeInTheDocument();
     });
 
     it('should render sun icon correctly and test getIconEmoji sun case', () => {
-      renderWithTheme(<RuralIcon icon="sun" data-testid="sun-icon" />);
+      renderWithTheme(<RuralIcon icon='sun' data-testid='sun-icon' />);
 
       const icon = screen.getByText('☀️');
       expect(icon).toBeInTheDocument();
     });
 
     it('should render rain icon correctly and test getIconEmoji rain case', () => {
-      renderWithTheme(<RuralIcon icon="rain" data-testid="rain-icon" />);
+      renderWithTheme(<RuralIcon icon='rain' data-testid='rain-icon' />);
 
       const icon = screen.getByText('🌧️');
       expect(icon).toBeInTheDocument();
     });
 
     it('should render growth icon correctly and test getIconEmoji growth case', () => {
-      renderWithTheme(<RuralIcon icon="growth" data-testid="growth-icon" />);
+      renderWithTheme(<RuralIcon icon='growth' data-testid='growth-icon' />);
 
       const icon = screen.getByText('📈');
       expect(icon).toBeInTheDocument();
@@ -85,14 +81,23 @@ describe('RuralComponents', () => {
 
     it('should render default icon for unknown types and test getIconEmoji default case', () => {
       // @ts-ignore - Testing runtime behavior with invalid icon to trigger default case
-      renderWithTheme(<RuralIcon icon="unknown" data-testid="unknown-icon" />);
+      renderWithTheme(<RuralIcon icon='unknown' data-testid='unknown-icon' />);
 
       const icon = screen.getByText('🌿');
       expect(icon).toBeInTheDocument();
     });
 
     it('should test all switch cases in getIconEmoji function systematically', () => {
-      const iconTypes = ['farm', 'plant', 'harvest', 'tractor', 'seed', 'sun', 'rain', 'growth'] as const;
+      const iconTypes = [
+        'farm',
+        'plant',
+        'harvest',
+        'tractor',
+        'seed',
+        'sun',
+        'rain',
+        'growth',
+      ] as const;
       const expectedEmojis = ['🏡', '🌱', '🌾', '🚜', '🌰', '☀️', '🌧️', '📈'];
 
       iconTypes.forEach((iconType, index) => {
@@ -108,26 +113,34 @@ describe('RuralComponents', () => {
 
     it('should handle null and undefined icon types (default case)', () => {
       // Test null icon (clear any previous renders)
-      const { unmount: unmount1 } = renderWithTheme(<RuralIcon icon={null as any} data-testid="null-icon" />);
+      const { unmount: unmount1 } = renderWithTheme(
+        <RuralIcon icon={null as any} data-testid='null-icon' />
+      );
       expect(screen.getByText('🌿')).toBeInTheDocument();
       unmount1();
 
       // Test undefined icon
-      const { unmount: unmount2 } = renderWithTheme(<RuralIcon icon={undefined as any} data-testid="undefined-icon" />);
+      const { unmount: unmount2 } = renderWithTheme(
+        <RuralIcon icon={undefined as any} data-testid='undefined-icon' />
+      );
       expect(screen.getByText('🌿')).toBeInTheDocument();
       unmount2();
     });
 
     it('should render with animate prop variations', () => {
-      const { unmount: unmount1 } = renderWithTheme(<RuralIcon icon="farm" animate={true} data-testid="animated-icon" />);
+      const { unmount: unmount1 } = renderWithTheme(
+        <RuralIcon icon='farm' animate={true} data-testid='animated-icon' />
+      );
       expect(screen.getByText('🏡')).toBeInTheDocument();
       unmount1();
 
-      const { unmount: unmount2 } = renderWithTheme(<RuralIcon icon="plant" animate={false} data-testid="static-icon" />);
+      const { unmount: unmount2 } = renderWithTheme(
+        <RuralIcon icon='plant' animate={false} data-testid='static-icon' />
+      );
       expect(screen.getByText('🌱')).toBeInTheDocument();
       unmount2();
 
-      renderWithTheme(<RuralIcon icon="harvest" data-testid="default-animate" />);
+      renderWithTheme(<RuralIcon icon='harvest' data-testid='default-animate' />);
       expect(screen.getByText('🌾')).toBeInTheDocument();
     });
   });
@@ -135,11 +148,7 @@ describe('RuralComponents', () => {
   describe('RuralStatComponent - Comprehensive Logic Tests', () => {
     it('should render basic stat without icon', () => {
       renderWithTheme(
-        <RuralStatComponent
-          value="100"
-          label="Total Fazendas"
-          data-testid="basic-stat"
-        />
+        <RuralStatComponent value='100' label='Total Fazendas' data-testid='basic-stat' />
       );
 
       expect(screen.getByText('100')).toBeInTheDocument();
@@ -150,9 +159,9 @@ describe('RuralComponents', () => {
       renderWithTheme(
         <RuralStatComponent
           value={50}
-          label="Propriedades Ativas"
-          icon="🏡"
-          data-testid="stat-with-icon"
+          label='Propriedades Ativas'
+          icon='🏡'
+          data-testid='stat-with-icon'
         />
       );
 
@@ -162,14 +171,14 @@ describe('RuralComponents', () => {
     });
 
     it('should render stat with React element icon', () => {
-      const CustomIcon = () => <span data-testid="custom-icon">🚜</span>;
+      const CustomIcon = () => <span data-testid='custom-icon'>🚜</span>;
 
       renderWithTheme(
         <RuralStatComponent
-          value="250 ha"
-          label="Área Total"
+          value='250 ha'
+          label='Área Total'
           icon={<CustomIcon />}
-          data-testid="stat-react-icon"
+          data-testid='stat-react-icon'
         />
       );
 
@@ -199,11 +208,7 @@ describe('RuralComponents', () => {
 
     it('should handle default color when color prop is not provided', () => {
       renderWithTheme(
-        <RuralStatComponent
-          value="75%"
-          label="Produtividade"
-          data-testid="primary-stat"
-        />
+        <RuralStatComponent value='75%' label='Produtividade' data-testid='primary-stat' />
       );
 
       expect(screen.getByText('75%')).toBeInTheDocument();
@@ -213,52 +218,30 @@ describe('RuralComponents', () => {
     it('should handle different value types correctly', () => {
       // String value
       renderWithTheme(
-        <RuralStatComponent
-          value="1,234"
-          label="String Value"
-          data-testid="string-value"
-        />
+        <RuralStatComponent value='1,234' label='String Value' data-testid='string-value' />
       );
       expect(screen.getByText('1,234')).toBeInTheDocument();
 
       // Numeric value
       renderWithTheme(
-        <RuralStatComponent
-          value={42.5}
-          label="Numeric Value"
-          data-testid="numeric-value"
-        />
+        <RuralStatComponent value={42.5} label='Numeric Value' data-testid='numeric-value' />
       );
       expect(screen.getByText('42.5')).toBeInTheDocument();
 
       // Zero value
-      renderWithTheme(
-        <RuralStatComponent
-          value={0}
-          label="Zero Value"
-          data-testid="zero-value"
-        />
-      );
+      renderWithTheme(<RuralStatComponent value={0} label='Zero Value' data-testid='zero-value' />);
       expect(screen.getByText('0')).toBeInTheDocument();
 
       // Empty string
       renderWithTheme(
-        <RuralStatComponent
-          value=""
-          label="Empty Value"
-          data-testid="empty-value"
-        />
+        <RuralStatComponent value='' label='Empty Value' data-testid='empty-value' />
       );
       expect(screen.getByText('Empty Value')).toBeInTheDocument();
     });
 
     it('should handle label transformation to uppercase', () => {
       renderWithTheme(
-        <RuralStatComponent
-          value="100"
-          label="mixed case Label"
-          data-testid="label-transform"
-        />
+        <RuralStatComponent value='100' label='mixed case Label' data-testid='label-transform' />
       );
 
       expect(screen.getByText('mixed case Label')).toBeInTheDocument();
@@ -266,7 +249,7 @@ describe('RuralComponents', () => {
 
     it('should handle complex React node as value', () => {
       const ComplexValue = () => (
-        <div data-testid="complex-value">
+        <div data-testid='complex-value'>
           <span>Complex</span>
           <strong>Value</strong>
         </div>
@@ -274,9 +257,9 @@ describe('RuralComponents', () => {
 
       renderWithTheme(
         <RuralStatComponent
-          value={<ComplexValue /> as any}
-          label="Complex Data"
-          data-testid="complex-stat"
+          value={(<ComplexValue />) as any}
+          label='Complex Data'
+          data-testid='complex-stat'
         />
       );
 
@@ -291,35 +274,21 @@ describe('RuralComponents', () => {
 
       // With icon
       const { unmount: unmount1 } = renderWithTheme(
-        <RuralStatComponent
-          value="100"
-          label="With Icon"
-          icon="🌾"
-          data-testid="with-icon"
-        />
+        <RuralStatComponent value='100' label='With Icon' icon='🌾' data-testid='with-icon' />
       );
       expect(screen.getByText('🌾')).toBeInTheDocument();
       unmount1();
 
       // Without icon
       const { unmount: unmount2 } = renderWithTheme(
-        <RuralStatComponent
-          value="200"
-          label="Without Icon"
-          data-testid="without-icon"
-        />
+        <RuralStatComponent value='200' label='Without Icon' data-testid='without-icon' />
       );
       expect(screen.queryByText('🌾')).not.toBeInTheDocument();
       unmount2();
 
       // With null icon
       const { unmount: unmount3 } = renderWithTheme(
-        <RuralStatComponent
-          value="300"
-          label="Null Icon"
-          icon={null}
-          data-testid="null-icon"
-        />
+        <RuralStatComponent value='300' label='Null Icon' icon={null} data-testid='null-icon' />
       );
       expect(screen.queryByText('🌾')).not.toBeInTheDocument();
       unmount3();
@@ -327,10 +296,10 @@ describe('RuralComponents', () => {
       // With undefined icon
       renderWithTheme(
         <RuralStatComponent
-          value="400"
-          label="Undefined Icon"
+          value='400'
+          label='Undefined Icon'
           icon={undefined}
-          data-testid="undefined-icon"
+          data-testid='undefined-icon'
         />
       );
       expect(screen.queryByText('🌾')).not.toBeInTheDocument();
@@ -340,10 +309,10 @@ describe('RuralComponents', () => {
       // @ts-ignore - Testing runtime behavior with invalid color
       renderWithTheme(
         <RuralStatComponent
-          value="100"
-          label="Invalid Color"
-          color={"invalid" as any}
-          data-testid="invalid-color"
+          value='100'
+          label='Invalid Color'
+          color={'invalid' as any}
+          data-testid='invalid-color'
         />
       );
 
@@ -356,7 +325,7 @@ describe('RuralComponents', () => {
     it('should test RuralDecorator position switch logic', () => {
       const positions = ['top', 'bottom', 'center'] as const;
 
-      positions.forEach((position) => {
+      positions.forEach(position => {
         const { unmount } = renderWithTheme(
           <RuralDecorator position={position} data-testid={`decorator-${position}`} />
         );
@@ -365,14 +334,14 @@ describe('RuralComponents', () => {
       });
 
       // Test default position
-      renderWithTheme(<RuralDecorator data-testid="decorator-default" />);
+      renderWithTheme(<RuralDecorator data-testid='decorator-default' />);
       expect(screen.getByTestId('decorator-default')).toBeInTheDocument();
     });
 
     it('should test RuralCard elevation switch logic', () => {
       const elevations = ['low', 'medium', 'high'] as const;
 
-      elevations.forEach((elevation) => {
+      elevations.forEach(elevation => {
         const { unmount } = renderWithTheme(
           <RuralCard elevation={elevation} data-testid={`card-${elevation}`}>
             <div>{elevation} elevation</div>
@@ -385,7 +354,7 @@ describe('RuralComponents', () => {
 
       // Test default elevation
       renderWithTheme(
-        <RuralCard data-testid="card-default">
+        <RuralCard data-testid='card-default'>
           <div>default elevation</div>
         </RuralCard>
       );
@@ -395,7 +364,7 @@ describe('RuralComponents', () => {
     it('should test NatureSection variant switch logic', () => {
       const variants = ['earth', 'leaf', 'sky'] as const;
 
-      variants.forEach((variant) => {
+      variants.forEach(variant => {
         const { unmount } = renderWithTheme(
           <NatureSection variant={variant} data-testid={`nature-${variant}`}>
             <div>{variant} nature</div>
@@ -408,7 +377,7 @@ describe('RuralComponents', () => {
 
       // Test default variant
       renderWithTheme(
-        <NatureSection data-testid="nature-default">
+        <NatureSection data-testid='nature-default'>
           <div>default nature</div>
         </NatureSection>
       );
@@ -418,7 +387,7 @@ describe('RuralComponents', () => {
     it('should test RuralTitle size switch logic', () => {
       const sizes = ['small', 'medium', 'large'] as const;
 
-      sizes.forEach((size) => {
+      sizes.forEach(size => {
         const { unmount } = renderWithTheme(
           <RuralTitle size={size} data-testid={`title-${size}`}>
             {size} title
@@ -430,18 +399,14 @@ describe('RuralComponents', () => {
       });
 
       // Test default size
-      renderWithTheme(
-        <RuralTitle data-testid="title-default">
-          default title
-        </RuralTitle>
-      );
+      renderWithTheme(<RuralTitle data-testid='title-default'>default title</RuralTitle>);
       expect(screen.getByTestId('title-default')).toBeInTheDocument();
     });
 
     it('should test RuralStat color switch logic', () => {
       const colors = ['primary', 'secondary', 'accent'] as const;
 
-      colors.forEach((color) => {
+      colors.forEach(color => {
         const { unmount } = renderWithTheme(
           <RuralStat $color={color} data-testid={`stat-${color}`}>
             <div>{color} stat</div>
@@ -454,7 +419,7 @@ describe('RuralComponents', () => {
 
       // Test default color
       renderWithTheme(
-        <RuralStat data-testid="stat-default">
+        <RuralStat data-testid='stat-default'>
           <div>default stat</div>
         </RuralStat>
       );
@@ -464,7 +429,7 @@ describe('RuralComponents', () => {
     it('should test RuralStatValue color switch logic', () => {
       const colors = ['primary', 'secondary', 'accent'] as const;
 
-      colors.forEach((color) => {
+      colors.forEach(color => {
         const { unmount } = renderWithTheme(
           <RuralStatValue $color={color} data-testid={`value-${color}`}>
             {color}
@@ -476,11 +441,7 @@ describe('RuralComponents', () => {
       });
 
       // Test default color
-      renderWithTheme(
-        <RuralStatValue data-testid="value-default">
-          default
-        </RuralStatValue>
-      );
+      renderWithTheme(<RuralStatValue data-testid='value-default'>default</RuralStatValue>);
       expect(screen.getByTestId('value-default')).toBeInTheDocument();
     });
   });
@@ -488,40 +449,40 @@ describe('RuralComponents', () => {
   describe('Complex Integration and Edge Cases', () => {
     it('should render complex nested rural dashboard', () => {
       renderWithTheme(
-        <RuralPattern data-testid="dashboard-pattern">
-          <RuralCard elevation="high">
-            <RuralTitle size="large">Dashboard Rural Completo</RuralTitle>
-            <RuralDecorator position="center" />
+        <RuralPattern data-testid='dashboard-pattern'>
+          <RuralCard elevation='high'>
+            <RuralTitle size='large'>Dashboard Rural Completo</RuralTitle>
+            <RuralDecorator position='center' />
 
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <RuralStatComponent
-                value="150"
-                label="Fazendas Cadastradas"
-                icon={<RuralIcon icon="farm" animate />}
-                color="primary"
+                value='150'
+                label='Fazendas Cadastradas'
+                icon={<RuralIcon icon='farm' animate />}
+                color='primary'
               />
 
               <RuralStatComponent
-                value="2,400 ha"
-                label="Área Total Plantada"
-                icon={<RuralIcon icon="plant" animate />}
-                color="secondary"
+                value='2,400 ha'
+                label='Área Total Plantada'
+                icon={<RuralIcon icon='plant' animate />}
+                color='secondary'
               />
 
               <RuralStatComponent
-                value="95%"
-                label="Taxa de Sucesso"
-                icon={<RuralIcon icon="growth" animate />}
-                color="accent"
+                value='95%'
+                label='Taxa de Sucesso'
+                icon={<RuralIcon icon='growth' animate />}
+                color='accent'
               />
             </div>
 
-            <NatureSection variant="leaf">
+            <NatureSection variant='leaf'>
               <RuralIconContainer>
-                <RuralIcon icon="sun" animate />
-                <RuralIcon icon="rain" animate />
-                <RuralIcon icon="harvest" animate />
-                <RuralIcon icon="tractor" animate />
+                <RuralIcon icon='sun' animate />
+                <RuralIcon icon='rain' animate />
+                <RuralIcon icon='harvest' animate />
+                <RuralIcon icon='tractor' animate />
               </RuralIconContainer>
             </NatureSection>
           </RuralCard>
@@ -547,52 +508,52 @@ describe('RuralComponents', () => {
 
     it('should test all component combinations with all prop variants', () => {
       renderWithTheme(
-        <div data-testid="comprehensive-test">
+        <div data-testid='comprehensive-test'>
           {/* Test all RuralCard elevations */}
-          <RuralCard elevation="low">
+          <RuralCard elevation='low'>
             <RuralStatComponent
-              value="Low Card"
-              label="Low Elevation"
-              color="primary"
-              icon={<RuralIcon icon="farm" animate={true} />}
+              value='Low Card'
+              label='Low Elevation'
+              color='primary'
+              icon={<RuralIcon icon='farm' animate={true} />}
             />
           </RuralCard>
 
-          <RuralCard elevation="medium">
+          <RuralCard elevation='medium'>
             <RuralStatComponent
-              value="Medium Card"
-              label="Medium Elevation"
-              color="secondary"
-              icon={<RuralIcon icon="plant" animate={false} />}
+              value='Medium Card'
+              label='Medium Elevation'
+              color='secondary'
+              icon={<RuralIcon icon='plant' animate={false} />}
             />
           </RuralCard>
 
-          <RuralCard elevation="high">
+          <RuralCard elevation='high'>
             <RuralStatComponent
-              value="High Card"
-              label="High Elevation"
-              color="accent"
-              icon={<RuralIcon icon="harvest" />}
+              value='High Card'
+              label='High Elevation'
+              color='accent'
+              icon={<RuralIcon icon='harvest' />}
             />
           </RuralCard>
 
           {/* Test all NatureSection variants */}
-          <NatureSection variant="earth">
-            <RuralTitle size="small">Earth Section</RuralTitle>
+          <NatureSection variant='earth'>
+            <RuralTitle size='small'>Earth Section</RuralTitle>
           </NatureSection>
 
-          <NatureSection variant="leaf">
-            <RuralTitle size="medium">Leaf Section</RuralTitle>
+          <NatureSection variant='leaf'>
+            <RuralTitle size='medium'>Leaf Section</RuralTitle>
           </NatureSection>
 
-          <NatureSection variant="sky">
-            <RuralTitle size="large">Sky Section</RuralTitle>
+          <NatureSection variant='sky'>
+            <RuralTitle size='large'>Sky Section</RuralTitle>
           </NatureSection>
 
           {/* Test all RuralDecorator positions */}
-          <RuralDecorator position="top" />
-          <RuralDecorator position="bottom" />
-          <RuralDecorator position="center" />
+          <RuralDecorator position='top' />
+          <RuralDecorator position='bottom' />
+          <RuralDecorator position='center' />
         </div>
       );
 
@@ -607,7 +568,7 @@ describe('RuralComponents', () => {
 
     it('should handle RuralStatLabel text transformation', () => {
       renderWithTheme(
-        <RuralStatLabel data-testid="stat-label">
+        <RuralStatLabel data-testid='stat-label'>
           mixed Case Label with UPPERCASE and lowercase
         </RuralStatLabel>
       );
@@ -617,15 +578,15 @@ describe('RuralComponents', () => {
 
     it('should test RuralIconContainer with multiple icons', () => {
       renderWithTheme(
-        <RuralIconContainer data-testid="icon-container">
-          <RuralIcon icon="farm" />
-          <RuralIcon icon="plant" />
-          <RuralIcon icon="harvest" />
-          <RuralIcon icon="tractor" />
-          <RuralIcon icon="seed" />
-          <RuralIcon icon="sun" />
-          <RuralIcon icon="rain" />
-          <RuralIcon icon="growth" />
+        <RuralIconContainer data-testid='icon-container'>
+          <RuralIcon icon='farm' />
+          <RuralIcon icon='plant' />
+          <RuralIcon icon='harvest' />
+          <RuralIcon icon='tractor' />
+          <RuralIcon icon='seed' />
+          <RuralIcon icon='sun' />
+          <RuralIcon icon='rain' />
+          <RuralIcon icon='growth' />
         </RuralIconContainer>
       );
 
@@ -645,14 +606,9 @@ describe('RuralComponents', () => {
       const iconTypes = ['farm', 'plant', 'harvest'] as const;
       const expectedEmojis = ['🏡', '🌱', '🌾'] as const;
 
-      animateValues.forEach((animateValue) => {
+      animateValues.forEach(animateValue => {
         iconTypes.forEach((iconType, iconIndex) => {
-          const { unmount } = renderWithTheme(
-            <RuralIcon
-              icon={iconType}
-              animate={animateValue}
-            />
-          );
+          const { unmount } = renderWithTheme(<RuralIcon icon={iconType} animate={animateValue} />);
           expect(screen.getByText(expectedEmojis[iconIndex])).toBeInTheDocument();
           unmount();
         });
@@ -664,19 +620,19 @@ describe('RuralComponents', () => {
     it('should handle invalid prop values gracefully', () => {
       // @ts-ignore - Testing runtime behavior with invalid props
       renderWithTheme(
-        <div data-testid="error-handling">
-          <RuralIcon icon={"invalid-icon" as any} />
-          <RuralDecorator position={"invalid-position" as any} />
-          <RuralCard elevation={"invalid-elevation" as any}>Content</RuralCard>
-          <NatureSection variant={"invalid-variant" as any}>Content</NatureSection>
-          <RuralTitle size={"invalid-size" as any}>Title</RuralTitle>
-          <RuralStat $color={"invalid-color" as any}>Stat</RuralStat>
-          <RuralStatValue $color={"invalid-color" as any}>Value</RuralStatValue>
+        <div data-testid='error-handling'>
+          <RuralIcon icon={'invalid-icon' as any} />
+          <RuralDecorator position={'invalid-position' as any} />
+          <RuralCard elevation={'invalid-elevation' as any}>Content</RuralCard>
+          <NatureSection variant={'invalid-variant' as any}>Content</NatureSection>
+          <RuralTitle size={'invalid-size' as any}>Title</RuralTitle>
+          <RuralStat $color={'invalid-color' as any}>Stat</RuralStat>
+          <RuralStatValue $color={'invalid-color' as any}>Value</RuralStatValue>
           <RuralStatComponent
-            value="Test"
-            label="Test"
-            color={"invalid-color" as any}
-            icon={"invalid-icon" as any}
+            value='Test'
+            label='Test'
+            color={'invalid-color' as any}
+            icon={'invalid-icon' as any}
           />
         </div>
       );
@@ -692,14 +648,14 @@ describe('RuralComponents', () => {
 
     it('should handle null and undefined children', () => {
       renderWithTheme(
-        <div data-testid="null-children">
+        <div data-testid='null-children'>
           <RuralIconContainer>{null}</RuralIconContainer>
           <RuralPattern>{undefined}</RuralPattern>
-          <RuralCard elevation="low">{null}</RuralCard>
-          <NatureSection variant="earth">{undefined}</NatureSection>
-          <RuralTitle size="medium">{null}</RuralTitle>
-          <RuralStat $color="primary">{undefined}</RuralStat>
-          <RuralStatValue $color="secondary">{null}</RuralStatValue>
+          <RuralCard elevation='low'>{null}</RuralCard>
+          <NatureSection variant='earth'>{undefined}</NatureSection>
+          <RuralTitle size='medium'>{null}</RuralTitle>
+          <RuralStat $color='primary'>{undefined}</RuralStat>
+          <RuralStatValue $color='secondary'>{null}</RuralStatValue>
           <RuralStatLabel>{undefined}</RuralStatLabel>
         </div>
       );
@@ -710,19 +666,19 @@ describe('RuralComponents', () => {
     it('should handle complex nested structures without errors', () => {
       renderWithTheme(
         <RuralPattern>
-          <RuralCard elevation="high">
-            <NatureSection variant="leaf">
+          <RuralCard elevation='high'>
+            <NatureSection variant='leaf'>
               <RuralPattern>
-                <RuralCard elevation="medium">
-                  <NatureSection variant="sky">
+                <RuralCard elevation='medium'>
+                  <NatureSection variant='sky'>
                     <RuralPattern>
-                      <RuralCard elevation="low">
-                        <RuralTitle size="large">Deeply Nested</RuralTitle>
+                      <RuralCard elevation='low'>
+                        <RuralTitle size='large'>Deeply Nested</RuralTitle>
                         <RuralStatComponent
-                          value="Deep"
-                          label="Nested Component"
-                          icon={<RuralIcon icon="growth" animate />}
-                          color="accent"
+                          value='Deep'
+                          label='Nested Component'
+                          icon={<RuralIcon icon='growth' animate />}
+                          color='accent'
                         />
                       </RuralCard>
                     </RuralPattern>
@@ -743,14 +699,14 @@ describe('RuralComponents', () => {
 
   describe('Additional Coverage for Uncovered Switch Cases', () => {
     it('should render RuralDecorator with top position', () => {
-      renderWithTheme(<RuralDecorator position="top" data-testid="decorator-top" />);
+      renderWithTheme(<RuralDecorator position='top' data-testid='decorator-top' />);
 
       const decorator = screen.getByTestId('decorator-top');
       expect(decorator).toBeInTheDocument();
     });
 
     it('should render RuralDecorator with bottom position', () => {
-      renderWithTheme(<RuralDecorator position="bottom" data-testid="decorator-bottom" />);
+      renderWithTheme(<RuralDecorator position='bottom' data-testid='decorator-bottom' />);
 
       const decorator = screen.getByTestId('decorator-bottom');
       expect(decorator).toBeInTheDocument();
@@ -758,7 +714,7 @@ describe('RuralComponents', () => {
 
     it('should render RuralCard with low elevation and test hover state coverage', () => {
       renderWithTheme(
-        <RuralCard elevation="low" data-testid="card-low">
+        <RuralCard elevation='low' data-testid='card-low'>
           <p>Low elevation card</p>
         </RuralCard>
       );
@@ -770,7 +726,7 @@ describe('RuralComponents', () => {
 
     it('should render RuralCard with high elevation and test hover state coverage', () => {
       renderWithTheme(
-        <RuralCard elevation="high" data-testid="card-high">
+        <RuralCard elevation='high' data-testid='card-high'>
           <p>High elevation card</p>
         </RuralCard>
       );
@@ -782,7 +738,7 @@ describe('RuralComponents', () => {
 
     it('should render NatureSection with leaf variant', () => {
       renderWithTheme(
-        <NatureSection variant="leaf" data-testid="nature-leaf">
+        <NatureSection variant='leaf' data-testid='nature-leaf'>
           <p>Leaf variant content</p>
         </NatureSection>
       );
@@ -794,7 +750,7 @@ describe('RuralComponents', () => {
 
     it('should render NatureSection with sky variant', () => {
       renderWithTheme(
-        <NatureSection variant="sky" data-testid="nature-sky">
+        <NatureSection variant='sky' data-testid='nature-sky'>
           <p>Sky variant content</p>
         </NatureSection>
       );
@@ -806,7 +762,7 @@ describe('RuralComponents', () => {
 
     it('should render RuralTitle with small size', () => {
       renderWithTheme(
-        <RuralTitle size="small" data-testid="title-small">
+        <RuralTitle size='small' data-testid='title-small'>
           Small Rural Title
         </RuralTitle>
       );
@@ -818,7 +774,7 @@ describe('RuralComponents', () => {
 
     it('should render RuralTitle with large size', () => {
       renderWithTheme(
-        <RuralTitle size="large" data-testid="title-large">
+        <RuralTitle size='large' data-testid='title-large'>
           Large Rural Title
         </RuralTitle>
       );
@@ -830,8 +786,8 @@ describe('RuralComponents', () => {
 
     it('should render RuralStat with secondary color', () => {
       renderWithTheme(
-        <RuralStat $color="secondary" data-testid="stat-secondary">
-          <RuralStatValue $color="secondary">42</RuralStatValue>
+        <RuralStat $color='secondary' data-testid='stat-secondary'>
+          <RuralStatValue $color='secondary'>42</RuralStatValue>
           <RuralStatLabel>Secondary Stat</RuralStatLabel>
         </RuralStat>
       );
@@ -844,8 +800,8 @@ describe('RuralComponents', () => {
 
     it('should render RuralStat with accent color', () => {
       renderWithTheme(
-        <RuralStat $color="accent" data-testid="stat-accent">
-          <RuralStatValue $color="accent">99</RuralStatValue>
+        <RuralStat $color='accent' data-testid='stat-accent'>
+          <RuralStatValue $color='accent'>99</RuralStatValue>
           <RuralStatLabel>Accent Stat</RuralStatLabel>
         </RuralStat>
       );
@@ -858,11 +814,7 @@ describe('RuralComponents', () => {
 
     it('should render RuralStatComponent with secondary color prop', () => {
       renderWithTheme(
-        <RuralStatComponent
-          value="100"
-          label="Secondary Color Test"
-          color="secondary"
-        />
+        <RuralStatComponent value='100' label='Secondary Color Test' color='secondary' />
       );
 
       expect(screen.getByText('100')).toBeInTheDocument();
@@ -871,8 +823,8 @@ describe('RuralComponents', () => {
 
     it('should test default cases and unknown icon variants', () => {
       renderWithTheme(
-        <div data-testid="unknown-icon-container">
-          <RuralIcon icon={"unknown-icon" as any} />
+        <div data-testid='unknown-icon-container'>
+          <RuralIcon icon={'unknown-icon' as any} />
         </div>
       );
 
@@ -882,7 +834,7 @@ describe('RuralComponents', () => {
     });
 
     it('should test default position in RuralDecorator', () => {
-      renderWithTheme(<RuralDecorator data-testid="decorator-default" />);
+      renderWithTheme(<RuralDecorator data-testid='decorator-default' />);
 
       const decorator = screen.getByTestId('decorator-default');
       expect(decorator).toBeInTheDocument();
@@ -890,7 +842,7 @@ describe('RuralComponents', () => {
 
     it('should test medium elevation as default in RuralCard', () => {
       renderWithTheme(
-        <RuralCard data-testid="card-default">
+        <RuralCard data-testid='card-default'>
           <p>Default elevation card</p>
         </RuralCard>
       );
@@ -902,7 +854,7 @@ describe('RuralComponents', () => {
 
     it('should test earth variant as default in NatureSection', () => {
       renderWithTheme(
-        <NatureSection data-testid="nature-default">
+        <NatureSection data-testid='nature-default'>
           <p>Default earth variant</p>
         </NatureSection>
       );
@@ -913,11 +865,7 @@ describe('RuralComponents', () => {
     });
 
     it('should test medium size as default in RuralTitle', () => {
-      renderWithTheme(
-        <RuralTitle data-testid="title-default">
-          Default Medium Title
-        </RuralTitle>
-      );
+      renderWithTheme(<RuralTitle data-testid='title-default'>Default Medium Title</RuralTitle>);
 
       const title = screen.getByTestId('title-default');
       expect(title).toBeInTheDocument();
@@ -926,8 +874,8 @@ describe('RuralComponents', () => {
 
     it('should test primary color as default in RuralStat and RuralStatValue', () => {
       renderWithTheme(
-        <RuralStat data-testid="stat-default">
-          <RuralStatValue data-testid="stat-value-default">123</RuralStatValue>
+        <RuralStat data-testid='stat-default'>
+          <RuralStatValue data-testid='stat-value-default'>123</RuralStatValue>
           <RuralStatLabel>Default Primary</RuralStatLabel>
         </RuralStat>
       );

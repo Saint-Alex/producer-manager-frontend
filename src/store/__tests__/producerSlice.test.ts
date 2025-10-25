@@ -2,15 +2,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import { producerService } from '../../services/producerService';
 import { CreateProducerData, Producer, UpdateProducerData } from '../../types/producer';
 import producerSlice, {
-    addProducer,
-    clearCurrentProducer,
-    clearError,
-    createProducer,
-    deleteProducer,
-    fetchProducerById,
-    fetchProducers,
-    setCurrentProducer,
-    updateProducer,
+  addProducer,
+  clearCurrentProducer,
+  clearError,
+  createProducer,
+  deleteProducer,
+  fetchProducerById,
+  fetchProducers,
+  setCurrentProducer,
+  updateProducer,
 } from '../producerSlice';
 
 jest.mock('../../services/producerService');

@@ -2,16 +2,16 @@ import { configureStore } from '@reduxjs/toolkit';
 import { culturaService } from '../../services/culturaService';
 import type { Cultura } from '../../types/cultura';
 import culturaSlice, {
-    clearCurrentCultura,
-    clearError,
-    createCultura,
-    deleteCultura,
-    fetchCulturaById,
-    fetchCulturas,
-    fetchCulturasByPropriedade,
-    fetchCulturasBySafra,
-    setCurrentCultura,
-    updateCultura,
+  clearCurrentCultura,
+  clearError,
+  createCultura,
+  deleteCultura,
+  fetchCulturaById,
+  fetchCulturas,
+  fetchCulturasByPropriedade,
+  fetchCulturasBySafra,
+  setCurrentCultura,
+  updateCultura,
 } from '../culturaSlice';
 
 // Mock do service
@@ -94,10 +94,7 @@ describe('culturaSlice', () => {
     });
 
     it('should handle fulfilled state', async () => {
-      const mockCulturas = [
-        createMockCultura('1', 'Milho'),
-        createMockCultura('2', 'Soja'),
-      ];
+      const mockCulturas = [createMockCultura('1', 'Milho'), createMockCultura('2', 'Soja')];
 
       mockedCulturaService.getAll.mockResolvedValue(mockCulturas);
 
@@ -130,9 +127,7 @@ describe('culturaSlice', () => {
     });
 
     it('should handle fulfilled state', async () => {
-      const mockCulturas = [
-        createMockCultura('1', 'Milho'),
-      ];
+      const mockCulturas = [createMockCultura('1', 'Milho')];
 
       mockedCulturaService.getByPropriedade.mockResolvedValue(mockCulturas);
 
@@ -165,9 +160,7 @@ describe('culturaSlice', () => {
     });
 
     it('should handle fulfilled state', async () => {
-      const mockCulturas = [
-        createMockCultura('1', 'Soja'),
-      ];
+      const mockCulturas = [createMockCultura('1', 'Soja')];
 
       mockedCulturaService.getBySafra.mockResolvedValue(mockCulturas);
 
@@ -261,13 +254,10 @@ describe('culturaSlice', () => {
   describe('updateCultura async thunk', () => {
     beforeEach(() => {
       // Set initial culturas
-      const initialCulturas = [
-        createMockCultura('1', 'Milho'),
-        createMockCultura('2', 'Soja'),
-      ];
+      const initialCulturas = [createMockCultura('1', 'Milho'), createMockCultura('2', 'Soja')];
       store.dispatch({
         type: fetchCulturas.fulfilled.type,
-        payload: initialCulturas
+        payload: initialCulturas,
       });
     });
 
@@ -323,13 +313,10 @@ describe('culturaSlice', () => {
   describe('deleteCultura async thunk', () => {
     beforeEach(() => {
       // Set initial culturas
-      const initialCulturas = [
-        createMockCultura('1', 'Milho'),
-        createMockCultura('2', 'Soja'),
-      ];
+      const initialCulturas = [createMockCultura('1', 'Milho'), createMockCultura('2', 'Soja')];
       store.dispatch({
         type: fetchCulturas.fulfilled.type,
-        payload: initialCulturas
+        payload: initialCulturas,
       });
     });
 

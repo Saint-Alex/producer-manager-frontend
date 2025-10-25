@@ -23,23 +23,23 @@ jest.mock('../../../components/shared', () => ({
   ),
   ConfirmModal: ({ isOpen, title, message, onConfirm, onCancel, confirmText, cancelText }: any) =>
     isOpen ? (
-      <div data-testid="confirm-modal">
+      <div data-testid='confirm-modal'>
         <h2>{title}</h2>
         <p>{message}</p>
-        <button onClick={onConfirm} data-testid="confirm-delete">
+        <button onClick={onConfirm} data-testid='confirm-delete'>
           {confirmText}
         </button>
-        <button onClick={onCancel} data-testid="cancel-delete">
+        <button onClick={onCancel} data-testid='cancel-delete'>
           {cancelText}
         </button>
       </div>
     ) : null,
   NotificationModal: ({ isOpen, title, type, message, onClose }: any) =>
     isOpen ? (
-      <div data-testid="notification-modal" data-type={type}>
+      <div data-testid='notification-modal' data-type={type}>
         <h2>{title}</h2>
         <p>{message}</p>
-        <button onClick={onClose} data-testid="close-notification">
+        <button onClick={onClose} data-testid='close-notification'>
           Fechar
         </button>
       </div>
@@ -108,9 +108,7 @@ describe('CulturesPage', () => {
     await act(async () => {
       renderResult = render(
         <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            {component}
-          </ThemeProvider>
+          <ThemeProvider theme={theme}>{component}</ThemeProvider>
         </Provider>
       );
     });
@@ -188,7 +186,7 @@ describe('CulturesPage', () => {
       const errorMessage = 'Erro ao carregar culturas';
       await renderWithProviders(<CulturesPage />, {
         error: errorMessage,
-        culturas: []
+        culturas: [],
       });
 
       await waitFor(() => {
@@ -200,20 +198,22 @@ describe('CulturesPage', () => {
       await renderWithProviders(<CulturesPage />, {
         culturas: [],
         loading: false,
-        error: null
+        error: null,
       });
 
       await waitFor(() => {
         expect(screen.getByText('Nenhuma cultura cadastrada')).toBeInTheDocument();
       });
-      expect(screen.getByText('Comece criando sua primeira cultura agrícola para organizar os cultivos.')).toBeInTheDocument();
+      expect(
+        screen.getByText('Comece criando sua primeira cultura agrícola para organizar os cultivos.')
+      ).toBeInTheDocument();
       expect(screen.getByText('Cadastrar Primeira Cultura')).toBeInTheDocument();
     });
 
     test('deve exibir e limpar erro automaticamente', async () => {
       await renderWithProviders(<CulturesPage />, {
         error: 'Erro ao buscar culturas',
-        culturas: []
+        culturas: [],
       });
 
       await waitFor(() => {
@@ -322,7 +322,9 @@ describe('CulturesPage', () => {
       });
 
       expect(screen.getByText('Nenhum resultado encontrado')).toBeInTheDocument();
-      expect(screen.getByText('Tente ajustar os termos de busca ou limpar os filtros.')).toBeInTheDocument();
+      expect(
+        screen.getByText('Tente ajustar os termos de busca ou limpar os filtros.')
+      ).toBeInTheDocument();
     });
 
     test('deve limpar filtros ao clicar no botão', async () => {
@@ -388,7 +390,9 @@ describe('CulturesPage', () => {
 
       expect(screen.getByText('Editar Cultura')).toBeInTheDocument();
       expect(screen.getByDisplayValue('Milho')).toBeInTheDocument();
-      expect(screen.getByDisplayValue('Cultura de milho para alimentação e ração')).toBeInTheDocument();
+      expect(
+        screen.getByDisplayValue('Cultura de milho para alimentação e ração')
+      ).toBeInTheDocument();
     });
 
     test('deve fechar modal ao clicar em cancelar', async () => {
@@ -524,7 +528,9 @@ describe('CulturesPage', () => {
       // Verificar se modal abriu com dados corretos
       expect(screen.getByText('Editar Cultura')).toBeInTheDocument();
       expect(screen.getByDisplayValue('Milho')).toBeInTheDocument();
-      expect(screen.getByDisplayValue('Cultura de milho para alimentação e ração')).toBeInTheDocument();
+      expect(
+        screen.getByDisplayValue('Cultura de milho para alimentação e ração')
+      ).toBeInTheDocument();
     });
 
     test('deve permitir modificar dados no formulário de edição', async () => {
@@ -578,7 +584,7 @@ describe('CulturesPage', () => {
       await renderWithProviders(<CulturesPage />, {
         culturas: mockCulturas,
         loading: false,
-        error: 'Erro ao deletar cultura'
+        error: 'Erro ao deletar cultura',
       });
 
       await waitFor(() => {
@@ -734,7 +740,7 @@ describe('CulturesPage', () => {
       await renderWithProviders(<CulturesPage />, {
         culturas: [],
         loading: false,
-        error: null
+        error: null,
       });
 
       await waitFor(() => {

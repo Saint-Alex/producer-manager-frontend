@@ -16,12 +16,9 @@ const initialState: ProducerState = {
   currentProducer: null,
 };
 
-export const fetchProducers = createAsyncThunk(
-  'producers/fetchProducers',
-  async () => {
-    return await producerService.getAll();
-  }
-);
+export const fetchProducers = createAsyncThunk('producers/fetchProducers', async () => {
+  return await producerService.getAll();
+});
 
 export const fetchProducerById = createAsyncThunk(
   'producers/fetchProducerById',
@@ -44,13 +41,10 @@ export const updateProducer = createAsyncThunk(
   }
 );
 
-export const deleteProducer = createAsyncThunk(
-  'producers/deleteProducer',
-  async (id: string) => {
-    await producerService.delete(id);
-    return id;
-  }
-);
+export const deleteProducer = createAsyncThunk('producers/deleteProducer', async (id: string) => {
+  await producerService.delete(id);
+  return id;
+});
 
 const producerSlice = createSlice({
   name: 'producers',
@@ -62,16 +56,16 @@ const producerSlice = createSlice({
     setCurrentProducer: (state, action: PayloadAction<Producer | null>) => {
       state.currentProducer = action.payload;
     },
-    clearCurrentProducer: (state) => {
+    clearCurrentProducer: state => {
       state.currentProducer = null;
     },
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(fetchProducers.pending, (state) => {
+      .addCase(fetchProducers.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -83,7 +77,7 @@ const producerSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Erro ao buscar produtores';
       })
-      .addCase(fetchProducerById.pending, (state) => {
+      .addCase(fetchProducerById.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -95,7 +89,7 @@ const producerSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Erro ao buscar produtor';
       })
-      .addCase(createProducer.pending, (state) => {
+      .addCase(createProducer.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -107,15 +101,13 @@ const producerSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Erro ao criar produtor';
       })
-      .addCase(updateProducer.pending, (state) => {
+      .addCase(updateProducer.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updateProducer.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.producers.findIndex(
-          (p) => p.id === action.payload.id
-        );
+        const index = state.producers.findIndex(p => p.id === action.payload.id);
         if (index !== -1) {
           state.producers[index] = action.payload;
         }
@@ -124,15 +116,13 @@ const producerSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Erro ao atualizar produtor';
       })
-      .addCase(deleteProducer.pending, (state) => {
+      .addCase(deleteProducer.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(deleteProducer.fulfilled, (state, action) => {
         state.loading = false;
-        state.producers = state.producers.filter(
-          (p) => p.id !== action.payload
-        );
+        state.producers = state.producers.filter(p => p.id !== action.payload);
       })
       .addCase(deleteProducer.rejected, (state, action) => {
         state.loading = false;
@@ -141,10 +131,6 @@ const producerSlice = createSlice({
   },
 });
 
-export const {
-  addProducer,
-  setCurrentProducer,
-  clearCurrentProducer,
-  clearError,
-} = producerSlice.actions;
+export const { addProducer, setCurrentProducer, clearCurrentProducer, clearError } =
+  producerSlice.actions;
 export default producerSlice.reducer;

@@ -6,11 +6,7 @@ import { theme } from '../../../styles/theme';
 import { ActionButton, ActionButtonProps } from '../ActionButton';
 
 const renderWithTheme = (component: React.ReactNode) => {
-  return render(
-    <ThemeProvider theme={theme}>
-      {component}
-    </ThemeProvider>
-  );
+  return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
 };
 
 describe('ActionButton Component', () => {
@@ -30,9 +26,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should render with custom className', () => {
-      renderWithTheme(
-        <ActionButton className="custom-class">Test</ActionButton>
-      );
+      renderWithTheme(<ActionButton className='custom-class'>Test</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toHaveClass('custom-class');
@@ -41,18 +35,14 @@ describe('ActionButton Component', () => {
 
   describe('Button Types', () => {
     it('should render as submit button when type is submit', () => {
-      renderWithTheme(
-        <ActionButton type="submit">Submit</ActionButton>
-      );
+      renderWithTheme(<ActionButton type='submit'>Submit</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toHaveAttribute('type', 'submit');
     });
 
     it('should render as reset button when type is reset', () => {
-      renderWithTheme(
-        <ActionButton type="reset">Reset</ActionButton>
-      );
+      renderWithTheme(<ActionButton type='reset'>Reset</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toHaveAttribute('type', 'reset');
@@ -69,14 +59,12 @@ describe('ActionButton Component', () => {
       'info',
       'outlined-danger',
       'outlined-secondary',
-      'outlined-primary'
+      'outlined-primary',
     ];
 
-    variants.forEach((variant) => {
+    variants.forEach(variant => {
       it(`should render ${variant} variant correctly`, () => {
-        renderWithTheme(
-          <ActionButton variant={variant}>{variant} Button</ActionButton>
-        );
+        renderWithTheme(<ActionButton variant={variant}>{variant} Button</ActionButton>);
 
         const button = screen.getByRole('button');
         expect(button).toBeInTheDocument();
@@ -110,11 +98,9 @@ describe('ActionButton Component', () => {
   describe('Sizes', () => {
     const sizes: ActionButtonProps['size'][] = ['small', 'medium', 'large'];
 
-    sizes.forEach((size) => {
+    sizes.forEach(size => {
       it(`should render ${size} size correctly`, () => {
-        renderWithTheme(
-          <ActionButton size={size}>{size} Button</ActionButton>
-        );
+        renderWithTheme(<ActionButton size={size}>{size} Button</ActionButton>);
 
         const button = screen.getByRole('button');
         expect(button).toBeInTheDocument();
@@ -147,18 +133,14 @@ describe('ActionButton Component', () => {
 
   describe('States', () => {
     it('should be disabled when disabled prop is true', () => {
-      renderWithTheme(
-        <ActionButton disabled>Disabled Button</ActionButton>
-      );
+      renderWithTheme(<ActionButton disabled>Disabled Button</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeDisabled();
     });
 
     it('should show loading state', () => {
-      renderWithTheme(
-        <ActionButton loading>Loading Button</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading>Loading Button</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeDisabled();
@@ -166,18 +148,14 @@ describe('ActionButton Component', () => {
     });
 
     it('should be disabled when loading is true', () => {
-      renderWithTheme(
-        <ActionButton loading>Loading</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading>Loading</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeDisabled();
     });
 
     it('should render full width when fullWidth is true', () => {
-      renderWithTheme(
-        <ActionButton fullWidth>Full Width</ActionButton>
-      );
+      renderWithTheme(<ActionButton fullWidth>Full Width</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -187,9 +165,7 @@ describe('ActionButton Component', () => {
   describe('Click Handling', () => {
     it('should call onClick when clicked', () => {
       const handleClick = jest.fn();
-      renderWithTheme(
-        <ActionButton onClick={handleClick}>Clickable</ActionButton>
-      );
+      renderWithTheme(<ActionButton onClick={handleClick}>Clickable</ActionButton>);
 
       const button = screen.getByRole('button');
       fireEvent.click(button);
@@ -237,9 +213,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should not be focusable when disabled', () => {
-      renderWithTheme(
-        <ActionButton disabled>Not Focusable</ActionButton>
-      );
+      renderWithTheme(<ActionButton disabled>Not Focusable</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeDisabled();
@@ -247,9 +221,7 @@ describe('ActionButton Component', () => {
 
     it('should handle keyboard events', () => {
       const handleClick = jest.fn();
-      renderWithTheme(
-        <ActionButton onClick={handleClick}>Keyboard</ActionButton>
-      );
+      renderWithTheme(<ActionButton onClick={handleClick}>Keyboard</ActionButton>);
 
       const button = screen.getByRole('button');
       fireEvent.keyDown(button, { key: 'Enter' });
@@ -275,7 +247,7 @@ describe('ActionButton Component', () => {
     it('should render with icon and text', () => {
       renderWithTheme(
         <ActionButton>
-          <span data-testid="icon">⭐</span>
+          <span data-testid='icon'>⭐</span>
           Star
         </ActionButton>
       );
@@ -296,12 +268,12 @@ describe('ActionButton Component', () => {
 
   describe('Form Integration', () => {
     it('should submit form when type is submit', () => {
-      const handleSubmit = jest.fn((e) => e.preventDefault());
+      const handleSubmit = jest.fn(e => e.preventDefault());
 
       render(
         <ThemeProvider theme={theme}>
           <form onSubmit={handleSubmit}>
-            <ActionButton type="submit">Submit Form</ActionButton>
+            <ActionButton type='submit'>Submit Form</ActionButton>
           </form>
         </ThemeProvider>
       );
@@ -342,9 +314,7 @@ describe('ActionButton Component', () => {
 
   describe('Conditional Styling and Loading States', () => {
     it('should render loading spinner when loading is true', () => {
-      renderWithTheme(
-        <ActionButton loading>Loading Button</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading>Loading Button</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -353,9 +323,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should hide button content when loading', () => {
-      renderWithTheme(
-        <ActionButton loading>Hidden Content</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading>Hidden Content</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -363,9 +331,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should show button content when not loading', () => {
-      renderWithTheme(
-        <ActionButton loading={false}>Visible Content</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading={false}>Visible Content</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -373,36 +339,28 @@ describe('ActionButton Component', () => {
     });
 
     it('should render fullWidth style when fullWidth is true', () => {
-      renderWithTheme(
-        <ActionButton fullWidth>Full Width Button</ActionButton>
-      );
+      renderWithTheme(<ActionButton fullWidth>Full Width Button</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
     });
 
     it('should not render fullWidth style when fullWidth is false', () => {
-      renderWithTheme(
-        <ActionButton fullWidth={false}>Normal Width Button</ActionButton>
-      );
+      renderWithTheme(<ActionButton fullWidth={false}>Normal Width Button</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
     });
 
     it('should apply disabled state correctly', () => {
-      renderWithTheme(
-        <ActionButton disabled>Disabled Button</ActionButton>
-      );
+      renderWithTheme(<ActionButton disabled>Disabled Button</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeDisabled();
     });
 
     it('should not apply disabled styles when not disabled', () => {
-      renderWithTheme(
-        <ActionButton disabled={false}>Enabled Button</ActionButton>
-      );
+      renderWithTheme(<ActionButton disabled={false}>Enabled Button</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).not.toBeDisabled();
@@ -412,7 +370,9 @@ describe('ActionButton Component', () => {
   describe('Conditional Props Combinations', () => {
     it('should handle fullWidth=true with large size', () => {
       renderWithTheme(
-        <ActionButton fullWidth size="large">Large Full Width</ActionButton>
+        <ActionButton fullWidth size='large'>
+          Large Full Width
+        </ActionButton>
       );
 
       const button = screen.getByRole('button');
@@ -421,7 +381,9 @@ describe('ActionButton Component', () => {
 
     it('should handle fullWidth=false with small size', () => {
       renderWithTheme(
-        <ActionButton fullWidth={false} size="small">Small Normal Width</ActionButton>
+        <ActionButton fullWidth={false} size='small'>
+          Small Normal Width
+        </ActionButton>
       );
 
       const button = screen.getByRole('button');
@@ -430,7 +392,9 @@ describe('ActionButton Component', () => {
 
     it('should handle loading=true with disabled=true', () => {
       renderWithTheme(
-        <ActionButton loading disabled>Loading and Disabled</ActionButton>
+        <ActionButton loading disabled>
+          Loading and Disabled
+        </ActionButton>
       );
 
       const button = screen.getByRole('button');
@@ -439,7 +403,9 @@ describe('ActionButton Component', () => {
 
     it('should handle loading=false with disabled=false', () => {
       renderWithTheme(
-        <ActionButton loading={false} disabled={false}>Active Button</ActionButton>
+        <ActionButton loading={false} disabled={false}>
+          Active Button
+        </ActionButton>
       );
 
       const button = screen.getByRole('button');
@@ -450,12 +416,12 @@ describe('ActionButton Component', () => {
       const outlineVariants: ActionButtonProps['variant'][] = [
         'outlined-primary',
         'outlined-secondary',
-        'outlined-danger'
+        'outlined-danger',
       ];
 
       outlineVariants.forEach(variant => {
         renderWithTheme(
-          <ActionButton variant={variant} size="small">
+          <ActionButton variant={variant} size='small'>
             {variant} Small
           </ActionButton>
         );
@@ -473,7 +439,7 @@ describe('ActionButton Component', () => {
         'danger',
         'success',
         'warning',
-        'info'
+        'info',
       ];
 
       solidVariants.forEach(variant => {
@@ -505,11 +471,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should handle fullWidth with different screen sizes (xs mediaQuery)', () => {
-      renderWithTheme(
-        <ActionButton fullWidth>
-          Full Width XS
-        </ActionButton>
-      );
+      renderWithTheme(<ActionButton fullWidth>Full Width XS</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -544,9 +506,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should render loading spinner correctly', () => {
-      const { container } = renderWithTheme(
-        <ActionButton loading>Loading Test</ActionButton>
-      );
+      const { container } = renderWithTheme(<ActionButton loading>Loading Test</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -556,9 +516,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should handle ButtonContent opacity when loading=true', () => {
-      renderWithTheme(
-        <ActionButton loading>Content Hidden</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading>Content Hidden</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -566,9 +524,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should handle ButtonContent opacity when loading=false', () => {
-      renderWithTheme(
-        <ActionButton loading={false}>Content Visible</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading={false}>Content Visible</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -576,9 +532,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should test focus outline styles', () => {
-      renderWithTheme(
-        <ActionButton>Focus Test</ActionButton>
-      );
+      renderWithTheme(<ActionButton>Focus Test</ActionButton>);
 
       const button = screen.getByRole('button');
       button.focus();
@@ -602,8 +556,8 @@ describe('ActionButton Component', () => {
     it('should test StyledButton props passing', () => {
       renderWithTheme(
         <ActionButton
-          variant="primary"
-          size="large"
+          variant='primary'
+          size='large'
           loading={true}
           fullWidth={true}
           disabled={false}
@@ -626,7 +580,7 @@ describe('ActionButton Component', () => {
         { loading: false, fullWidth: true, disabled: true },
         { loading: false, fullWidth: true, disabled: false },
         { loading: false, fullWidth: false, disabled: true },
-        { loading: false, fullWidth: false, disabled: false }
+        { loading: false, fullWidth: false, disabled: false },
       ];
 
       combinations.forEach((combo, index) => {
@@ -662,36 +616,28 @@ describe('ActionButton Component', () => {
     });
 
     it('should handle edge case where variant is explicitly undefined', () => {
-      renderWithTheme(
-        <ActionButton variant={undefined}>Explicit Undefined</ActionButton>
-      );
+      renderWithTheme(<ActionButton variant={undefined}>Explicit Undefined</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
     });
 
     it('should handle edge case where size is explicitly undefined', () => {
-      renderWithTheme(
-        <ActionButton size={undefined}>Size Undefined</ActionButton>
-      );
+      renderWithTheme(<ActionButton size={undefined}>Size Undefined</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
     });
 
     it('should test conditional styling with fullWidth false explicitly', () => {
-      renderWithTheme(
-        <ActionButton fullWidth={false}>Not Full Width</ActionButton>
-      );
+      renderWithTheme(<ActionButton fullWidth={false}>Not Full Width</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
     });
 
     it('should test conditional styling with loading false explicitly', () => {
-      renderWithTheme(
-        <ActionButton loading={false}>Not Loading</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading={false}>Not Loading</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -721,9 +667,7 @@ describe('ActionButton Component', () => {
     });
 
     it('should test component with only children prop', () => {
-      renderWithTheme(
-        <ActionButton>Simple Button</ActionButton>
-      );
+      renderWithTheme(<ActionButton>Simple Button</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -732,7 +676,13 @@ describe('ActionButton Component', () => {
 
     it('should test component with minimal props for maximum coverage', () => {
       renderWithTheme(
-        <ActionButton variant="primary" size="medium" loading={false} disabled={false} fullWidth={false}>
+        <ActionButton
+          variant='primary'
+          size='medium'
+          loading={false}
+          disabled={false}
+          fullWidth={false}
+        >
           Complete Props
         </ActionButton>
       );
@@ -743,8 +693,15 @@ describe('ActionButton Component', () => {
 
     it('should ensure all variant styles are rendered (coverage test)', () => {
       const allVariants: ActionButtonProps['variant'][] = [
-        'primary', 'secondary', 'danger', 'success', 'warning', 'info',
-        'outlined-danger', 'outlined-secondary', 'outlined-primary'
+        'primary',
+        'secondary',
+        'danger',
+        'success',
+        'warning',
+        'info',
+        'outlined-danger',
+        'outlined-secondary',
+        'outlined-primary',
       ];
 
       allVariants.forEach((variant, index) => {
@@ -762,9 +719,7 @@ describe('ActionButton Component', () => {
       const allSizes: ActionButtonProps['size'][] = ['small', 'medium', 'large'];
 
       allSizes.forEach((size, index) => {
-        const { unmount } = renderWithTheme(
-          <ActionButton size={size}>Size {size}</ActionButton>
-        );
+        const { unmount } = renderWithTheme(<ActionButton size={size}>Size {size}</ActionButton>);
 
         const button = screen.getByText(`Size ${size}`);
         expect(button).toBeInTheDocument();
@@ -774,9 +729,7 @@ describe('ActionButton Component', () => {
 
     // Test para cobrir todas as branches do getVariantStyles
     it('should test default case in getVariantStyles function', () => {
-      renderWithTheme(
-        <ActionButton variant={null as any}>Default Case</ActionButton>
-      );
+      renderWithTheme(<ActionButton variant={null as any}>Default Case</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -784,9 +737,7 @@ describe('ActionButton Component', () => {
 
     // Test para cobrir todas as branches do getSizeStyles
     it('should test default case in getSizeStyles function', () => {
-      renderWithTheme(
-        <ActionButton size={null as any}>Default Size Case</ActionButton>
-      );
+      renderWithTheme(<ActionButton size={null as any}>Default Size Case</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -795,7 +746,7 @@ describe('ActionButton Component', () => {
     // Test mais específico para buttonProps spread
     it('should pass through additional button props', () => {
       renderWithTheme(
-        <ActionButton data-testid="custom-button" aria-label="Custom label">
+        <ActionButton data-testid='custom-button' aria-label='Custom label'>
           Custom Props
         </ActionButton>
       );
@@ -806,34 +757,26 @@ describe('ActionButton Component', () => {
     });
 
     it('should test conditional CSS application for fullWidth', () => {
-      const { container } = renderWithTheme(
-        <ActionButton fullWidth>Full Width Test</ActionButton>
-      );
+      const { container } = renderWithTheme(<ActionButton fullWidth>Full Width Test</ActionButton>);
 
       expect(container.firstChild).toBeInTheDocument();
     });
 
     it('should test conditional CSS application for loading', () => {
-      const { container } = renderWithTheme(
-        <ActionButton loading>Loading Test</ActionButton>
-      );
+      const { container } = renderWithTheme(<ActionButton loading>Loading Test</ActionButton>);
 
       expect(container.firstChild).toBeInTheDocument();
     });
 
     it('should test ButtonContent component with loading=true', () => {
-      renderWithTheme(
-        <ActionButton loading>Hidden Content Test</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading>Hidden Content Test</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
     });
 
     it('should test ButtonContent component with loading=false', () => {
-      renderWithTheme(
-        <ActionButton loading={false}>Visible Content Test</ActionButton>
-      );
+      renderWithTheme(<ActionButton loading={false}>Visible Content Test</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -843,8 +786,8 @@ describe('ActionButton Component', () => {
     it('should test ternary conditions in styled components', () => {
       renderWithTheme(
         <ActionButton
-          variant="primary"
-          size="small"
+          variant='primary'
+          size='small'
           fullWidth={true}
           loading={true}
           disabled={false}
@@ -861,8 +804,8 @@ describe('ActionButton Component', () => {
     it('should test opposite ternary conditions', () => {
       renderWithTheme(
         <ActionButton
-          variant="secondary"
-          size="large"
+          variant='secondary'
+          size='large'
           fullWidth={false}
           loading={false}
           disabled={true}
@@ -928,11 +871,7 @@ describe('ActionButton Component', () => {
       // Criamos um componente que força o default path
       const TestButton = () => {
         const variant = undefined; // Força undefined
-        return (
-          <ActionButton variant={variant}>
-            Default Path Test
-          </ActionButton>
-        );
+        return <ActionButton variant={variant}>Default Path Test</ActionButton>;
       };
 
       renderWithTheme(<TestButton />);
@@ -945,11 +884,7 @@ describe('ActionButton Component', () => {
     it('should test size default case path explicitly', () => {
       const TestButton = () => {
         const size = undefined; // Força undefined
-        return (
-          <ActionButton size={size}>
-            Size Default Path Test
-          </ActionButton>
-        );
+        return <ActionButton size={size}>Size Default Path Test</ActionButton>;
       };
 
       renderWithTheme(<TestButton />);
@@ -960,9 +895,7 @@ describe('ActionButton Component', () => {
 
     // Teste para cobrir o caso "medium" explícito vs default
     it('should test explicit medium size vs default', () => {
-      renderWithTheme(
-        <ActionButton size="medium">Explicit Medium</ActionButton>
-      );
+      renderWithTheme(<ActionButton size='medium'>Explicit Medium</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -971,9 +904,7 @@ describe('ActionButton Component', () => {
     // Teste para verificar LoadingSpinner rendering
     it('should render LoadingSpinner when loading is true', () => {
       const { container } = renderWithTheme(
-        <ActionButton loading>
-          Loading with Spinner
-        </ActionButton>
+        <ActionButton loading>Loading with Spinner</ActionButton>
       );
 
       // Verifica se há elementos que indicam o spinner
@@ -983,11 +914,7 @@ describe('ActionButton Component', () => {
 
     // Teste para verificar se LoadingSpinner não renderiza quando loading=false
     it('should not render LoadingSpinner when loading is false', () => {
-      renderWithTheme(
-        <ActionButton loading={false}>
-          Not Loading
-        </ActionButton>
-      );
+      renderWithTheme(<ActionButton loading={false}>Not Loading</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -1011,25 +938,19 @@ describe('ActionButton Component', () => {
     // Teste para cobrir ternary operator no fullWidth
     it('should test fullWidth ternary operator paths', () => {
       // Teste com fullWidth=true
-      renderWithTheme(
-        <ActionButton fullWidth={true}>Full Width True</ActionButton>
-      );
+      renderWithTheme(<ActionButton fullWidth={true}>Full Width True</ActionButton>);
 
       let button = screen.getByText('Full Width True');
       expect(button).toBeInTheDocument();
 
       // Teste com fullWidth=false
-      renderWithTheme(
-        <ActionButton fullWidth={false}>Full Width False</ActionButton>
-      );
+      renderWithTheme(<ActionButton fullWidth={false}>Full Width False</ActionButton>);
 
       button = screen.getByText('Full Width False');
       expect(button).toBeInTheDocument();
 
       // Teste com fullWidth=undefined (default)
-      renderWithTheme(
-        <ActionButton>Full Width Undefined</ActionButton>
-      );
+      renderWithTheme(<ActionButton>Full Width Undefined</ActionButton>);
 
       button = screen.getByText('Full Width Undefined');
       expect(button).toBeInTheDocument();
@@ -1043,14 +964,12 @@ describe('ActionButton Component', () => {
         { props: { fullWidth: true }, name: 'Full Width CSS' },
         { props: { fullWidth: false }, name: 'Not Full Width CSS' },
         { props: { disabled: true }, name: 'Disabled CSS' },
-        { props: { disabled: false }, name: 'Not Disabled CSS' }
+        { props: { disabled: false }, name: 'Not Disabled CSS' },
       ];
 
-      testCases.forEach((testCase) => {
+      testCases.forEach(testCase => {
         const { unmount } = renderWithTheme(
-          <ActionButton {...testCase.props}>
-            {testCase.name}
-          </ActionButton>
+          <ActionButton {...testCase.props}>{testCase.name}</ActionButton>
         );
 
         const button = screen.getByText(testCase.name);
@@ -1062,16 +981,22 @@ describe('ActionButton Component', () => {
     // Teste para verificar todos os valores possíveis de variant passados para getVariantStyles
     it('should test all variant values passed to getVariantStyles', () => {
       const variants = [
-        'primary', 'secondary', 'danger', 'success', 'warning', 'info',
-        'outlined-danger', 'outlined-secondary', 'outlined-primary',
-        undefined, null
+        'primary',
+        'secondary',
+        'danger',
+        'success',
+        'warning',
+        'info',
+        'outlined-danger',
+        'outlined-secondary',
+        'outlined-primary',
+        undefined,
+        null,
       ];
 
       variants.forEach((variant, index) => {
         const { unmount } = renderWithTheme(
-          <ActionButton variant={variant as any}>
-            Variant {index}
-          </ActionButton>
+          <ActionButton variant={variant as any}>Variant {index}</ActionButton>
         );
 
         const button = screen.getByText(`Variant ${index}`);
@@ -1086,9 +1011,7 @@ describe('ActionButton Component', () => {
 
       sizes.forEach((size, index) => {
         const { unmount } = renderWithTheme(
-          <ActionButton size={size as any}>
-            Size {index}
-          </ActionButton>
+          <ActionButton size={size as any}>Size {index}</ActionButton>
         );
 
         const button = screen.getByText(`Size ${index}`);
@@ -1099,11 +1022,7 @@ describe('ActionButton Component', () => {
 
     // Teste específico para o mediaQuery mobile no default variant
     it('should test mobile mediaQuery in default variant case', () => {
-      renderWithTheme(
-        <ActionButton variant={undefined}>
-          Mobile Default Variant
-        </ActionButton>
-      );
+      renderWithTheme(<ActionButton variant={undefined}>Mobile Default Variant</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -1112,11 +1031,7 @@ describe('ActionButton Component', () => {
     // Teste para verificar que todos os ternary operators são cobertos
     it('should test ternary operators coverage', () => {
       const { container } = renderWithTheme(
-        <ActionButton
-          fullWidth={true}
-          loading={true}
-          disabled={false}
-        >
+        <ActionButton fullWidth={true} loading={true} disabled={false}>
           Ternary Coverage
         </ActionButton>
       );
@@ -1128,12 +1043,12 @@ describe('ActionButton Component', () => {
     it('should test StyledButton props mapping', () => {
       renderWithTheme(
         <ActionButton
-          variant="danger"
-          size="large"
+          variant='danger'
+          size='large'
           loading={true}
           fullWidth={true}
           disabled={false}
-          className="test-class"
+          className='test-class'
         >
           Styled Button Props
         </ActionButton>
@@ -1150,14 +1065,10 @@ describe('ActionButton Component', () => {
       const customProps = {
         'data-custom': 'value',
         'aria-describedby': 'description',
-        role: 'button' // Explícito
+        role: 'button', // Explícito
       };
 
-      renderWithTheme(
-        <ActionButton {...customProps}>
-          Custom Props Spread
-        </ActionButton>
-      );
+      renderWithTheme(<ActionButton {...customProps}>Custom Props Spread</ActionButton>);
 
       const button = screen.getByRole('button');
       expect(button).toBeInTheDocument();
@@ -1193,9 +1104,7 @@ describe('ActionButton Component', () => {
 
       // Test: Verificar conditional rendering completo
       const { container } = renderWithTheme(
-        <ActionButton loading={true}>
-          Final Test 3
-        </ActionButton>
+        <ActionButton loading={true}>Final Test 3</ActionButton>
       );
 
       expect(container.firstChild).toBeInTheDocument();
@@ -1231,16 +1140,12 @@ describe('ActionButton Component', () => {
         null,
         undefined,
         ['Array', 'of', 'children'],
-        <span key="jsx">JSX Element</span>,
-        <React.Fragment key="fragment">Fragment</React.Fragment>
+        <span key='jsx'>JSX Element</span>,
+        <React.Fragment key='fragment'>Fragment</React.Fragment>,
       ];
 
       reactNodeTypes.forEach((child, index) => {
-        const { unmount } = renderWithTheme(
-          <ActionButton key={index}>
-            {child}
-          </ActionButton>
-        );
+        const { unmount } = renderWithTheme(<ActionButton key={index}>{child}</ActionButton>);
 
         const button = screen.getByRole('button');
         expect(button).toBeInTheDocument();

@@ -25,20 +25,14 @@ const mockOnCancel = jest.fn();
 
 jest.mock('../../../components/forms/ProducerForm', () => ({
   ProducerForm: ({ onSubmit, onCancel, initialData, isLoading, isEditMode }: any) => (
-    <div data-testid="producer-form">
-      <div data-testid="initial-data">{JSON.stringify(initialData)}</div>
-      <div data-testid="is-loading">{isLoading.toString()}</div>
-      <div data-testid="is-edit-mode">{isEditMode.toString()}</div>
-      <button
-        data-testid="submit-button"
-        onClick={() => onSubmit(mockFormData)}
-      >
+    <div data-testid='producer-form'>
+      <div data-testid='initial-data'>{JSON.stringify(initialData)}</div>
+      <div data-testid='is-loading'>{isLoading.toString()}</div>
+      <div data-testid='is-edit-mode'>{isEditMode.toString()}</div>
+      <button data-testid='submit-button' onClick={() => onSubmit(mockFormData)}>
         Submit
       </button>
-      <button
-        data-testid="cancel-button"
-        onClick={onCancel}
-      >
+      <button data-testid='cancel-button' onClick={onCancel}>
         Cancel
       </button>
     </div>
@@ -111,17 +105,12 @@ const createTestStore = (initialState = {}) => {
 // Helper para renderizar com providers
 const renderWithProviders = (
   component: React.ReactElement,
-  {
-    store = createTestStore(),
-    route = '/',
-  } = {}
+  { store = createTestStore(), route = '/' } = {}
 ) => {
   return render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[route]}>
-        <ThemeProvider theme={theme}>
-          {component}
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{component}</ThemeProvider>
       </MemoryRouter>
     </Provider>
   );
@@ -193,7 +182,7 @@ describe('ProducerRegisterPage', () => {
 
       const mockDispatch = jest.fn();
       mockDispatch.mockImplementation(() => ({
-        unwrap: () => Promise.reject(new Error('Network error'))
+        unwrap: () => Promise.reject(new Error('Network error')),
       }));
 
       store.dispatch = mockDispatch;
@@ -203,7 +192,9 @@ describe('ProducerRegisterPage', () => {
       fireEvent.click(screen.getByTestId('submit-button'));
 
       await waitFor(() => {
-        expect(screen.getByText('Erro ao cadastrar o produtor. Tente novamente.')).toBeInTheDocument();
+        expect(
+          screen.getByText('Erro ao cadastrar o produtor. Tente novamente.')
+        ).toBeInTheDocument();
       });
     });
 
@@ -212,12 +203,12 @@ describe('ProducerRegisterPage', () => {
 
       const mockDispatch = jest.fn();
       let resolvePromise: any;
-      const promise = new Promise((resolve) => {
+      const promise = new Promise(resolve => {
         resolvePromise = resolve;
       });
 
       mockDispatch.mockImplementation(() => ({
-        unwrap: () => promise
+        unwrap: () => promise,
       }));
 
       store.dispatch = mockDispatch;
@@ -305,7 +296,7 @@ describe('ProducerRegisterPage', () => {
 
       const mockDispatch = jest.fn();
       mockDispatch.mockImplementation(() => ({
-        unwrap: () => Promise.resolve(mockProducer)
+        unwrap: () => Promise.resolve(mockProducer),
       }));
 
       store.dispatch = mockDispatch;
@@ -319,9 +310,12 @@ describe('ProducerRegisterPage', () => {
       });
 
       // Verificar navegação após timeout
-      await waitFor(() => {
-        expect(mockNavigate).toHaveBeenCalledWith('/');
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(mockNavigate).toHaveBeenCalledWith('/');
+        },
+        { timeout: 3000 }
+      );
     });
 
     it('should handle update error', async () => {
@@ -336,7 +330,7 @@ describe('ProducerRegisterPage', () => {
 
       const mockDispatch = jest.fn();
       mockDispatch.mockImplementation(() => ({
-        unwrap: () => Promise.reject(new Error('Update failed'))
+        unwrap: () => Promise.reject(new Error('Update failed')),
       }));
 
       store.dispatch = mockDispatch;
@@ -346,7 +340,9 @@ describe('ProducerRegisterPage', () => {
       fireEvent.click(screen.getByTestId('submit-button'));
 
       await waitFor(() => {
-        expect(screen.getByText('Erro ao atualizar o produtor. Tente novamente.')).toBeInTheDocument();
+        expect(
+          screen.getByText('Erro ao atualizar o produtor. Tente novamente.')
+        ).toBeInTheDocument();
       });
     });
 
@@ -361,7 +357,7 @@ describe('ProducerRegisterPage', () => {
 
       expect(mockDispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: 'producers/clearCurrentProducer'
+          type: 'producers/clearCurrentProducer',
         })
       );
     });
@@ -444,7 +440,7 @@ describe('ProducerRegisterPage', () => {
 
       // Mock successful responses for all operations
       mockDispatch.mockImplementation(() => ({
-        unwrap: () => Promise.resolve({ id: 'new-id' })
+        unwrap: () => Promise.resolve({ id: 'new-id' }),
       }));
 
       store.dispatch = mockDispatch;
@@ -514,7 +510,7 @@ describe('ProducerRegisterPage', () => {
       const store = createTestStore();
       const mockDispatch = jest.fn();
       mockDispatch.mockImplementation(() => ({
-        unwrap: () => Promise.resolve({ id: 'new-id' })
+        unwrap: () => Promise.resolve({ id: 'new-id' }),
       }));
 
       store.dispatch = mockDispatch;
@@ -542,20 +538,22 @@ describe('ProducerRegisterPage', () => {
       // First submission fails
       const mockDispatchFail = jest.fn();
       mockDispatchFail.mockImplementation(() => ({
-        unwrap: () => Promise.reject(new Error('First error'))
+        unwrap: () => Promise.reject(new Error('First error')),
       }));
       store.dispatch = mockDispatchFail;
 
       fireEvent.click(screen.getByTestId('submit-button'));
 
       await waitFor(() => {
-        expect(screen.getByText('Erro ao cadastrar o produtor. Tente novamente.')).toBeInTheDocument();
+        expect(
+          screen.getByText('Erro ao cadastrar o produtor. Tente novamente.')
+        ).toBeInTheDocument();
       });
 
       // Second submission should clear error first
       const mockDispatchSuccess = jest.fn();
       mockDispatchSuccess.mockImplementation(() => ({
-        unwrap: () => Promise.resolve({ id: 'success-id' })
+        unwrap: () => Promise.resolve({ id: 'success-id' }),
       }));
       store.dispatch = mockDispatchSuccess;
 
@@ -563,7 +561,9 @@ describe('ProducerRegisterPage', () => {
 
       // Error should be cleared before new submission
       await waitFor(() => {
-        expect(screen.queryByText('Erro ao cadastrar o produtor. Tente novamente.')).not.toBeInTheDocument();
+        expect(
+          screen.queryByText('Erro ao cadastrar o produtor. Tente novamente.')
+        ).not.toBeInTheDocument();
       });
     });
 

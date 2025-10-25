@@ -21,13 +21,13 @@ import {
   StatCard,
   StatLabel,
   StatNumber,
-  StatsContainer
+  StatsContainer,
 } from './ProducersPage.styled';
 
 const ProducersPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { producers, loading, error } = useAppSelector((state) => state.producers);
+  const { producers, loading, error } = useAppSelector(state => state.producers);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -42,15 +42,17 @@ const ProducersPage: React.FC = () => {
 
   // Filter producers based on search term (with safety check)
   const producersList = producers || [];
-  const filteredProducers = producersList.filter(producer =>
-    producer.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    producer.cpfCnpj.includes(searchTerm)
+  const filteredProducers = producersList.filter(
+    producer =>
+      producer.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      producer.cpfCnpj.includes(searchTerm)
   );
 
   // Calculate stats
   const totalProducers = producersList.length;
-  const totalPropertiesCount = producersList.reduce((acc, producer) =>
-    acc + (producer.propriedades?.length || 0), 0
+  const totalPropertiesCount = producersList.reduce(
+    (acc, producer) => acc + (producer.propriedades?.length || 0),
+    0
   );
 
   const handleNewProducer = () => {
@@ -105,11 +107,7 @@ const ProducersPage: React.FC = () => {
       <PageHeader>
         <PageTitle>Produtores Rurais</PageTitle>
         <HeaderActions>
-          <ActionButton
-            variant="primary"
-            size="large"
-            onClick={handleNewProducer}
-          >
+          <ActionButton variant='primary' size='large' onClick={handleNewProducer}>
             + Novo Produtor
           </ActionButton>
         </HeaderActions>
@@ -132,14 +130,12 @@ const ProducersPage: React.FC = () => {
 
       <SearchContainer>
         <SearchInput
-          type="text"
-          placeholder="Buscar por nome ou CPF/CNPJ..."
+          type='text'
+          placeholder='Buscar por nome ou CPF/CNPJ...'
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
         />
-        <FilterButton onClick={() => setSearchTerm('')}>
-          Limpar Filtros
-        </FilterButton>
+        <FilterButton onClick={() => setSearchTerm('')}>Limpar Filtros</FilterButton>
       </SearchContainer>
 
       <ContentSection>
@@ -149,17 +145,16 @@ const ProducersPage: React.FC = () => {
         </SectionHeader>
 
         <SectionContent>
-          {error && (
-            <ErrorMessage>
-              {error}
-            </ErrorMessage>
-          )}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
           {!error && filteredProducers.length === 0 && producers.length === 0 && (
             <EmptyMessage>
               <h3>Nenhum produtor cadastrado</h3>
-              <p>Comece cadastrando seu primeiro produtor rural para gerenciar propriedades e culturas.</p>
-              <ActionButton variant="primary" onClick={handleNewProducer}>
+              <p>
+                Comece cadastrando seu primeiro produtor rural para gerenciar propriedades e
+                culturas.
+              </p>
+              <ActionButton variant='primary' onClick={handleNewProducer}>
                 Cadastrar Primeiro Produtor
               </ActionButton>
             </EmptyMessage>
@@ -185,12 +180,12 @@ const ProducersPage: React.FC = () => {
 
       <ConfirmModal
         isOpen={showDeleteModal}
-        title="Confirmar Exclusão"
-        message="Tem certeza que deseja excluir este produtor? Esta ação não pode ser desfeita e todas as propriedades associadas também serão removidas."
+        title='Confirmar Exclusão'
+        message='Tem certeza que deseja excluir este produtor? Esta ação não pode ser desfeita e todas as propriedades associadas também serão removidas.'
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
-        confirmText="Excluir"
-        cancelText="Cancelar"
+        confirmText='Excluir'
+        cancelText='Cancelar'
       />
 
       <NotificationModal

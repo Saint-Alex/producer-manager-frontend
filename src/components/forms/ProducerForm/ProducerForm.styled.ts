@@ -40,10 +40,12 @@ export const FormCard = styled.div`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg,
+    background: linear-gradient(
+      90deg,
       ${theme.colors.primary.main} 0%,
       ${theme.colors.accent.main} 50%,
-      ${theme.colors.secondary.main} 100%);
+      ${theme.colors.secondary.main} 100%
+    );
     border-radius: ${theme.borderRadius.lg} ${theme.borderRadius.lg} 0 0;
 
     ${theme.mediaQueries.mobile} {
@@ -102,7 +104,8 @@ export const FormGroup = styled.div`
   gap: 0.5rem;
 `;
 
-export const SectionTitle = styled.h3`  font-size: ${theme.fontSize.xl};
+export const SectionTitle = styled.h3`
+  font-size: ${theme.fontSize.xl};
   font-weight: ${theme.fontWeight.semibold};
   color: ${theme.colors.text.primary};
   margin-bottom: ${theme.spacing.md};
@@ -150,59 +153,53 @@ export const Label = styled.label`
 export const Input = styled.input<{ $hasError?: boolean }>`
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid ${({ $hasError }) =>
-    $hasError ? '#D84315' : '#E8D5BA'};
+  border: 2px solid ${({ $hasError }) => ($hasError ? '#D84315' : '#E8D5BA')};
   border-radius: 8px;
   font-size: 0.875rem;
-  font-family: "Nunito", "Source Sans Pro", sans-serif;
+  font-family: 'Nunito', 'Source Sans Pro', sans-serif;
   transition: all 0.3s ease;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 
   &:focus {
     outline: none;
-    border-color: ${({ $hasError }) =>
-      $hasError ? '#D84315' : '#4A6741'};
-    box-shadow: 0 0 0 3px ${({ $hasError }) =>
-      $hasError ? '#D8431520' : '#4A674120'};
+    border-color: ${({ $hasError }) => ($hasError ? '#D84315' : '#4A6741')};
+    box-shadow: 0 0 0 3px ${({ $hasError }) => ($hasError ? '#D8431520' : '#4A674120')};
   }
 
   &:disabled {
-    background-color: #F5E6D3;
+    background-color: #f5e6d3;
     cursor: not-allowed;
   }
 
   &::placeholder {
-    color: #64543D;
+    color: #64543d;
   }
 
   @media (max-width: 768px) {
     padding: 0.875rem;
     font-size: 1rem;
   }
-`;;
+`;
 
 export const Select = styled.select<{ $hasError?: boolean }>`
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid ${({ $hasError }) =>
-    $hasError ? '#D84315' : '#E8D5BA'};
+  border: 2px solid ${({ $hasError }) => ($hasError ? '#D84315' : '#E8D5BA')};
   border-radius: 8px;
   font-size: 0.875rem;
-  font-family: "Nunito", "Source Sans Pro", sans-serif;
+  font-family: 'Nunito', 'Source Sans Pro', sans-serif;
   transition: all 0.3s ease;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   cursor: pointer;
 
   &:focus {
     outline: none;
-    border-color: ${({ $hasError }) =>
-      $hasError ? '#D84315' : '#4A6741'};
-    box-shadow: 0 0 0 3px ${({ $hasError }) =>
-      $hasError ? '#D8431520' : '#4A674120'};
+    border-color: ${({ $hasError }) => ($hasError ? '#D84315' : '#4A6741')};
+    box-shadow: 0 0 0 3px ${({ $hasError }) => ($hasError ? '#D8431520' : '#4A674120')};
   }
 
   &:disabled {
-    background-color: #F5E6D3;
+    background-color: #f5e6d3;
     cursor: not-allowed;
   }
 
@@ -215,32 +212,29 @@ export const Select = styled.select<{ $hasError?: boolean }>`
 export const Textarea = styled.textarea<{ $hasError?: boolean }>`
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid ${({ $hasError }) =>
-    $hasError ? '#D84315' : '#E8D5BA'};
+  border: 2px solid ${({ $hasError }) => ($hasError ? '#D84315' : '#E8D5BA')};
   border-radius: 8px;
   font-size: 0.875rem;
-  font-family: "Nunito", "Source Sans Pro", sans-serif;
-  background-color: #FFFFFF;
-  color: #2C1C0B;
+  font-family: 'Nunito', 'Source Sans Pro', sans-serif;
+  background-color: #ffffff;
+  color: #2c1c0b;
   resize: vertical;
   min-height: 80px;
   transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: ${({ $hasError }) =>
-      $hasError ? '#D84315' : '#4A6741'};
-    box-shadow: 0 0 0 3px ${({ $hasError }) =>
-      $hasError ? '#D8431520' : '#4A674120'};
+    border-color: ${({ $hasError }) => ($hasError ? '#D84315' : '#4A6741')};
+    box-shadow: 0 0 0 3px ${({ $hasError }) => ($hasError ? '#D8431520' : '#4A674120')};
   }
 
   &:disabled {
-    background-color: #F5E6D3;
+    background-color: #f5e6d3;
     cursor: not-allowed;
   }
 
   &::placeholder {
-    color: #64543D;
+    color: #64543d;
   }
 
   @media (max-width: 768px) {

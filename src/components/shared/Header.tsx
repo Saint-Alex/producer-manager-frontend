@@ -18,10 +18,12 @@ const HeaderContainer = styled.header`
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg,
+    background: linear-gradient(
+      90deg,
       ${theme.colors.accent.main} 0%,
       ${theme.colors.secondary.main} 50%,
-      ${theme.colors.accent.main} 100%);
+      ${theme.colors.accent.main} 100%
+    );
   }
 `;
 
@@ -88,14 +90,14 @@ const Navigation = styled.nav<{ $isOpen: boolean }>`
     gap: 0;
     padding: ${theme.spacing.md} 0;
     box-shadow: ${theme.shadows.lg};
-    transform: ${({ $isOpen }) => $isOpen ? 'translateY(0)' : 'translateY(-100%)'};
-    opacity: ${({ $isOpen }) => $isOpen ? '1' : '0'};
-    visibility: ${({ $isOpen }) => $isOpen ? 'visible' : 'hidden'};
+    transform: ${({ $isOpen }) => ($isOpen ? 'translateY(0)' : 'translateY(-100%)')};
+    opacity: ${({ $isOpen }) => ($isOpen ? '1' : '0')};
+    visibility: ${({ $isOpen }) => ($isOpen ? 'visible' : 'hidden')};
     transition: all 0.3s ease;
   }
 `;
 
-const NavLink = styled(Link) <{ $isActive: boolean }>`
+const NavLink = styled(Link)<{ $isActive: boolean }>`
   color: white;
   text-decoration: none;
   font-weight: ${theme.fontWeight.medium};
@@ -117,7 +119,9 @@ const NavLink = styled(Link) <{ $isActive: boolean }>`
     }
   }
 
-  ${({ $isActive }) => $isActive && `
+  ${({ $isActive }) =>
+    $isActive &&
+    `
     background: ${theme.colors.accent.main}30;
     color: ${theme.colors.accent.lighter};
 
@@ -199,35 +203,35 @@ const Header: React.FC = () => {
   return (
     <HeaderContainer>
       <HeaderContent>
-        <Logo to="/" onClick={closeMobileMenu}>
+        <Logo to='/' onClick={closeMobileMenu}>
           Cadastro de Produtores Rurais
         </Logo>
 
         <Navigation $isOpen={isMobileMenuOpen}>
           <NavLink
-            to="/"
+            to='/'
             $isActive={isActive('/')}
             data-active={isActive('/')}
             onClick={closeMobileMenu}
-            aria-label="Ir para Dashboard"
+            aria-label='Ir para Dashboard'
           >
             Dashboard
           </NavLink>
           <NavLink
-            to="/producers"
+            to='/producers'
             $isActive={isActive('/producer')}
             data-active={isActive('/producer')}
             onClick={closeMobileMenu}
-            aria-label="Ir para Produtores"
+            aria-label='Ir para Produtores'
           >
             Produtores
           </NavLink>
           <NavLink
-            to="/culturas"
+            to='/culturas'
             $isActive={isActive('/culturas')}
             data-active={isActive('/culturas')}
             onClick={closeMobileMenu}
-            aria-label="Ir para Culturas"
+            aria-label='Ir para Culturas'
           >
             Culturas
           </NavLink>

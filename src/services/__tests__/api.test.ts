@@ -57,9 +57,7 @@ describe('apiClient', () => {
         status: 404,
       });
 
-      await expect(apiClient.get('/test-endpoint')).rejects.toThrow(
-        'HTTP error! status: 404'
-      );
+      await expect(apiClient.get('/test-endpoint')).rejects.toThrow('HTTP error! status: 404');
     });
 
     it('deve lançar erro quando fetch falhar', async () => {
@@ -190,7 +188,7 @@ describe('apiClient', () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
         headers: {
-          get: (header: string) => header === 'content-type' ? 'application/json' : null,
+          get: (header: string) => (header === 'content-type' ? 'application/json' : null),
         },
         json: () => Promise.resolve(mockResponseData),
       });
@@ -231,9 +229,7 @@ describe('apiClient', () => {
         status: 403,
       });
 
-      await expect(apiClient.delete('/test-endpoint')).rejects.toThrow(
-        'HTTP error! status: 403'
-      );
+      await expect(apiClient.delete('/test-endpoint')).rejects.toThrow('HTTP error! status: 403');
     });
   });
 
@@ -248,9 +244,7 @@ describe('apiClient', () => {
       const methods = ['get', 'post', 'put', 'patch', 'delete'];
       for (const method of methods) {
         mockFetch.mockClear();
-        const args = method === 'get' || method === 'delete'
-          ? ['/test']
-          : ['/test', {}];
+        const args = method === 'get' || method === 'delete' ? ['/test'] : ['/test', {}];
 
         await (apiClient as any)[method](...args);
 
@@ -273,10 +267,7 @@ describe('apiClient', () => {
 
       await apiClient.get('/test');
 
-      expect(mockFetch).toHaveBeenCalledWith(
-        'http://localhost:3001/test',
-        expect.any(Object)
-      );
+      expect(mockFetch).toHaveBeenCalledWith('http://localhost:3001/test', expect.any(Object));
     });
   });
 
@@ -317,7 +308,7 @@ describe('apiClient', () => {
       mockFetch.mockResolvedValueOnce({
         ok: true,
         headers: {
-          get: (header: string) => header === 'content-type' ? 'text/plain' : null,
+          get: (header: string) => (header === 'content-type' ? 'text/plain' : null),
         },
       });
 

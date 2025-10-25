@@ -2,15 +2,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import { safraService } from '../../services/safraService';
 import type { Safra } from '../../types/safra';
 import safraSlice, {
-    clearCurrentSafra,
-    clearError,
-    createSafra,
-    deleteSafra,
-    fetchSafraById,
-    fetchSafras,
-    fetchSafrasByPropriedade,
-    setCurrentSafra,
-    updateSafra,
+  clearCurrentSafra,
+  clearError,
+  createSafra,
+  deleteSafra,
+  fetchSafraById,
+  fetchSafras,
+  fetchSafrasByPropriedade,
+  setCurrentSafra,
+  updateSafra,
 } from '../safraSlice';
 
 // Mock do service
@@ -145,9 +145,7 @@ describe('safraSlice', () => {
     });
 
     it('should handle fulfilled state', async () => {
-      const mockSafras = [
-        createMockSafra('1', 'Safra 2024', 2024),
-      ];
+      const mockSafras = [createMockSafra('1', 'Safra 2024', 2024)];
 
       mockedSafraService.getByPropriedade.mockResolvedValue(mockSafras);
 
@@ -160,7 +158,9 @@ describe('safraSlice', () => {
     });
 
     it('should handle rejected state', async () => {
-      mockedSafraService.getByPropriedade.mockRejectedValue(new Error('Propriedade não encontrada'));
+      mockedSafraService.getByPropriedade.mockRejectedValue(
+        new Error('Propriedade não encontrada')
+      );
 
       await store.dispatch(fetchSafrasByPropriedade('prop123'));
 
@@ -247,7 +247,7 @@ describe('safraSlice', () => {
       ];
       store.dispatch({
         type: fetchSafras.fulfilled.type,
-        payload: initialSafras
+        payload: initialSafras,
       });
     });
 
@@ -322,7 +322,7 @@ describe('safraSlice', () => {
       ];
       store.dispatch({
         type: fetchSafras.fulfilled.type,
-        payload: initialSafras
+        payload: initialSafras,
       });
     });
 

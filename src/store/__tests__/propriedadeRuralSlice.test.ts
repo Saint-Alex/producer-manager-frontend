@@ -2,20 +2,22 @@ import { configureStore } from '@reduxjs/toolkit';
 import { propriedadeRuralService } from '../../services/propriedadeRuralService';
 import type { PropriedadeRural, PropriedadeRuralFormData } from '../../types/propriedadeRural';
 import propriedadeRuralSlice, {
-    clearCurrentPropriedade,
-    clearError,
-    createPropriedade,
-    deletePropriedade,
-    fetchPropriedadeById,
-    fetchPropriedades,
-    fetchPropriedadesByProdutor,
-    setCurrentPropriedade,
-    updatePropriedade,
+  clearCurrentPropriedade,
+  clearError,
+  createPropriedade,
+  deletePropriedade,
+  fetchPropriedadeById,
+  fetchPropriedades,
+  fetchPropriedadesByProdutor,
+  setCurrentPropriedade,
+  updatePropriedade,
 } from '../propriedadeRuralSlice';
 
 // Mock do service
 jest.mock('../../services/propriedadeRuralService');
-const mockedPropriedadeService = propriedadeRuralService as jest.Mocked<typeof propriedadeRuralService>;
+const mockedPropriedadeService = propriedadeRuralService as jest.Mocked<
+  typeof propriedadeRuralService
+>;
 
 // Helper para criar store de teste
 const createTestStore = () => {
@@ -85,7 +87,10 @@ describe('propriedadeRuralSlice', () => {
 
     it('should clear error', () => {
       // Set error first
-      store.dispatch({ type: 'propriedades/fetchPropriedades/rejected', error: { message: 'Test error' } });
+      store.dispatch({
+        type: 'propriedades/fetchPropriedades/rejected',
+        error: { message: 'Test error' },
+      });
       expect(store.getState().propriedades.error).toBe('Test error');
 
       // Clear error
@@ -151,9 +156,7 @@ describe('propriedadeRuralSlice', () => {
     });
 
     it('should handle fulfilled state', async () => {
-      const mockPropriedades = [
-        createMockPropriedade('1', 'Fazenda Produtor'),
-      ];
+      const mockPropriedades = [createMockPropriedade('1', 'Fazenda Produtor')];
 
       mockedPropriedadeService.getByProdutor.mockResolvedValue(mockPropriedades);
 
@@ -166,7 +169,9 @@ describe('propriedadeRuralSlice', () => {
     });
 
     it('should handle rejected state', async () => {
-      mockedPropriedadeService.getByProdutor.mockRejectedValue(new Error('Produtor não encontrado'));
+      mockedPropriedadeService.getByProdutor.mockRejectedValue(
+        new Error('Produtor não encontrado')
+      );
 
       await store.dispatch(fetchPropriedadesByProdutor('prod123'));
 
@@ -239,7 +244,9 @@ describe('propriedadeRuralSlice', () => {
       const state = store.getState().propriedades;
       expect(state.loading).toBe(false);
       expect(state.propriedades).toContainEqual(mockPropriedade);
-      expect(mockedPropriedadeService.convertFormToCreateData).toHaveBeenCalledWith(formData, ['prod1']);
+      expect(mockedPropriedadeService.convertFormToCreateData).toHaveBeenCalledWith(formData, [
+        'prod1',
+      ]);
       expect(mockedPropriedadeService.create).toHaveBeenCalledWith(mockCreateData);
     });
 
@@ -266,7 +273,7 @@ describe('propriedadeRuralSlice', () => {
       ];
       store.dispatch({
         type: fetchPropriedades.fulfilled.type,
-        payload: initialPropriedades
+        payload: initialPropriedades,
       });
     });
 
@@ -376,7 +383,7 @@ describe('propriedadeRuralSlice', () => {
       ];
       store.dispatch({
         type: fetchPropriedades.fulfilled.type,
-        payload: initialPropriedades
+        payload: initialPropriedades,
       });
     });
 

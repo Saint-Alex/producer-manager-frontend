@@ -1,8 +1,8 @@
 import {
-    CreatePropriedadeData,
-    PropriedadeRural,
-    PropriedadeRuralFormData,
-    UpdatePropriedadeData,
+  CreatePropriedadeData,
+  PropriedadeRural,
+  PropriedadeRuralFormData,
+  UpdatePropriedadeData,
 } from '../types/propriedadeRural';
 import { apiClient, apiConfig } from './api';
 

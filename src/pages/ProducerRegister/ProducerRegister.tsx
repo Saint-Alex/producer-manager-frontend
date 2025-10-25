@@ -12,11 +12,7 @@ import {
 import { createPropriedade } from '../../store/propriedadeRuralSlice';
 import { createSafra } from '../../store/safraSlice';
 import { Producer, ProducerFormData } from '../../types/producer';
-import {
-  PageContainer as Container,
-  ErrorMessage,
-  PageTitle,
-} from './ProducerRegister.styled';
+import { PageContainer as Container, ErrorMessage, PageTitle } from './ProducerRegister.styled';
 
 const ProducerRegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,9 +20,7 @@ const ProducerRegisterPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const isEditMode = Boolean(id);
 
-  const { currentProducer, loading } = useSelector(
-    (state: RootState) => state.producers
-  );
+  const { currentProducer, loading } = useSelector((state: RootState) => state.producers);
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -55,13 +49,15 @@ const ProducerRegisterPage: React.FC = () => {
 
     try {
       if (isEditMode && id) {
-        await dispatch(updateProducer({
-          id,
-          data: {
-            cpfCnpj: formData.cpfCnpj,
-            nome: formData.nome,
-          }
-        })).unwrap();
+        await dispatch(
+          updateProducer({
+            id,
+            data: {
+              cpfCnpj: formData.cpfCnpj,
+              nome: formData.nome,
+            },
+          })
+        ).unwrap();
         setTimeout(() => {
           navigate('/');
         }, 2000);
@@ -125,18 +121,12 @@ const ProducerRegisterPage: React.FC = () => {
 
   return (
     <Container>
-      <PageTitle>
-        {isEditMode ? 'Editar Produtor' : 'Cadastrar Novo Produtor'}
-      </PageTitle>
+      <PageTitle>{isEditMode ? 'Editar Produtor' : 'Cadastrar Novo Produtor'}</PageTitle>
 
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
       <ProducerForm
-        initialData={
-          currentProducer
-            ? convertProducerToFormData(currentProducer)
-            : undefined
-        }
+        initialData={currentProducer ? convertProducerToFormData(currentProducer) : undefined}
         onSubmit={handleSubmit}
         onCancel={handleCancel}
         isLoading={isLoading || loading}

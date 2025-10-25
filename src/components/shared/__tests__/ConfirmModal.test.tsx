@@ -10,7 +10,7 @@ const renderConfirmModal = (props: Partial<ConfirmModalProps> = {}) => {
     message: 'Are you sure you want to proceed?',
     onConfirm: jest.fn(),
     onCancel: jest.fn(),
-    ...props
+    ...props,
   };
 
   return render(
@@ -47,7 +47,7 @@ describe('ConfirmModal', () => {
     test('displays correct title and message', () => {
       renderConfirmModal({
         title: 'Delete Item',
-        message: 'This action cannot be undone'
+        message: 'This action cannot be undone',
       });
 
       expect(screen.getByText('Delete Item')).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe('ConfirmModal', () => {
 
     test('renders HTML content in message with dangerouslySetInnerHTML', () => {
       renderConfirmModal({
-        message: '<strong>Warning:</strong> This will delete <em>all data</em>'
+        message: '<strong>Warning:</strong> This will delete <em>all data</em>',
       });
 
       expect(screen.getByText('Warning:')).toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('ConfirmModal', () => {
     test('displays default button texts when not provided', () => {
       renderConfirmModal({
         confirmText: undefined,
-        cancelText: undefined
+        cancelText: undefined,
       });
 
       expect(screen.getByText('Confirmar')).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe('ConfirmModal', () => {
     test('displays custom button texts when provided', () => {
       renderConfirmModal({
         confirmText: 'Yes, Delete',
-        cancelText: 'No, Keep'
+        cancelText: 'No, Keep',
       });
 
       expect(screen.getByText('Yes, Delete')).toBeInTheDocument();
@@ -167,7 +167,8 @@ describe('ConfirmModal', () => {
       renderConfirmModal({ onCancel: mockOnCancel });
 
       // Encontrar o overlay (primeiro div renderizado)
-      const overlay = screen.getByText('Confirm Action').closest('div')?.parentElement?.parentElement;
+      const overlay = screen.getByText('Confirm Action').closest('div')
+        ?.parentElement?.parentElement;
 
       if (overlay) {
         // Simular clique no overlay (onde target === currentTarget)
@@ -192,7 +193,7 @@ describe('ConfirmModal', () => {
           target: titleElement,
           currentTarget: overlay,
           preventDefault: jest.fn(),
-          stopPropagation: jest.fn()
+          stopPropagation: jest.fn(),
         } as any;
 
         fireEvent.click(overlay, mockEvent);
@@ -213,7 +214,7 @@ describe('ConfirmModal', () => {
         confirmText: 'Delete Forever',
         cancelText: 'Keep Account',
         onConfirm: mockOnConfirm,
-        onCancel: mockOnCancel
+        onCancel: mockOnCancel,
       });
 
       expect(screen.getByText('⚠️')).toBeInTheDocument();
@@ -235,12 +236,14 @@ describe('ConfirmModal', () => {
         title: 'Unsaved Changes',
         message: 'You have unsaved changes. Do you want to leave?',
         confirmText: 'Leave Anyway',
-        cancelText: 'Stay Here'
+        cancelText: 'Stay Here',
       });
 
       expect(screen.getByText('⚠️')).toBeInTheDocument();
       expect(screen.getByText('Unsaved Changes')).toBeInTheDocument();
-      expect(screen.getByText('You have unsaved changes. Do you want to leave?')).toBeInTheDocument();
+      expect(
+        screen.getByText('You have unsaved changes. Do you want to leave?')
+      ).toBeInTheDocument();
       expect(screen.getByText('Leave Anyway')).toBeInTheDocument();
       expect(screen.getByText('Stay Here')).toBeInTheDocument();
     });
@@ -251,7 +254,7 @@ describe('ConfirmModal', () => {
         title: 'Information',
         message: 'This will send a notification to all users',
         confirmText: 'Send Now',
-        cancelText: 'Later'
+        cancelText: 'Later',
       });
 
       expect(screen.getByText('ℹ️')).toBeInTheDocument();
@@ -266,7 +269,7 @@ describe('ConfirmModal', () => {
     test('handles empty title and message', () => {
       renderConfirmModal({
         title: '',
-        message: ''
+        message: '',
       });
 
       expect(screen.getByText('⚠️')).toBeInTheDocument();
@@ -276,7 +279,7 @@ describe('ConfirmModal', () => {
 
     test('handles complex HTML in message', () => {
       renderConfirmModal({
-        message: '<div><p>Line 1</p><ul><li>Option A</li><li>Option B</li></ul></div>'
+        message: '<div><p>Line 1</p><ul><li>Option A</li><li>Option B</li></ul></div>',
       });
 
       expect(screen.getByText('Line 1')).toBeInTheDocument();
@@ -286,11 +289,12 @@ describe('ConfirmModal', () => {
 
     test('handles very long text content', () => {
       const longTitle = 'This is a very long confirmation title that might need wrapping';
-      const longMessage = 'This is an extremely long confirmation message that contains detailed information about the action being performed and its consequences';
+      const longMessage =
+        'This is an extremely long confirmation message that contains detailed information about the action being performed and its consequences';
 
       renderConfirmModal({
         title: longTitle,
-        message: longMessage
+        message: longMessage,
       });
 
       expect(screen.getByText(longTitle)).toBeInTheDocument();
@@ -302,7 +306,7 @@ describe('ConfirmModal', () => {
         title: 'Título com acentos: çãõ',
         message: 'Mensagem com símbolos: @#$%^&*()_+{}|:"<>?',
         confirmText: 'Sim! ✅',
-        cancelText: 'Não ❌'
+        cancelText: 'Não ❌',
       });
 
       expect(screen.getByText('Título com acentos: çãõ')).toBeInTheDocument();
@@ -320,8 +324,8 @@ describe('ConfirmModal', () => {
         <ThemeProvider theme={theme}>
           <ConfirmModal
             isOpen={false}
-            title="Confirm Action"
-            message="Are you sure?"
+            title='Confirm Action'
+            message='Are you sure?'
             onConfirm={jest.fn()}
             onCancel={jest.fn()}
           />
@@ -334,8 +338,8 @@ describe('ConfirmModal', () => {
         <ThemeProvider theme={theme}>
           <ConfirmModal
             isOpen={true}
-            title="Confirm Action"
-            message="Are you sure?"
+            title='Confirm Action'
+            message='Are you sure?'
             onConfirm={jest.fn()}
             onCancel={jest.fn()}
           />
@@ -380,7 +384,7 @@ describe('ConfirmModal', () => {
     test('both buttons with custom text', () => {
       renderConfirmModal({
         confirmText: 'Execute',
-        cancelText: 'Abort'
+        cancelText: 'Abort',
       });
 
       expect(screen.getByText('Execute')).toBeInTheDocument();
@@ -396,14 +400,15 @@ describe('ConfirmModal', () => {
       renderConfirmModal({ onCancel: mockOnCancel });
 
       // Criar um mock de evento onde target === currentTarget
-      const overlayElement = screen.getByText('Confirm Action').closest('div')?.parentElement?.parentElement;
+      const overlayElement = screen.getByText('Confirm Action').closest('div')
+        ?.parentElement?.parentElement;
 
       if (overlayElement) {
         const mockEvent = {
           target: overlayElement,
           currentTarget: overlayElement,
           preventDefault: jest.fn(),
-          stopPropagation: jest.fn()
+          stopPropagation: jest.fn(),
         } as any;
 
         fireEvent.click(overlayElement, mockEvent);
@@ -428,7 +433,7 @@ describe('ConfirmModal', () => {
       const mockOnCancel = jest.fn();
       renderConfirmModal({
         onConfirm: mockOnConfirm,
-        onCancel: mockOnCancel
+        onCancel: mockOnCancel,
       });
 
       fireEvent.click(screen.getByText('Confirmar'));

@@ -1,9 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { propriedadeRuralService } from '../services/propriedadeRuralService';
-import {
-    PropriedadeRural,
-    PropriedadeRuralFormData,
-} from '../types/propriedadeRural';
+import { PropriedadeRural, PropriedadeRuralFormData } from '../types/propriedadeRural';
 
 interface PropriedadeRuralState {
   propriedades: PropriedadeRural[];
@@ -19,20 +16,15 @@ const initialState: PropriedadeRuralState = {
   error: null,
 };
 
-export const fetchPropriedades = createAsyncThunk(
-  'propriedades/fetchPropriedades',
-  async () => {
-    const propriedades = await propriedadeRuralService.getAll();
-    return propriedades;
-  }
-);
+export const fetchPropriedades = createAsyncThunk('propriedades/fetchPropriedades', async () => {
+  const propriedades = await propriedadeRuralService.getAll();
+  return propriedades;
+});
 
 export const fetchPropriedadesByProdutor = createAsyncThunk(
   'propriedades/fetchPropriedadesByProdutor',
   async (produtorId: string) => {
-    const propriedades = await propriedadeRuralService.getByProdutor(
-      produtorId
-    );
+    const propriedades = await propriedadeRuralService.getByProdutor(produtorId);
     return propriedades;
   }
 );
@@ -87,17 +79,17 @@ const propriedadeRuralSlice = createSlice({
     setCurrentPropriedade: (state, action) => {
       state.currentPropriedade = action.payload;
     },
-    clearCurrentPropriedade: (state) => {
+    clearCurrentPropriedade: state => {
       state.currentPropriedade = null;
     },
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Fetch all propriedades
-      .addCase(fetchPropriedades.pending, (state) => {
+      .addCase(fetchPropriedades.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -110,7 +102,7 @@ const propriedadeRuralSlice = createSlice({
         state.error = action.error.message || 'Erro ao buscar propriedades';
       })
       // Fetch propriedades by produtor
-      .addCase(fetchPropriedadesByProdutor.pending, (state) => {
+      .addCase(fetchPropriedadesByProdutor.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -120,11 +112,10 @@ const propriedadeRuralSlice = createSlice({
       })
       .addCase(fetchPropriedadesByProdutor.rejected, (state, action) => {
         state.loading = false;
-        state.error =
-          action.error.message || 'Erro ao buscar propriedades do produtor';
+        state.error = action.error.message || 'Erro ao buscar propriedades do produtor';
       })
       // Fetch propriedade by id
-      .addCase(fetchPropriedadeById.pending, (state) => {
+      .addCase(fetchPropriedadeById.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -137,7 +128,7 @@ const propriedadeRuralSlice = createSlice({
         state.error = action.error.message || 'Erro ao buscar propriedade';
       })
       // Create propriedade
-      .addCase(createPropriedade.pending, (state) => {
+      .addCase(createPropriedade.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -150,15 +141,13 @@ const propriedadeRuralSlice = createSlice({
         state.error = action.error.message || 'Erro ao criar propriedade';
       })
       // Update propriedade
-      .addCase(updatePropriedade.pending, (state) => {
+      .addCase(updatePropriedade.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updatePropriedade.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.propriedades.findIndex(
-          (p) => p.id === action.payload.id
-        );
+        const index = state.propriedades.findIndex(p => p.id === action.payload.id);
         if (index !== -1) {
           state.propriedades[index] = action.payload;
         }
@@ -171,15 +160,13 @@ const propriedadeRuralSlice = createSlice({
         state.error = action.error.message || 'Erro ao atualizar propriedade';
       })
       // Delete propriedade
-      .addCase(deletePropriedade.pending, (state) => {
+      .addCase(deletePropriedade.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(deletePropriedade.fulfilled, (state, action) => {
         state.loading = false;
-        state.propriedades = state.propriedades.filter(
-          (p) => p.id !== action.payload
-        );
+        state.propriedades = state.propriedades.filter(p => p.id !== action.payload);
         if (state.currentPropriedade?.id === action.payload) {
           state.currentPropriedade = null;
         }

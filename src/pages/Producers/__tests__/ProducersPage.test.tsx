@@ -40,7 +40,7 @@ jest.mock('../../../components/shared', () => ({
   ),
   ConfirmModal: ({ isOpen, title, message, onConfirm, onCancel, confirmText, cancelText }: any) =>
     isOpen ? (
-      <div data-testid="confirm-modal">
+      <div data-testid='confirm-modal'>
         <h3>{title}</h3>
         <p>{message}</p>
         <button onClick={onConfirm}>{confirmText}</button>
@@ -49,7 +49,7 @@ jest.mock('../../../components/shared', () => ({
     ) : null,
   NotificationModal: ({ isOpen, title, message, type, onClose }: any) =>
     isOpen ? (
-      <div data-testid="notification-modal" data-type={type}>
+      <div data-testid='notification-modal' data-type={type}>
         <h3>{title}</h3>
         <p>{message}</p>
         <button onClick={onClose}>OK</button>
@@ -59,7 +59,7 @@ jest.mock('../../../components/shared', () => ({
 
 jest.mock('../../../components/lists', () => ({
   ProducerList: ({ producers, onEdit, onDelete, onViewProperties }: any) => (
-    <div data-testid="producer-list">
+    <div data-testid='producer-list'>
       {producers.map((producer: any) => (
         <div key={producer.id} data-testid={`producer-${producer.id}`}>
           <span>{producer.nome}</span>
@@ -97,10 +97,7 @@ const mockProducers = [
 
 const reducerMock = (state = {}, action: any) => state;
 
-const renderWithProviders = (
-  ui: React.ReactElement,
-  initialProducerState?: any
-) => {
+const renderWithProviders = (ui: React.ReactElement, initialProducerState?: any) => {
   const store = configureStore({
     reducer: {
       producers: reducerMock,
@@ -111,17 +108,15 @@ const renderWithProviders = (
         loading: false,
         error: null,
         currentProducer: null,
-        ...initialProducerState
-      }
-    }
+        ...initialProducerState,
+      },
+    },
   });
 
   return render(
     <Provider store={store}>
       <ThemeProvider theme={{} as any}>
-        <Router>
-          {ui}
-        </Router>
+        <Router>{ui}</Router>
       </ThemeProvider>
     </Provider>
   );
@@ -217,7 +212,8 @@ describe('ProducersPage', () => {
       expect(zeros.length).toBeGreaterThan(0);
       expect(screen.getByText('Produtores Cadastrados')).toBeInTheDocument();
     });
-  }); describe('Funcionalidade de busca', () => {
+  });
+  describe('Funcionalidade de busca', () => {
     test('deve filtrar produtores por nome', async () => {
       const user = userEvent.setup();
       mockState.producers.producers = mockProducers;
@@ -250,7 +246,11 @@ describe('ProducersPage', () => {
       renderWithProviders(<ProducersPage />);
 
       expect(screen.getByText('Nenhum produtor cadastrado')).toBeInTheDocument();
-      expect(screen.getByText('Comece cadastrando seu primeiro produtor rural para gerenciar propriedades e culturas.')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'Comece cadastrando seu primeiro produtor rural para gerenciar propriedades e culturas.'
+        )
+      ).toBeInTheDocument();
     });
 
     test('deve mostrar botão para cadastrar primeiro produtor quando lista vazia', () => {
@@ -418,9 +418,12 @@ describe('ProducersPage', () => {
       await user.type(searchInput, 'Nome que não existe');
 
       // Aguardar que o filtro seja aplicado
-      await waitFor(() => {
-        expect(screen.getByText('Nenhum resultado encontrado')).toBeInTheDocument();
-      }, { timeout: 2000 });
+      await waitFor(
+        () => {
+          expect(screen.getByText('Nenhum resultado encontrado')).toBeInTheDocument();
+        },
+        { timeout: 2000 }
+      );
     });
 
     test('deve mostrar dica para ajustar busca quando não há resultados', async () => {
@@ -432,9 +435,14 @@ describe('ProducersPage', () => {
       await user.clear(searchInput);
       await user.type(searchInput, 'xyz123');
 
-      await waitFor(() => {
-        expect(screen.getByText('Tente ajustar os termos de busca ou limpar os filtros.')).toBeInTheDocument();
-      }, { timeout: 2000 });
+      await waitFor(
+        () => {
+          expect(
+            screen.getByText('Tente ajustar os termos de busca ou limpar os filtros.')
+          ).toBeInTheDocument();
+        },
+        { timeout: 2000 }
+      );
     });
   });
 
@@ -516,12 +524,16 @@ describe('ProducersPage', () => {
       expect(mockUnwrap).toHaveBeenCalled();
 
       // Aguardar a notificação de sucesso
-      await waitFor(() => {
-        expect(screen.getByTestId('notification-modal')).toBeInTheDocument();
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(screen.getByTestId('notification-modal')).toBeInTheDocument();
+        },
+        { timeout: 3000 }
+      );
 
       expect(screen.getByText('Produtor excluído com sucesso!')).toBeInTheDocument();
-    }); test('deve mostrar notificação de erro ao falhar na exclusão', async () => {
+    });
+    test('deve mostrar notificação de erro ao falhar na exclusão', async () => {
       const user = userEvent.setup();
       mockState.producers.producers = mockProducers;
 

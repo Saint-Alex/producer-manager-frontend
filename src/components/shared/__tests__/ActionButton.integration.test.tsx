@@ -6,11 +6,7 @@ import { theme } from '../../../styles/theme';
 import { ActionButton, ActionButtonProps } from '../ActionButton';
 
 const renderWithTheme = (component: React.ReactNode) => {
-  return render(
-    <ThemeProvider theme={theme}>
-      {component}
-    </ThemeProvider>
-  );
+  return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
 };
 
 // Integration tests to ensure all variant and size combinations render
@@ -25,14 +21,14 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
     'outlined-danger',
     'outlined-secondary',
     'outlined-primary',
-    undefined // Test default case
+    undefined, // Test default case
   ];
 
   const sizes: ActionButtonProps['size'][] = [
     'small',
     'medium',
     'large',
-    undefined // Test default case
+    undefined, // Test default case
   ];
 
   // Test all variant combinations to ensure CSS functions are called
@@ -42,11 +38,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
         const testId = `button-${variantIndex}-${sizeIndex}`;
 
         renderWithTheme(
-          <ActionButton
-            variant={variant}
-            size={size}
-            data-testid={testId}
-          >
+          <ActionButton variant={variant} size={size} data-testid={testId}>
             Button {variantIndex}-{sizeIndex}
           </ActionButton>
         );
@@ -64,11 +56,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
       const testId = `fullwidth-button-${variantIndex}`;
 
       renderWithTheme(
-        <ActionButton
-          variant={variant}
-          fullWidth={true}
-          data-testid={testId}
-        >
+        <ActionButton variant={variant} fullWidth={true} data-testid={testId}>
           FullWidth {variantIndex}
         </ActionButton>
       );
@@ -85,12 +73,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
         const testId = `loading-button-${variantIndex}-${sizeIndex}`;
 
         renderWithTheme(
-          <ActionButton
-            variant={variant}
-            size={size}
-            loading={true}
-            data-testid={testId}
-          >
+          <ActionButton variant={variant} size={size} loading={true} data-testid={testId}>
             Loading {variantIndex}-{sizeIndex}
           </ActionButton>
         );
@@ -109,12 +92,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
         const testId = `disabled-button-${variantIndex}-${sizeIndex}`;
 
         renderWithTheme(
-          <ActionButton
-            variant={variant}
-            size={size}
-            disabled={true}
-            data-testid={testId}
-          >
+          <ActionButton variant={variant} size={size} disabled={true} data-testid={testId}>
             Disabled {variantIndex}-{sizeIndex}
           </ActionButton>
         );
@@ -130,13 +108,13 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
   it('should render with all props combined', () => {
     renderWithTheme(
       <ActionButton
-        variant="outlined-primary"
-        size="large"
+        variant='outlined-primary'
+        size='large'
         fullWidth={true}
         loading={true}
-        className="custom-class"
-        type="submit"
-        data-testid="complex-button"
+        className='custom-class'
+        type='submit'
+        data-testid='complex-button'
       >
         Complex Button
       </ActionButton>
@@ -151,7 +129,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
 
   // Test button types
   const buttonTypes: ActionButtonProps['type'][] = ['button', 'submit', 'reset'];
-  buttonTypes.forEach((type) => {
+  buttonTypes.forEach(type => {
     it(`should render with type=${type}`, () => {
       renderWithTheme(
         <ActionButton type={type} data-testid={`type-${type}`}>
@@ -167,7 +145,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
   // Test edge cases that might not be covered
   it('should handle undefined variant gracefully', () => {
     renderWithTheme(
-      <ActionButton variant={undefined} data-testid="undefined-variant">
+      <ActionButton variant={undefined} data-testid='undefined-variant'>
         Undefined Variant
       </ActionButton>
     );
@@ -178,7 +156,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
 
   it('should handle undefined size gracefully', () => {
     renderWithTheme(
-      <ActionButton size={undefined} data-testid="undefined-size">
+      <ActionButton size={undefined} data-testid='undefined-size'>
         Undefined Size
       </ActionButton>
     );
@@ -190,7 +168,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
   // Test with different loading states
   it('should render loading spinner when loading=true', () => {
     renderWithTheme(
-      <ActionButton loading={true} data-testid="loading-spinner">
+      <ActionButton loading={true} data-testid='loading-spinner'>
         Loading Button
       </ActionButton>
     );
@@ -203,7 +181,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
   // Test button content opacity when loading
   it('should have content with proper opacity when loading', () => {
     renderWithTheme(
-      <ActionButton loading={true} data-testid="content-opacity">
+      <ActionButton loading={true} data-testid='content-opacity'>
         Content Button
       </ActionButton>
     );
@@ -214,11 +192,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
 
   // Test focus behavior
   it('should be focusable when not disabled', () => {
-    renderWithTheme(
-      <ActionButton data-testid="focusable">
-        Focusable Button
-      </ActionButton>
-    );
+    renderWithTheme(<ActionButton data-testid='focusable'>Focusable Button</ActionButton>);
 
     const button = screen.getByTestId('focusable');
     button.focus();
@@ -229,7 +203,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
   it('should call onClick when clicked', () => {
     const handleClick = jest.fn();
     renderWithTheme(
-      <ActionButton onClick={handleClick} data-testid="clickable">
+      <ActionButton onClick={handleClick} data-testid='clickable'>
         Clickable Button
       </ActionButton>
     );
@@ -243,7 +217,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
   it('should not call onClick when loading', () => {
     const handleClick = jest.fn();
     renderWithTheme(
-      <ActionButton onClick={handleClick} loading={true} data-testid="loading-no-click">
+      <ActionButton onClick={handleClick} loading={true} data-testid='loading-no-click'>
         Loading Button
       </ActionButton>
     );
@@ -257,7 +231,7 @@ describe('ActionButton Integration Tests - Complete Coverage', () => {
   it('should not call onClick when disabled', () => {
     const handleClick = jest.fn();
     renderWithTheme(
-      <ActionButton onClick={handleClick} disabled={true} data-testid="disabled-no-click">
+      <ActionButton onClick={handleClick} disabled={true} data-testid='disabled-no-click'>
         Disabled Button
       </ActionButton>
     );

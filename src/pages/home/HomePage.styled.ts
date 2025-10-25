@@ -42,10 +42,12 @@ export const HomeCard = styled.div`
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg,
+    background: linear-gradient(
+      90deg,
       ${theme.colors.primary.main} 0%,
       ${theme.colors.accent.main} 50%,
-      ${theme.colors.secondary.main} 100%);
+      ${theme.colors.secondary.main} 100%
+    );
     border-radius: ${theme.borderRadius.lg} ${theme.borderRadius.lg} 0 0;
 
     ${theme.mediaQueries.mobile} {
@@ -155,7 +157,7 @@ export const HomeButton = styled.button`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: left 0.5s;
   }
 
@@ -187,7 +189,11 @@ export const HomeButton = styled.button`
 export const FeaturesSection = styled.div`
   margin-top: ${theme.spacing.xxl};
   padding: ${theme.spacing.xl};
-  background: linear-gradient(135deg, ${theme.colors.background.accent} 0%, ${theme.colors.neutral[50]} 100%);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.background.accent} 0%,
+    ${theme.colors.neutral[50]} 100%
+  );
   border-radius: ${theme.borderRadius.lg};
   border: 1px solid ${theme.colors.border.main};
   position: relative;
@@ -211,8 +217,11 @@ export const FeaturesSection = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-image:
-      radial-gradient(circle at 1px 1px, ${theme.colors.primary.main}15 1px, transparent 0);
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      ${theme.colors.primary.main}15 1px,
+      transparent 0
+    );
     background-size: 20px 20px;
     border-radius: ${theme.borderRadius.lg};
     pointer-events: none;
@@ -465,7 +474,11 @@ export const ErrorMessage = styled.div`
   text-align: center;
   padding: ${theme.spacing.lg};
   color: ${theme.colors.danger.dark};
-  background: linear-gradient(135deg, ${theme.colors.danger.lighter}20, ${theme.colors.danger.lighter}10);
+  background: linear-gradient(
+    135deg,
+    ${theme.colors.danger.lighter}20,
+    ${theme.colors.danger.lighter}10
+  );
   border: 2px solid ${theme.colors.danger.light};
   border-radius: ${theme.borderRadius.lg};
   margin: ${theme.spacing.lg} 0;

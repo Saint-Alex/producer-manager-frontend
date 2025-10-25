@@ -5,7 +5,7 @@ import {
   createCultura,
   deleteCultura,
   fetchCulturas,
-  updateCultura
+  updateCultura,
 } from '../../store/culturaSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
@@ -39,7 +39,7 @@ import {
   StatLabel,
   StatNumber,
   StatsContainer,
-  TextArea
+  TextArea,
 } from './CulturesPage.styled';
 
 interface CulturaFormData {
@@ -49,7 +49,7 @@ interface CulturaFormData {
 
 const CulturesPage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { culturas, loading, error } = useAppSelector((state) => state.culturas);
+  const { culturas, loading, error } = useAppSelector(state => state.culturas);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [showForm, setShowForm] = useState(false);
@@ -62,7 +62,7 @@ const CulturesPage: React.FC = () => {
 
   const [formData, setFormData] = useState<CulturaFormData>({
     nome: '',
-    descricao: ''
+    descricao: '',
   });
 
   useEffect(() => {
@@ -79,16 +79,15 @@ const CulturesPage: React.FC = () => {
   }, [error, dispatch]);
 
   // Filter culturas based on search term
-  const filteredCulturas = culturas.filter(cultura =>
-    cultura.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (cultura.descricao?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false)
+  const filteredCulturas = culturas.filter(
+    cultura =>
+      cultura.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (cultura.descricao?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false)
   );
 
   // Calculate stats
   const totalCulturas = culturas.length;
-  const totalCultivos = culturas.reduce((acc, cultura) =>
-    acc + (cultura.cultivos?.length || 0), 0
-  );
+  const totalCultivos = culturas.reduce((acc, cultura) => acc + (cultura.cultivos?.length || 0), 0);
 
   const handleNewCultura = () => {
     setFormData({ nome: '', descricao: '' });
@@ -99,7 +98,7 @@ const CulturesPage: React.FC = () => {
   const handleEditCultura = (cultura: any) => {
     setFormData({
       nome: cultura.nome,
-      descricao: cultura.descricao || ''
+      descricao: cultura.descricao || '',
     });
     setEditingCultura(cultura.id);
     setShowForm(true);
@@ -123,10 +122,12 @@ const CulturesPage: React.FC = () => {
       }, {} as any);
 
       if (editingCultura) {
-        await dispatch(updateCultura({
-          id: editingCultura,
-          data: dataToSend
-        })).unwrap();
+        await dispatch(
+          updateCultura({
+            id: editingCultura,
+            data: dataToSend,
+          })
+        ).unwrap();
         setNotificationMessage('Cultura atualizada com sucesso!');
       } else {
         await dispatch(createCultura(dataToSend)).unwrap();
@@ -191,11 +192,7 @@ const CulturesPage: React.FC = () => {
       <PageHeader>
         <PageTitle>Culturas Agrícolas</PageTitle>
         <HeaderActions>
-          <ActionButton
-            variant="secondary"
-            size="large"
-            onClick={handleNewCultura}
-          >
+          <ActionButton variant='secondary' size='large' onClick={handleNewCultura}>
             + Nova Cultura
           </ActionButton>
         </HeaderActions>
@@ -218,14 +215,12 @@ const CulturesPage: React.FC = () => {
 
       <SearchContainer>
         <SearchInput
-          type="text"
-          placeholder="Buscar por nome ou descrição..."
+          type='text'
+          placeholder='Buscar por nome ou descrição...'
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
         />
-        <FilterButton onClick={() => setSearchTerm('')}>
-          Limpar Filtros
-        </FilterButton>
+        <FilterButton onClick={() => setSearchTerm('')}>Limpar Filtros</FilterButton>
       </SearchContainer>
 
       <ContentSection>
@@ -235,17 +230,13 @@ const CulturesPage: React.FC = () => {
         </SectionHeader>
 
         <SectionContent>
-          {error && (
-            <ErrorMessage>
-              {error}
-            </ErrorMessage>
-          )}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
 
           {!error && filteredCulturas.length === 0 && culturas.length === 0 && (
             <EmptyMessage>
               <h3>Nenhuma cultura cadastrada</h3>
               <p>Comece criando sua primeira cultura agrícola para organizar os cultivos.</p>
-              <ActionButton variant="secondary" onClick={handleNewCultura}>
+              <ActionButton variant='secondary' onClick={handleNewCultura}>
                 Cadastrar Primeira Cultura
               </ActionButton>
             </EmptyMessage>
@@ -260,27 +251,32 @@ const CulturesPage: React.FC = () => {
 
           {!error && filteredCulturas.length > 0 && (
             <CulturaGrid>
-              {filteredCulturas.map((cultura) => (
+              {filteredCulturas.map(cultura => (
                 <CulturaCard key={cultura.id}>
                   <CulturaName>{cultura.nome}</CulturaName>
                   <CulturaDescription>
                     {cultura.descricao || 'Sem descrição disponível'}
                   </CulturaDescription>
                   <CulturaInfo>
-                    <p><strong>Cultivos:</strong> {cultura.cultivos?.length || 0}</p>
-                    <p><strong>Cadastrada em:</strong> {new Date(cultura.createdAt).toLocaleDateString('pt-BR')}</p>
+                    <p>
+                      <strong>Cultivos:</strong> {cultura.cultivos?.length || 0}
+                    </p>
+                    <p>
+                      <strong>Cadastrada em:</strong>{' '}
+                      {new Date(cultura.createdAt).toLocaleDateString('pt-BR')}
+                    </p>
                   </CulturaInfo>
                   <CulturaActions>
                     <ActionButton
-                      variant="secondary"
-                      size="small"
+                      variant='secondary'
+                      size='small'
                       onClick={() => handleEditCultura(cultura)}
                     >
                       Editar
                     </ActionButton>
                     <ActionButton
-                      variant="danger"
-                      size="small"
+                      variant='danger'
+                      size='small'
                       onClick={() => handleDeleteClick(cultura.id)}
                     >
                       Excluir
@@ -295,51 +291,41 @@ const CulturesPage: React.FC = () => {
 
       {/* Form Modal */}
       {showForm && (
-        <FormModal onClick={(e) => e.target === e.currentTarget && handleFormCancel()}>
+        <FormModal onClick={e => e.target === e.currentTarget && handleFormCancel()}>
           <FormContainer>
-            <FormTitle>
-              {editingCultura ? 'Editar Cultura' : 'Nova Cultura'}
-            </FormTitle>
+            <FormTitle>{editingCultura ? 'Editar Cultura' : 'Nova Cultura'}</FormTitle>
             <form onSubmit={handleFormSubmit}>
               <FormGroup>
-                <Label htmlFor="nome">Nome da Cultura *</Label>
+                <Label htmlFor='nome'>Nome da Cultura *</Label>
                 <Input
-                  type="text"
-                  id="nome"
-                  name="nome"
+                  type='text'
+                  id='nome'
+                  name='nome'
                   value={formData.nome}
                   onChange={handleFormChange}
-                  placeholder="Ex: Soja, Milho, Algodão..."
+                  placeholder='Ex: Soja, Milho, Algodão...'
                   required
                 />
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="descricao">Descrição</Label>
+                <Label htmlFor='descricao'>Descrição</Label>
                 <TextArea
-                  id="descricao"
-                  name="descricao"
+                  id='descricao'
+                  name='descricao'
                   value={formData.descricao}
                   onChange={handleFormChange}
-                  placeholder="Descrição detalhada da cultura, características, período de plantio, etc."
+                  placeholder='Descrição detalhada da cultura, características, período de plantio, etc.'
                   rows={4}
                 />
               </FormGroup>
 
               <FormActions>
-                <ActionButton
-                  type="button"
-                  variant="secondary"
-                  onClick={handleFormCancel}
-                >
+                <ActionButton type='button' variant='secondary' onClick={handleFormCancel}>
                   Cancelar
                 </ActionButton>
-                <ActionButton
-                  type="submit"
-                  variant="primary"
-                  disabled={loading}
-                >
-                  {loading ? 'Salvando...' : (editingCultura ? 'Atualizar' : 'Criar')}
+                <ActionButton type='submit' variant='primary' disabled={loading}>
+                  {loading ? 'Salvando...' : editingCultura ? 'Atualizar' : 'Criar'}
                 </ActionButton>
               </FormActions>
             </form>
@@ -349,12 +335,12 @@ const CulturesPage: React.FC = () => {
 
       <ConfirmModal
         isOpen={showDeleteModal}
-        title="Confirmar Exclusão"
-        message="Tem certeza que deseja excluir esta cultura? Esta ação não pode ser desfeita e todos os cultivos associados também serão removidos."
+        title='Confirmar Exclusão'
+        message='Tem certeza que deseja excluir esta cultura? Esta ação não pode ser desfeita e todos os cultivos associados também serão removidos.'
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
-        confirmText="Excluir"
-        cancelText="Cancelar"
+        confirmText='Excluir'
+        cancelText='Cancelar'
       />
 
       <NotificationModal

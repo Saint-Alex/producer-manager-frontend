@@ -27,19 +27,13 @@ export const fetchSafrasByPropriedade = createAsyncThunk(
   }
 );
 
-export const fetchSafraById = createAsyncThunk(
-  'safras/fetchById',
-  async (id: string) => {
-    return await safraService.getById(id);
-  }
-);
+export const fetchSafraById = createAsyncThunk('safras/fetchById', async (id: string) => {
+  return await safraService.getById(id);
+});
 
-export const createSafra = createAsyncThunk(
-  'safras/create',
-  async (safraData: CreateSafraData) => {
-    return await safraService.create(safraData);
-  }
-);
+export const createSafra = createAsyncThunk('safras/create', async (safraData: CreateSafraData) => {
+  return await safraService.create(safraData);
+});
 
 export const updateSafra = createAsyncThunk(
   'safras/update',
@@ -48,32 +42,29 @@ export const updateSafra = createAsyncThunk(
   }
 );
 
-export const deleteSafra = createAsyncThunk(
-  'safras/delete',
-  async (id: string) => {
-    await safraService.delete(id);
-    return id;
-  }
-);
+export const deleteSafra = createAsyncThunk('safras/delete', async (id: string) => {
+  await safraService.delete(id);
+  return id;
+});
 
 const safraSlice = createSlice({
   name: 'safras',
   initialState,
   reducers: {
-    clearError: (state) => {
+    clearError: state => {
       state.error = null;
     },
     setCurrentSafra: (state, action: PayloadAction<Safra | null>) => {
       state.currentSafra = action.payload;
     },
-    clearCurrentSafra: (state) => {
+    clearCurrentSafra: state => {
       state.currentSafra = null;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       // Fetch all safras
-      .addCase(fetchSafras.pending, (state) => {
+      .addCase(fetchSafras.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -86,7 +77,7 @@ const safraSlice = createSlice({
         state.error = action.error.message || 'Erro ao buscar safras';
       })
       // Fetch safras by propriedade
-      .addCase(fetchSafrasByPropriedade.pending, (state) => {
+      .addCase(fetchSafrasByPropriedade.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -99,7 +90,7 @@ const safraSlice = createSlice({
         state.error = action.error.message || 'Erro ao buscar safras';
       })
       // Fetch safra by id
-      .addCase(fetchSafraById.pending, (state) => {
+      .addCase(fetchSafraById.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -112,7 +103,7 @@ const safraSlice = createSlice({
         state.error = action.error.message || 'Erro ao buscar safra';
       })
       // Create safra
-      .addCase(createSafra.pending, (state) => {
+      .addCase(createSafra.pending, state => {
         state.loading = true;
         state.error = null;
       })
@@ -125,13 +116,13 @@ const safraSlice = createSlice({
         state.error = action.error.message || 'Erro ao criar safra';
       })
       // Update safra
-      .addCase(updateSafra.pending, (state) => {
+      .addCase(updateSafra.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updateSafra.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.safras.findIndex((s) => s.id === action.payload.id);
+        const index = state.safras.findIndex(s => s.id === action.payload.id);
         if (index !== -1) {
           state.safras[index] = action.payload;
         }
@@ -144,13 +135,13 @@ const safraSlice = createSlice({
         state.error = action.error.message || 'Erro ao atualizar safra';
       })
       // Delete safra
-      .addCase(deleteSafra.pending, (state) => {
+      .addCase(deleteSafra.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(deleteSafra.fulfilled, (state, action) => {
         state.loading = false;
-        state.safras = state.safras.filter((s) => s.id !== action.payload);
+        state.safras = state.safras.filter(s => s.id !== action.payload);
         if (state.currentSafra?.id === action.payload) {
           state.currentSafra = null;
         }
@@ -162,6 +153,5 @@ const safraSlice = createSlice({
   },
 });
 
-export const { clearError, setCurrentSafra, clearCurrentSafra } =
-  safraSlice.actions;
+export const { clearError, setCurrentSafra, clearCurrentSafra } = safraSlice.actions;
 export default safraSlice.reducer;

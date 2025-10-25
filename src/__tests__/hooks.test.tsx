@@ -14,10 +14,7 @@ describe('Redux Hooks', () => {
   });
 
   test('useAppSelector returns state', () => {
-    const { result } = renderHook(
-      () => useAppSelector((state) => state.producers),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useAppSelector(state => state.producers), { wrapper });
     expect(result.current).toBeDefined();
     expect(result.current.producers).toEqual([]);
     expect(result.current.loading).toBe(false);

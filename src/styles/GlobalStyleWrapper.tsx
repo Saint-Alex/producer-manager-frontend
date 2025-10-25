@@ -9,7 +9,7 @@ interface GlobalStyleWrapperProps {
 export const GlobalStyleWrapper: React.FC<GlobalStyleWrapperProps> = ({ children }) => {
   if (process.env.NODE_ENV === 'test') {
     return (
-      <div data-testid="theme-provider">
+      <div data-testid='theme-provider'>
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </div>
     );
@@ -18,7 +18,7 @@ export const GlobalStyleWrapper: React.FC<GlobalStyleWrapperProps> = ({ children
   try {
     const { GlobalStyle } = require('./GlobalStyles');
     return (
-      <div data-testid="theme-provider">
+      <div data-testid='theme-provider'>
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           {children}
@@ -27,7 +27,7 @@ export const GlobalStyleWrapper: React.FC<GlobalStyleWrapperProps> = ({ children
     );
   } catch (error) {
     return (
-      <div data-testid="theme-provider">
+      <div data-testid='theme-provider'>
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </div>
     );
