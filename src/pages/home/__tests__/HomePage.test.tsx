@@ -553,4 +553,321 @@ describe('HomePage', () => {
       expect(charts[0]).toHaveTextContent('2 items'); // Should filter and keep both items with count > 0
     });
   });
+
+  // Testes adicionais para cobertura de branches específicas
+  describe('Advanced branch coverage tests', () => {
+    test('handles uso do solo chart when all items have value > 0', () => {
+      const propriedadesComAreaValida = [
+        {
+          ...mockPropriedades[0],
+          areaAgricultavel: 500,
+          areaVegetacao: 300,
+        },
+        {
+          ...mockPropriedades[0],
+          areaAgricultavel: 200,
+          areaVegetacao: 150,
+        },
+      ];
+
+      const stateWithData = {
+        propriedades: {
+          propriedades: propriedadesComAreaValida,
+          loading: false,
+          error: null,
+        },
+      };
+
+      renderHomePage(stateWithData);
+
+      // Deve renderizar o gráfico de uso do solo quando todos os valores são > 0
+      const charts = screen.getAllByTestId('pie-chart');
+      expect(charts.length).toBeGreaterThan(0);
+    });
+
+    test('shows "Sem dados para exibir" when uso do solo has items with value 0', () => {
+      const propriedadesComAreaZero = [
+        {
+          ...mockPropriedades[0],
+          areaAgricultavel: 0,
+          areaVegetacao: 0,
+        },
+      ];
+
+      const stateWithData = {
+        propriedades: {
+          propriedades: propriedadesComAreaZero,
+          loading: false,
+          error: null,
+        },
+      };
+
+      renderHomePage(stateWithData);
+
+      // Deve mostrar mensagem vazia quando algum valor é 0
+      const emptyMessages = screen.getAllByText('Sem dados para exibir');
+      expect(emptyMessages.length).toBeGreaterThan(0);
+      expect(emptyMessages[0]).toBeInTheDocument();
+    });
+
+    test('handles arcLabel logic for value === 0 in uso do solo', () => {
+      // Simula a lógica do arcLabel para item.value === 0
+      const arcLabelFunction = (item: { value: number }) => {
+        if (item.value === 0) return '';
+        return item.value < 1000
+          ? `${item.value.toFixed(1)}`
+          : `${(item.value / 1000).toFixed(1)}k`;
+      };
+
+      expect(arcLabelFunction({ value: 0 })).toBe('');
+    });
+
+    test('handles arcLabel logic for value < 1000 in uso do solo', () => {
+      // Simula a lógica do arcLabel para item.value < 1000
+      const arcLabelFunction = (item: { value: number }) => {
+        if (item.value === 0) return '';
+        return item.value < 1000
+          ? `${item.value.toFixed(1)}`
+          : `${(item.value / 1000).toFixed(1)}k`;
+      };
+
+      expect(arcLabelFunction({ value: 500.5 })).toBe('500.5');
+    });
+
+    test('handles arcLabel logic for value >= 1000 in uso do solo', () => {
+      // Simula a lógica do arcLabel para item.value >= 1000
+      const arcLabelFunction = (item: { value: number }) => {
+        if (item.value === 0) return '';
+        return item.value < 1000
+          ? `${item.value.toFixed(1)}`
+          : `${(item.value / 1000).toFixed(1)}k`;
+      };
+
+      expect(arcLabelFunction({ value: 1500 })).toBe('1.5k');
+    });
+
+    test('handles arcLabel logic for value > 0 in estados and culturas charts', () => {
+      // Simula a lógica do arcLabel para item.value > 0
+      const arcLabelFunction = (item: { value: number }) => (item.value > 0 ? `${item.value}` : '');
+
+      expect(arcLabelFunction({ value: 5 })).toBe('5');
+      expect(arcLabelFunction({ value: 0 })).toBe('');
+    });
+
+    test('renders charts with mixed data scenarios', () => {
+      const mixedDataState = {
+        propriedades: {
+          propriedades: [
+            { ...mockPropriedades[0], estado: 'SP', areaAgricultavel: 1000, areaVegetacao: 500 },
+            { ...mockPropriedades[0], estado: 'RJ', areaAgricultavel: 800, areaVegetacao: 400 },
+            { ...mockPropriedades[0], estado: 'SP', areaAgricultavel: 600, areaVegetacao: 300 },
+          ],
+          loading: false,
+          error: null,
+        },
+        safras: {
+          safras: [
+            {
+              id: '1',
+              nome: 'Safra 1',
+              ano: 2023,
+              createdAt: '2024-01-01T00:00:00Z',
+              updatedAt: '2024-01-01T00:00:00Z',
+              cultivos: [
+                {
+                  id: '1',
+                  cultura: {
+                    id: '1',
+                    nome: 'Soja',
+                    createdAt: '2024-01-01T00:00:00Z',
+                    updatedAt: '2024-01-01T00:00:00Z',
+                  },
+                  areaPlantada: 300,
+                  propriedadeRural: {} as any,
+                  safra: {} as any,
+                  createdAt: '2024-01-01T00:00:00Z',
+                  updatedAt: '2024-01-01T00:00:00Z',
+                },
+                {
+                  id: '2',
+                  cultura: {
+                    id: '2',
+                    nome: 'Milho',
+                    createdAt: '2024-01-01T00:00:00Z',
+                    updatedAt: '2024-01-01T00:00:00Z',
+                  },
+                  areaPlantada: 200,
+                  propriedadeRural: {} as any,
+                  safra: {} as any,
+                  createdAt: '2024-01-01T00:00:00Z',
+                  updatedAt: '2024-01-01T00:00:00Z',
+                },
+                {
+                  id: '3',
+                  cultura: {
+                    id: '1',
+                    nome: 'Soja',
+                    createdAt: '2024-01-01T00:00:00Z',
+                    updatedAt: '2024-01-01T00:00:00Z',
+                  },
+                  areaPlantada: 150,
+                  propriedadeRural: {} as any,
+                  safra: {} as any,
+                  createdAt: '2024-01-01T00:00:00Z',
+                  updatedAt: '2024-01-01T00:00:00Z',
+                },
+              ],
+            },
+          ],
+          loading: false,
+          error: null,
+        },
+      };
+
+      renderHomePage(mixedDataState);
+
+      // Deve renderizar todos os gráficos com dados
+      const charts = screen.getAllByTestId('pie-chart');
+      expect(charts).toHaveLength(3); // Estados, Culturas, Uso do Solo
+
+      // Verifica se os dados foram processados corretamente
+      expect(charts[0]).toHaveTextContent('2 items'); // 2 estados únicos
+      expect(charts[1]).toHaveTextContent('2 items'); // 2 culturas únicas
+      expect(charts[2]).toHaveTextContent('2 items'); // Área agricultável e vegetação
+    });
+
+    test('handles edge case with zero values in different contexts', () => {
+      const edgeCaseState = {
+        propriedades: {
+          propriedades: [
+            { ...mockPropriedades[0], estado: 'SP', areaAgricultavel: 0, areaVegetacao: 100 },
+          ],
+          loading: false,
+          error: null,
+        },
+        safras: {
+          safras: [
+            {
+              id: '1',
+              nome: 'Safra Edge',
+              ano: 2023,
+              createdAt: '2024-01-01T00:00:00Z',
+              updatedAt: '2024-01-01T00:00:00Z',
+              cultivos: [
+                {
+                  id: '1',
+                  cultura: {
+                    id: '1',
+                    nome: 'Café',
+                    createdAt: '2024-01-01T00:00:00Z',
+                    updatedAt: '2024-01-01T00:00:00Z',
+                  },
+                  areaPlantada: 0, // Edge case: zero area
+                  propriedadeRural: {} as any,
+                  safra: {} as any,
+                  createdAt: '2024-01-01T00:00:00Z',
+                  updatedAt: '2024-01-01T00:00:00Z',
+                },
+              ],
+            },
+          ],
+          loading: false,
+          error: null,
+        },
+      };
+
+      renderHomePage(edgeCaseState);
+
+      // Estados deve ter 1 gráfico (SP com 1 fazenda)
+      const charts = screen.getAllByTestId('pie-chart');
+      expect(charts[0]).toHaveTextContent('1 items'); // Estados chart
+
+      // Culturas deve estar vazio (filtro remove items com count === 0)
+      const emptyMessages = screen.getAllByText('Sem dados para exibir');
+      expect(emptyMessages.length).toBeGreaterThan(0);
+    });
+
+    test('validates uso do solo with large values formatting', () => {
+      const largeValuesState = {
+        propriedades: {
+          propriedades: [{ ...mockPropriedades[0], areaAgricultavel: 50000, areaVegetacao: 25000 }],
+          loading: false,
+          error: null,
+        },
+      };
+
+      renderHomePage(largeValuesState);
+
+      // Deve renderizar gráfico com valores grandes
+      const charts = screen.getAllByTestId('pie-chart');
+      expect(charts[1]).toHaveTextContent('2 items'); // Uso do solo chart
+    });
+
+    test('handles all chart conditions in single test scenario', () => {
+      const comprehensiveState = {
+        propriedades: {
+          propriedades: [
+            { ...mockPropriedades[0], estado: 'MG', areaAgricultavel: 750, areaVegetacao: 250 },
+            { ...mockPropriedades[0], estado: 'RS', areaAgricultavel: 1200, areaVegetacao: 800 },
+          ],
+          loading: false,
+          error: null,
+        },
+        safras: {
+          safras: [
+            {
+              id: '1',
+              nome: 'Safra Completa',
+              ano: 2023,
+              createdAt: '2024-01-01T00:00:00Z',
+              updatedAt: '2024-01-01T00:00:00Z',
+              cultivos: [
+                {
+                  id: '1',
+                  cultura: {
+                    id: '1',
+                    nome: 'Arroz',
+                    createdAt: '2024-01-01T00:00:00Z',
+                    updatedAt: '2024-01-01T00:00:00Z',
+                  },
+                  areaPlantada: 400,
+                  propriedadeRural: {} as any,
+                  safra: {} as any,
+                  createdAt: '2024-01-01T00:00:00Z',
+                  updatedAt: '2024-01-01T00:00:00Z',
+                },
+                {
+                  id: '2',
+                  cultura: {
+                    id: '2',
+                    nome: 'Feijão',
+                    createdAt: '2024-01-01T00:00:00Z',
+                    updatedAt: '2024-01-01T00:00:00Z',
+                  },
+                  areaPlantada: 600,
+                  propriedadeRural: {} as any,
+                  safra: {} as any,
+                  createdAt: '2024-01-01T00:00:00Z',
+                  updatedAt: '2024-01-01T00:00:00Z',
+                },
+              ],
+            },
+          ],
+          loading: false,
+          error: null,
+        },
+      };
+
+      renderHomePage(comprehensiveState);
+
+      // Deve renderizar todos os 3 gráficos
+      const charts = screen.getAllByTestId('pie-chart');
+      expect(charts).toHaveLength(3);
+
+      // Todos devem ter dados
+      expect(charts[0]).toHaveTextContent('2 items'); // Estados: MG, RS
+      expect(charts[1]).toHaveTextContent('2 items'); // Culturas: Arroz, Feijão
+      expect(charts[2]).toHaveTextContent('2 items'); // Uso do solo: agricultável, vegetação
+    });
+  });
 });

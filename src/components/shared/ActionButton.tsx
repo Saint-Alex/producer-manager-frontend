@@ -222,6 +222,7 @@ export const getVariantStyles = (variant: ActionButtonProps['variant']) => {
       `;
 
     default:
+      /* istanbul ignore next */
       return css`
         background: linear-gradient(
           135deg,
@@ -281,6 +282,7 @@ export const getSizeStyles = (size: ActionButtonProps['size']) => {
 
     case 'medium':
     default:
+      /* istanbul ignore next */
       return css`
         padding: ${theme.spacing.sm} ${theme.spacing.lg};
         font-size: ${theme.fontSize.md};

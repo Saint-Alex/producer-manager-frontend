@@ -22,7 +22,8 @@ export const apiClient = {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await this.handleError(response);
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
     return response.json();
@@ -38,7 +39,8 @@ export const apiClient = {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await this.handleError(response);
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
     return response.json();
@@ -54,7 +56,8 @@ export const apiClient = {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await this.handleError(response);
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
     return response.json();
@@ -70,7 +73,8 @@ export const apiClient = {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await this.handleError(response);
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
     return response.json();
@@ -85,7 +89,8 @@ export const apiClient = {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await this.handleError(response);
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
     // Para DELETE, verificar se há conteúdo para retornar
@@ -96,5 +101,17 @@ export const apiClient = {
 
     // Se não há conteúdo JSON, retornar undefined (para status 204 No Content)
     return undefined as T;
+  },
+
+  async handleError(response: Response): Promise<any> {
+    try {
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        return await response.json();
+      }
+    } catch (error) {
+      // Se não conseguir fazer parse do JSON, retorna objeto vazio
+    }
+    return {};
   },
 };

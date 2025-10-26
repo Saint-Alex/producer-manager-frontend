@@ -23,8 +23,8 @@ export const fetchCulturas = createAsyncThunk(
     try {
       const culturas = await culturaService.getAll();
       return culturas;
-    } catch (error) {
-      return rejectWithValue('Erro ao buscar culturas');
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Erro ao buscar culturas');
     }
   }
 );
@@ -35,8 +35,8 @@ export const fetchCulturasByPropriedade = createAsyncThunk(
     try {
       const culturas = await culturaService.getByPropriedade(propriedadeRuralId);
       return culturas;
-    } catch (error) {
-      return rejectWithValue('Erro ao buscar culturas da propriedade');
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Erro ao buscar culturas da propriedade');
     }
   }
 );
@@ -47,8 +47,8 @@ export const fetchCulturasBySafra = createAsyncThunk(
     try {
       const culturas = await culturaService.getBySafra(safraId);
       return culturas;
-    } catch (error) {
-      return rejectWithValue('Erro ao buscar culturas da safra');
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Erro ao buscar culturas da safra');
     }
   }
 );
@@ -59,8 +59,8 @@ export const fetchCulturaById = createAsyncThunk(
     try {
       const cultura = await culturaService.getById(id);
       return cultura;
-    } catch (error) {
-      return rejectWithValue('Erro ao buscar cultura');
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Erro ao buscar cultura');
     }
   }
 );
@@ -71,8 +71,8 @@ export const createCultura = createAsyncThunk(
     try {
       const cultura = await culturaService.create(data);
       return cultura;
-    } catch (error) {
-      return rejectWithValue('Erro ao criar cultura');
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Erro ao criar cultura');
     }
   }
 );
@@ -83,8 +83,8 @@ export const updateCultura = createAsyncThunk(
     try {
       const cultura = await culturaService.update(id, data);
       return cultura;
-    } catch (error) {
-      return rejectWithValue('Erro ao atualizar cultura');
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Erro ao atualizar cultura');
     }
   }
 );
@@ -95,8 +95,8 @@ export const deleteCultura = createAsyncThunk(
     try {
       await culturaService.delete(id);
       return id;
-    } catch (error) {
-      return rejectWithValue('Erro ao deletar cultura');
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Erro ao deletar cultura');
     }
   }
 );

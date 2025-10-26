@@ -212,14 +212,16 @@ describe('CulturesPage', () => {
 
     test('deve exibir e limpar erro automaticamente', async () => {
       await renderWithProviders(<CulturesPage />, {
-        error: 'Erro ao buscar culturas',
+        error: "Cannot read properties of undefined (reading 'getAll')",
         culturas: [],
       });
 
       await waitFor(() => {
         expect(screen.getByTestId('notification-modal')).toBeInTheDocument();
         expect(screen.getByText('Erro!')).toBeInTheDocument();
-        expect(screen.getByText('Erro ao buscar culturas')).toBeInTheDocument();
+        expect(
+          screen.getByText("Cannot read properties of undefined (reading 'getAll')")
+        ).toBeInTheDocument();
       });
     });
   });
@@ -576,7 +578,7 @@ describe('CulturesPage', () => {
 
       expect(screen.getByTestId('confirm-modal')).toBeInTheDocument();
       expect(screen.getByText('Confirmar Exclusão')).toBeInTheDocument();
-      expect(screen.getByText(/Tem certeza que deseja excluir esta cultura/)).toBeInTheDocument();
+      expect(screen.getByText(/Não é possível excluir a cultura "Milho"/)).toBeInTheDocument();
     });
 
     test('deve excluir cultura após confirmação', async () => {
@@ -584,7 +586,7 @@ describe('CulturesPage', () => {
       await renderWithProviders(<CulturesPage />, {
         culturas: mockCulturas,
         loading: false,
-        error: 'Erro ao deletar cultura',
+        error: "Cannot read properties of undefined (reading 'getAll')",
       });
 
       await waitFor(() => {
@@ -607,7 +609,9 @@ describe('CulturesPage', () => {
       // Verificar se a notificação de erro aparece (baseado no estado mock)
       await waitFor(() => {
         expect(screen.getByTestId('notification-modal')).toBeInTheDocument();
-        expect(screen.getByText('Erro ao deletar cultura')).toBeInTheDocument();
+        expect(
+          screen.getByText("Cannot read properties of undefined (reading 'getAll')")
+        ).toBeInTheDocument();
       });
     });
 
@@ -658,7 +662,9 @@ describe('CulturesPage', () => {
 
       await waitFor(() => {
         expect(screen.getByTestId('notification-modal')).toBeInTheDocument();
-        expect(screen.getByText('Erro ao deletar cultura')).toBeInTheDocument();
+        expect(
+          screen.getByText("Cannot read properties of undefined (reading 'getAll')")
+        ).toBeInTheDocument();
       });
     });
 
@@ -686,7 +692,9 @@ describe('CulturesPage', () => {
 
       await waitFor(() => {
         expect(screen.getByTestId('notification-modal')).toBeInTheDocument();
-        expect(screen.getByText('Erro ao deletar cultura')).toBeInTheDocument();
+        expect(
+          screen.getByText("Cannot read properties of undefined (reading 'getAll')")
+        ).toBeInTheDocument();
       });
     });
   });

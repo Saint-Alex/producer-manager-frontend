@@ -1,15 +1,14 @@
 import React from 'react';
 import {
-  ModalOverlay,
+  ModalActions,
+  ModalBody,
+  ModalButton,
+  ModalCloseButton,
   ModalContainer,
   ModalHeader,
-  ModalTitle,
-  ModalCloseButton,
-  ModalBody,
-  ModalIcon,
   ModalMessage,
-  ModalActions,
-  ModalButton,
+  ModalOverlay,
+  ModalTitle,
 } from './ConfirmModal.styled';
 
 export interface ConfirmModalProps {
@@ -19,6 +18,7 @@ export interface ConfirmModalProps {
   confirmText?: string;
   cancelText?: string;
   variant?: 'danger' | 'warning' | 'info';
+  confirmDisabled?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -30,23 +30,25 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   confirmText = 'Confirmar',
   cancelText = 'Cancelar',
   variant = 'warning',
+  confirmDisabled = false,
   onConfirm,
   onCancel,
 }) => {
   if (!isOpen) return null;
 
-  const getIcon = () => {
-    switch (variant) {
-      case 'danger':
-        return '⚠️';
-      case 'warning':
-        return '⚠️';
-      case 'info':
-        return 'ℹ️';
-      default:
-        return '⚠️';
-    }
-  };
+  // Icon is available for future use
+  // const getIcon = () => {
+  //   switch (variant) {
+  //     case 'danger':
+  //       return '⚠️';
+  //     case 'warning':
+  //       return '⚠️';
+  //     case 'info':
+  //       return 'ℹ️';
+  //     default:
+  //       return '⚠️';
+  //   }
+  // };
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -63,7 +65,6 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         </ModalHeader>
 
         <ModalBody>
-          <ModalIcon variant={variant}>{getIcon()}</ModalIcon>
           <ModalMessage dangerouslySetInnerHTML={{ __html: message }} />
         </ModalBody>
 
@@ -71,7 +72,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <ModalButton variant='secondary' onClick={onCancel}>
             {cancelText}
           </ModalButton>
-          <ModalButton variant={variant} onClick={onConfirm}>
+          <ModalButton variant={variant} onClick={onConfirm} disabled={confirmDisabled}>
             {confirmText}
           </ModalButton>
         </ModalActions>

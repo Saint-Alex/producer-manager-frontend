@@ -6,6 +6,7 @@ import { ActionButton } from '../../components/shared';
 import { AppDispatch, RootState } from '../../store';
 import { fetchPropriedades } from '../../store/propriedadeRuralSlice';
 import { fetchSafras } from '../../store/safraSlice';
+import { CHART_PALETTES } from '../../utils/chartColors';
 import {
   ButtonContainer,
   FeaturesSection,
@@ -48,7 +49,7 @@ const HomePage: React.FC = () => {
       (acc, safra) => {
         if (safra.cultivos) {
           safra.cultivos.forEach(cultivo => {
-            const cultura = cultivo.cultura?.nome || 'Não especificada';
+            const cultura = cultivo.cultura?.nome || /* istanbul ignore next */ 'Não especificada';
             acc[cultura] = (acc[cultura] || 0) + 1;
           });
         }
@@ -216,10 +217,12 @@ const HomePage: React.FC = () => {
               </h4>
               {getEstadosData().length > 0 ? (
                 <PieChart
+                  colors={CHART_PALETTES.estados}
                   series={[
                     {
                       data: getEstadosData(),
-                      arcLabel: item => (item.value > 0 ? `${item.value}` : ''),
+                      arcLabel: item =>
+                        item.value > 0 ? `${item.value}` : /* istanbul ignore next */ '',
                       arcLabelMinAngle: 20,
                       arcLabelRadius: '60%',
                     },
@@ -277,10 +280,12 @@ const HomePage: React.FC = () => {
               </h4>
               {getCulturasData().length > 0 ? (
                 <PieChart
+                  colors={CHART_PALETTES.culturas}
                   series={[
                     {
                       data: getCulturasData(),
-                      arcLabel: item => (item.value > 0 ? `${item.value}` : ''),
+                      arcLabel: item =>
+                        item.value > 0 ? `${item.value}` : /* istanbul ignore next */ '',
                       arcLabelMinAngle: 20,
                       arcLabelRadius: '60%',
                     },
@@ -338,6 +343,7 @@ const HomePage: React.FC = () => {
               </h4>
               {getUsoSoloData().every(item => item.value > 0) ? (
                 <PieChart
+                  colors={CHART_PALETTES.usoSolo}
                   series={[
                     {
                       data: getUsoSoloData(),

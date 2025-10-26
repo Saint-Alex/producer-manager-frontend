@@ -1,0 +1,31 @@
+{
+  "name": "producer-manager-frontend",
+  "description": "Producer Manager Frontend - Brain Agriculture",
+  "keywords": ["react", "typescript", "frontend", "agriculture"],
+  "repository": "https://github.com/Saint-Alex/producer-manager-frontend",
+  "logo": "",
+  "success_url": "/",
+  "env": {
+    "NODE_ENV": {
+      "description": "Environment for the application",
+      "value": "production",
+      "required": true
+    },
+    "REACT_APP_API_URL": {
+      "description": "URL do backend API (ex: https://producer-manager-backend-053a5c3a64be.herokuapp.com)",
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "stack": "heroku-22"
+}

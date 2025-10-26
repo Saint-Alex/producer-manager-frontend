@@ -93,42 +93,48 @@ describe('ConfirmModal', () => {
   });
 
   describe('Icon Display - Variant Switch Cases', () => {
-    test('displays warning icon for danger variant', () => {
+    test('displays no icon for danger variant', () => {
       renderConfirmModal({ variant: 'danger' });
 
-      expect(screen.getByText('⚠️')).toBeInTheDocument();
+      expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
+      expect(screen.getByText('Confirm Action')).toBeInTheDocument();
     });
 
-    test('displays warning icon for warning variant', () => {
+    test('displays no icon for warning variant', () => {
       renderConfirmModal({ variant: 'warning' });
 
-      expect(screen.getByText('⚠️')).toBeInTheDocument();
+      expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
+      expect(screen.getByText('Confirm Action')).toBeInTheDocument();
     });
 
-    test('displays info icon for info variant', () => {
+    test('displays no icon for info variant', () => {
       renderConfirmModal({ variant: 'info' });
 
-      expect(screen.getByText('ℹ️')).toBeInTheDocument();
+      expect(screen.queryByText('ℹ️')).not.toBeInTheDocument();
+      expect(screen.getByText('Confirm Action')).toBeInTheDocument();
     });
 
-    test('displays default warning icon for undefined variant', () => {
+    test('displays no icon for undefined variant', () => {
       renderConfirmModal({ variant: undefined });
 
-      expect(screen.getByText('⚠️')).toBeInTheDocument();
+      expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
+      expect(screen.getByText('Confirm Action')).toBeInTheDocument();
     });
 
-    test('displays default warning icon for invalid variant', () => {
+    test('displays no icon for invalid variant', () => {
       // Testing with unknown variant to ensure default icon
       const invalidVariant = 'invalid' as const;
       renderConfirmModal({ variant: invalidVariant as any });
 
-      expect(screen.getByText('⚠️')).toBeInTheDocument();
+      expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
+      expect(screen.getByText('Confirm Action')).toBeInTheDocument();
     });
 
-    test('displays default warning icon when no variant specified', () => {
+    test('displays no icon when no variant specified', () => {
       renderConfirmModal(); // usa default 'warning'
 
-      expect(screen.getByText('⚠️')).toBeInTheDocument();
+      expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
+      expect(screen.getByText('Confirm Action')).toBeInTheDocument();
     });
   });
 
@@ -218,7 +224,7 @@ describe('ConfirmModal', () => {
         onCancel: mockOnCancel,
       });
 
-      expect(screen.getByText('⚠️')).toBeInTheDocument();
+      expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
       expect(screen.getByText('Delete Account')).toBeInTheDocument();
       expect(screen.getByText('This will permanently delete your account')).toBeInTheDocument();
       expect(screen.getByText('Delete Forever')).toBeInTheDocument();
@@ -240,7 +246,7 @@ describe('ConfirmModal', () => {
         cancelText: 'Stay Here',
       });
 
-      expect(screen.getByText('⚠️')).toBeInTheDocument();
+      expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
       expect(screen.getByText('Unsaved Changes')).toBeInTheDocument();
       expect(
         screen.getByText('You have unsaved changes. Do you want to leave?')
@@ -258,7 +264,7 @@ describe('ConfirmModal', () => {
         cancelText: 'Later',
       });
 
-      expect(screen.getByText('ℹ️')).toBeInTheDocument();
+      expect(screen.queryByText('ℹ️')).not.toBeInTheDocument();
       expect(screen.getByText('Information')).toBeInTheDocument();
       expect(screen.getByText('This will send a notification to all users')).toBeInTheDocument();
       expect(screen.getByText('Send Now')).toBeInTheDocument();
@@ -273,7 +279,7 @@ describe('ConfirmModal', () => {
         message: '',
       });
 
-      expect(screen.getByText('⚠️')).toBeInTheDocument();
+      expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
       expect(screen.getByText('Confirmar')).toBeInTheDocument();
       expect(screen.getByText('Cancelar')).toBeInTheDocument();
     });

@@ -894,4 +894,347 @@ describe('RuralComponents', () => {
       expect(screen.getByText('Default Primary')).toBeInTheDocument();
     });
   });
+
+  describe('Deep Branch Coverage - CSS-in-JS Switch Statements', () => {
+    it('should test all hover state transformations in styled components', () => {
+      // Test hover states that include switch logic for different elevations
+      const elevations = ['low', 'medium', 'high'] as const;
+
+      elevations.forEach(elevation => {
+        const { unmount } = renderWithTheme(
+          <RuralCard elevation={elevation} data-testid={`hover-test-${elevation}`}>
+            <div>Testing hover {elevation}</div>
+          </RuralCard>
+        );
+
+        const card = screen.getByTestId(`hover-test-${elevation}`);
+        expect(card).toBeInTheDocument();
+        expect(screen.getByText(`Testing hover ${elevation}`)).toBeInTheDocument();
+        unmount();
+      });
+    });
+
+    it('should test CSS-in-JS function branches in styled components', () => {
+      // Test to ensure all switch branches in styled component functions are exercised
+      renderWithTheme(
+        <div data-testid='comprehensive-css-test'>
+          {/* Test RuralDecorator position branches */}
+          <RuralDecorator position='top' />
+          <RuralDecorator position='bottom' />
+          <RuralDecorator position='center' />
+          <RuralDecorator />
+
+          {/* Test RuralCard elevation branches */}
+          <RuralCard elevation='low'>Low Card</RuralCard>
+          <RuralCard elevation='medium'>Medium Card</RuralCard>
+          <RuralCard elevation='high'>High Card</RuralCard>
+          <RuralCard>Default Card</RuralCard>
+
+          {/* Test NatureSection variant branches */}
+          <NatureSection variant='earth'>Earth Section</NatureSection>
+          <NatureSection variant='leaf'>Leaf Section</NatureSection>
+          <NatureSection variant='sky'>Sky Section</NatureSection>
+          <NatureSection>Default Section</NatureSection>
+
+          {/* Test RuralTitle size branches */}
+          <RuralTitle size='small'>Small Title</RuralTitle>
+          <RuralTitle size='medium'>Medium Title</RuralTitle>
+          <RuralTitle size='large'>Large Title</RuralTitle>
+          <RuralTitle>Default Title</RuralTitle>
+
+          {/* Test RuralStat and RuralStatValue color branches */}
+          <RuralStat $color='primary'>
+            <RuralStatValue $color='primary'>Primary Value</RuralStatValue>
+          </RuralStat>
+          <RuralStat $color='secondary'>
+            <RuralStatValue $color='secondary'>Secondary Value</RuralStatValue>
+          </RuralStat>
+          <RuralStat $color='accent'>
+            <RuralStatValue $color='accent'>Accent Value</RuralStatValue>
+          </RuralStat>
+          <RuralStat>
+            <RuralStatValue>Default Value</RuralStatValue>
+          </RuralStat>
+        </div>
+      );
+
+      expect(screen.getByTestId('comprehensive-css-test')).toBeInTheDocument();
+      expect(screen.getByText('Low Card')).toBeInTheDocument();
+      expect(screen.getByText('Medium Card')).toBeInTheDocument();
+      expect(screen.getByText('High Card')).toBeInTheDocument();
+      expect(screen.getByText('Default Card')).toBeInTheDocument();
+      expect(screen.getByText('Earth Section')).toBeInTheDocument();
+      expect(screen.getByText('Leaf Section')).toBeInTheDocument();
+      expect(screen.getByText('Sky Section')).toBeInTheDocument();
+      expect(screen.getByText('Default Section')).toBeInTheDocument();
+      expect(screen.getByText('Small Title')).toBeInTheDocument();
+      expect(screen.getByText('Medium Title')).toBeInTheDocument();
+      expect(screen.getByText('Large Title')).toBeInTheDocument();
+      expect(screen.getByText('Default Title')).toBeInTheDocument();
+      expect(screen.getByText('Primary Value')).toBeInTheDocument();
+      expect(screen.getByText('Secondary Value')).toBeInTheDocument();
+      expect(screen.getByText('Accent Value')).toBeInTheDocument();
+      expect(screen.getByText('Default Value')).toBeInTheDocument();
+    });
+
+    it('should test RuralIcon with all possible icon types and animate combinations', () => {
+      const iconTypes = [
+        'farm',
+        'plant',
+        'harvest',
+        'tractor',
+        'seed',
+        'sun',
+        'rain',
+        'growth',
+      ] as const;
+      const animateStates = [true, false];
+
+      iconTypes.forEach((iconType, iconIndex) => {
+        animateStates.forEach((animate, _animateIndex) => {
+          const { unmount } = renderWithTheme(<RuralIcon icon={iconType} animate={animate} />);
+
+          // Verify icon renders with correct emoji
+          const expectedEmojis = ['🏡', '🌱', '🌾', '🚜', '🌰', '☀️', '🌧️', '📈'];
+          expect(screen.getByText(expectedEmojis[iconIndex])).toBeInTheDocument();
+          unmount();
+        });
+      });
+    });
+
+    it('should test switch default cases with invalid values', () => {
+      // Test all switch statement default cases by providing invalid values
+      renderWithTheme(
+        <div data-testid='default-cases-test'>
+          <RuralIcon icon={'invalid-icon' as any} />
+          <RuralDecorator position={'invalid-position' as any} />
+          <RuralCard elevation={'invalid-elevation' as any}>Invalid Card</RuralCard>
+          <NatureSection variant={'invalid-variant' as any}>Invalid Nature</NatureSection>
+          <RuralTitle size={'invalid-size' as any}>Invalid Title</RuralTitle>
+          <RuralStat $color={'invalid-color' as any}>
+            <RuralStatValue $color={'invalid-color' as any}>Invalid</RuralStatValue>
+          </RuralStat>
+        </div>
+      );
+
+      expect(screen.getByTestId('default-cases-test')).toBeInTheDocument();
+      expect(screen.getByText('🌿')).toBeInTheDocument(); // Default icon
+      expect(screen.getByText('Invalid Card')).toBeInTheDocument();
+      expect(screen.getByText('Invalid Nature')).toBeInTheDocument();
+      expect(screen.getByText('Invalid Title')).toBeInTheDocument();
+      expect(screen.getByText('Invalid')).toBeInTheDocument();
+    });
+
+    it('should test IconWrapper with animate prop combinations', () => {
+      // Test the internal IconWrapper component with different animate values
+      const { unmount: unmount1 } = renderWithTheme(<RuralIcon icon='farm' animate={true} />);
+      expect(screen.getByText('🏡')).toBeInTheDocument();
+      unmount1();
+
+      const { unmount: unmount2 } = renderWithTheme(<RuralIcon icon='plant' animate={false} />);
+      expect(screen.getByText('🌱')).toBeInTheDocument();
+      unmount2();
+
+      renderWithTheme(<RuralIcon icon='harvest' animate={undefined} />);
+      expect(screen.getByText('🌾')).toBeInTheDocument();
+    });
+
+    it('should test complex prop combinations to ensure all branches are covered', () => {
+      // Test complex combinations that might trigger different code paths
+      renderWithTheme(
+        <RuralCard elevation='high'>
+          <NatureSection variant='sky'>
+            <RuralTitle size='large'>Complex Test</RuralTitle>
+            <RuralDecorator position='center' />
+            <RuralStatComponent
+              value='999'
+              label='Complex Stat'
+              color='accent'
+              icon={<RuralIcon icon='growth' animate={true} />}
+            />
+            <RuralStat $color='secondary'>
+              <RuralStatValue $color='secondary'>Secondary Value</RuralStatValue>
+              <RuralStatLabel>Secondary Label</RuralStatLabel>
+            </RuralStat>
+          </NatureSection>
+        </RuralCard>
+      );
+
+      expect(screen.getByText('Complex Test')).toBeInTheDocument();
+      expect(screen.getByText('999')).toBeInTheDocument();
+      expect(screen.getByText('Complex Stat')).toBeInTheDocument();
+      expect(screen.getByText('📈')).toBeInTheDocument();
+      expect(screen.getByText('Secondary Value')).toBeInTheDocument();
+      expect(screen.getByText('Secondary Label')).toBeInTheDocument();
+    });
+
+    it('should test all conditional rendering branches in RuralStatComponent', () => {
+      // Test with icon present
+      const { unmount: unmount1 } = renderWithTheme(
+        <RuralStatComponent value='100' label='With Icon' icon='🎯' color='primary' />
+      );
+      expect(screen.getByText('🎯')).toBeInTheDocument();
+      unmount1();
+
+      // Test without icon
+      const { unmount: unmount2 } = renderWithTheme(
+        <RuralStatComponent value='200' label='Without Icon' color='secondary' />
+      );
+      expect(screen.queryByText('🎯')).not.toBeInTheDocument();
+      expect(screen.getByText('200')).toBeInTheDocument();
+      unmount2();
+
+      // Test with null icon
+      const { unmount: unmount3 } = renderWithTheme(
+        <RuralStatComponent value='300' label='Null Icon' icon={null} color='accent' />
+      );
+      expect(screen.queryByText('🎯')).not.toBeInTheDocument();
+      expect(screen.getByText('300')).toBeInTheDocument();
+      unmount3();
+
+      // Test with undefined icon
+      renderWithTheme(<RuralStatComponent value='400' label='Undefined Icon' icon={undefined} />);
+      expect(screen.queryByText('🎯')).not.toBeInTheDocument();
+      expect(screen.getByText('400')).toBeInTheDocument();
+    });
+
+    it('should test edge cases in getIconEmoji function', () => {
+      // Test all icon cases including edge cases
+      const iconTestCases = [
+        { icon: 'farm', emoji: '🏡' },
+        { icon: 'plant', emoji: '🌱' },
+        { icon: 'harvest', emoji: '🌾' },
+        { icon: 'tractor', emoji: '🚜' },
+        { icon: 'seed', emoji: '🌰' },
+        { icon: 'sun', emoji: '☀️' },
+        { icon: 'rain', emoji: '🌧️' },
+        { icon: 'growth', emoji: '📈' },
+        { icon: 'unknown', emoji: '🌿' },
+        { icon: null, emoji: '🌿' },
+        { icon: undefined, emoji: '🌿' },
+        { icon: '', emoji: '🌿' },
+        { icon: 'invalid', emoji: '🌿' },
+      ];
+
+      iconTestCases.forEach(({ icon, emoji }, index) => {
+        const { unmount } = renderWithTheme(
+          <div data-testid={`test-container-${index}`}>
+            <RuralIcon icon={icon as any} />
+          </div>
+        );
+
+        const container = screen.getByTestId(`test-container-${index}`);
+        expect(container).toBeInTheDocument();
+        expect(screen.getByText(emoji)).toBeInTheDocument();
+
+        unmount();
+      });
+    });
+
+    it('should test styled component hover state switch branches', () => {
+      // Test hover states that contain switch logic in CSS-in-JS
+      renderWithTheme(
+        <div data-testid='hover-states'>
+          <RuralCard elevation='low' data-testid='hover-low'>
+            <div>Hover Low</div>
+          </RuralCard>
+          <RuralCard elevation='medium' data-testid='hover-medium'>
+            <div>Hover Medium</div>
+          </RuralCard>
+          <RuralCard elevation='high' data-testid='hover-high'>
+            <div>Hover High</div>
+          </RuralCard>
+          <RuralStat $color='primary' data-testid='hover-stat-primary'>
+            <div>Hover Stat Primary</div>
+          </RuralStat>
+          <RuralStat $color='secondary' data-testid='hover-stat-secondary'>
+            <div>Hover Stat Secondary</div>
+          </RuralStat>
+          <RuralStat $color='accent' data-testid='hover-stat-accent'>
+            <div>Hover Stat Accent</div>
+          </RuralStat>
+        </div>
+      );
+
+      expect(screen.getByTestId('hover-states')).toBeInTheDocument();
+      expect(screen.getByTestId('hover-low')).toBeInTheDocument();
+      expect(screen.getByTestId('hover-medium')).toBeInTheDocument();
+      expect(screen.getByTestId('hover-high')).toBeInTheDocument();
+      expect(screen.getByTestId('hover-stat-primary')).toBeInTheDocument();
+      expect(screen.getByTestId('hover-stat-secondary')).toBeInTheDocument();
+      expect(screen.getByTestId('hover-stat-accent')).toBeInTheDocument();
+    });
+
+    it('should test comprehensive component integration with all prop variations', () => {
+      // Ultimate integration test to ensure all code paths are covered
+      renderWithTheme(
+        <RuralPattern>
+          <RuralCard elevation='high'>
+            <RuralTitle size='large'>Ultimate Integration Test</RuralTitle>
+            <RuralDecorator position='top' />
+
+            <NatureSection variant='leaf'>
+              <RuralStatComponent
+                value='100'
+                label='Stat with All Props'
+                color='accent'
+                icon={<RuralIcon icon='growth' animate={true} />}
+              />
+            </NatureSection>
+
+            <RuralDecorator position='center' />
+
+            <NatureSection variant='sky'>
+              <div style={{ display: 'grid', gap: '16px' }}>
+                <RuralStat $color='primary'>
+                  <RuralStatValue $color='primary'>Primary Value</RuralStatValue>
+                  <RuralStatLabel>Primary Label</RuralStatLabel>
+                </RuralStat>
+
+                <RuralStat $color='secondary'>
+                  <RuralStatValue $color='secondary'>Secondary Value</RuralStatValue>
+                  <RuralStatLabel>Secondary Label</RuralStatLabel>
+                </RuralStat>
+
+                <RuralStat $color='accent'>
+                  <RuralStatValue $color='accent'>Accent Value</RuralStatValue>
+                  <RuralStatLabel>Accent Label</RuralStatLabel>
+                </RuralStat>
+              </div>
+            </NatureSection>
+
+            <RuralDecorator position='bottom' />
+
+            <NatureSection variant='earth'>
+              <RuralIconContainer>
+                <RuralIcon icon='farm' animate={false} />
+                <RuralIcon icon='plant' animate={false} />
+                <RuralIcon icon='harvest' animate={false} />
+                <RuralIcon icon='tractor' animate={false} />
+                <RuralIcon icon='seed' animate={false} />
+                <RuralIcon icon='sun' animate={false} />
+                <RuralIcon icon='rain' animate={false} />
+                <RuralIcon icon='growth' animate={false} />
+              </RuralIconContainer>
+            </NatureSection>
+          </RuralCard>
+        </RuralPattern>
+      );
+
+      expect(screen.getByText('Ultimate Integration Test')).toBeInTheDocument();
+      expect(screen.getByText('100')).toBeInTheDocument();
+      expect(screen.getByText('Stat with All Props')).toBeInTheDocument();
+      expect(screen.getByText('Primary Value')).toBeInTheDocument();
+      expect(screen.getByText('Secondary Value')).toBeInTheDocument();
+      expect(screen.getByText('Accent Value')).toBeInTheDocument();
+      expect(screen.getByText('🏡')).toBeInTheDocument();
+      expect(screen.getByText('🌱')).toBeInTheDocument();
+      expect(screen.getByText('🌾')).toBeInTheDocument();
+      expect(screen.getByText('🚜')).toBeInTheDocument();
+      expect(screen.getByText('🌰')).toBeInTheDocument();
+      expect(screen.getByText('☀️')).toBeInTheDocument();
+      expect(screen.getByText('🌧️')).toBeInTheDocument();
+      expect(screen.getAllByText('📈')).toHaveLength(2); // One in stat, one in icon container
+    });
+  });
 });

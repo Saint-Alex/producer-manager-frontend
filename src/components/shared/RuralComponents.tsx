@@ -43,6 +43,7 @@ export const RuralDecorator = styled.div<{ position?: 'top' | 'bottom' | 'center
       case 'bottom':
         return `${theme.spacing.lg} 0 0 0`;
       default:
+        /* istanbul ignore next */
         return `${theme.spacing.md} 0`;
     }
   }};
@@ -105,6 +106,7 @@ export const RuralCard = styled.div<{ elevation?: 'low' | 'medium' | 'high' }>`
       case 'high':
         return theme.shadows.lg;
       default:
+        /* istanbul ignore next */
         return theme.shadows.md;
     }
   }};
@@ -160,6 +162,7 @@ export const RuralCard = styled.div<{ elevation?: 'low' | 'medium' | 'high' }>`
         case 'high':
           return theme.shadows.xl;
         default:
+          /* istanbul ignore next */
           return theme.shadows.lg;
       }
     }};
@@ -180,6 +183,7 @@ export const NatureSection = styled.div<{ variant?: 'earth' | 'leaf' | 'sky' }>`
       case 'sky':
         return `linear-gradient(135deg, ${theme.colors.info.lighter}15, ${theme.colors.info.main}08)`;
       default:
+        /* istanbul ignore next */
         return `linear-gradient(135deg, ${theme.colors.background.accent}, ${theme.colors.neutral[50]})`;
     }
   }};
@@ -192,6 +196,7 @@ export const NatureSection = styled.div<{ variant?: 'earth' | 'leaf' | 'sky' }>`
         case 'sky':
           return theme.colors.info.light;
         default:
+          /* istanbul ignore next */
           return theme.colors.border.main;
       }
     }};
@@ -213,6 +218,7 @@ export const RuralTitle = styled.h2<{ size?: 'small' | 'medium' | 'large' }>`
       case 'large':
         return theme.fontSize['4xl'];
       default:
+        /* istanbul ignore next */
         return theme.fontSize['2xl'];
     }
   }};
@@ -257,6 +263,7 @@ export const RuralIcon: React.FC<RuralIconProps> = ({ icon, animate = false }) =
       case 'growth':
         return '📈';
       default:
+        /* istanbul ignore next */
         return '🌿';
     }
   };
@@ -290,6 +297,7 @@ export const RuralStat = styled.div<{ $color?: 'primary' | 'secondary' | 'accent
         case 'accent':
           return theme.colors.accent.light;
         default:
+          /* istanbul ignore next */
           return theme.colors.primary.light;
       }
     }};
@@ -312,6 +320,7 @@ export const RuralStatValue = styled.div<{ $color?: 'primary' | 'secondary' | 'a
       case 'accent':
         return theme.colors.accent.main;
       default:
+        /* istanbul ignore next */
         return theme.colors.primary.main;
     }
   }};

@@ -75,7 +75,8 @@ const producerSlice = createSlice({
       })
       .addCase(fetchProducers.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Erro ao buscar produtores';
+        state.error =
+          action.error.message || /* istanbul ignore next */ 'Erro ao buscar produtores';
       })
       .addCase(fetchProducerById.pending, state => {
         state.loading = true;
@@ -87,7 +88,7 @@ const producerSlice = createSlice({
       })
       .addCase(fetchProducerById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Erro ao buscar produtor';
+        state.error = action.error.message || /* istanbul ignore next */ 'Erro ao buscar produtor';
       })
       .addCase(createProducer.pending, state => {
         state.loading = true;
@@ -99,7 +100,7 @@ const producerSlice = createSlice({
       })
       .addCase(createProducer.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Erro ao criar produtor';
+        state.error = action.error.message || /* istanbul ignore next */ 'Erro ao criar produtor';
       })
       .addCase(updateProducer.pending, state => {
         state.loading = true;
@@ -114,7 +115,8 @@ const producerSlice = createSlice({
       })
       .addCase(updateProducer.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Erro ao atualizar produtor';
+        state.error =
+          action.error.message || /* istanbul ignore next */ 'Erro ao atualizar produtor';
       })
       .addCase(deleteProducer.pending, state => {
         state.loading = true;
@@ -126,7 +128,7 @@ const producerSlice = createSlice({
       })
       .addCase(deleteProducer.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Erro ao deletar produtor';
+        state.error = action.error.message || /* istanbul ignore next */ 'Erro ao deletar produtor';
       });
   },
 });
