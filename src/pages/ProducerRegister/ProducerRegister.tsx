@@ -73,7 +73,7 @@ const ProducerRegisterPage: React.FC = () => {
 
         for (const fazenda of formData.fazendas) {
           try {
-            await dispatch(
+            const propriedadeResult = await dispatch(
               createPropriedade({
                 produtorId,
                 nomeFazenda: fazenda.nomeFazenda,
@@ -85,7 +85,7 @@ const ProducerRegisterPage: React.FC = () => {
               })
             ).unwrap();
 
-            // const propriedadeId = propriedadeResult.id;
+            const propriedadeId = propriedadeResult.id;
 
             for (const safra of fazenda.safras) {
               if (safra.ano && safra.nome && safra.culturasPlantadas.length > 0) {
@@ -93,16 +93,19 @@ const ProducerRegisterPage: React.FC = () => {
                   createSafra({
                     nome: safra.nome,
                     ano: Number(safra.ano),
+                    propriedadeRuralId: propriedadeId,
                   })
                 ).unwrap();
               }
             }
           } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Erro ao criar fazenda:', error);
           }
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      // eslint-disable-next-line no-console
       console.error('Erro no cadastro:', error);
       setErrorMessage(
         isEditMode

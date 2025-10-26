@@ -11,6 +11,14 @@ export interface PropriedadeRural {
   areaVegetacao: string | number; // Backend retorna como string decimal
   produtores?: Producer[]; // Relacionamento many-to-many
   cultivos?: Cultivo[]; // Relacionamento com cultivos
+  safra?: {
+    // Relacionamento 1:1 com safra (opcional, pois propriedade pode não ter safra)
+    id: string;
+    nome: string;
+    ano: number;
+    dataInicio?: string;
+    dataFim?: string;
+  } | null;
   createdAt: string; // Backend retorna como string ISO
   updatedAt: string; // Backend retorna como string ISO
 }

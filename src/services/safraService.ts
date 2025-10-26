@@ -15,8 +15,16 @@ export const safraService = {
   },
 
   async getByPropriedade(propriedadeId: string): Promise<Safra[]> {
-    // Para compatibilidade - buscar safras por propriedade via query params
-    return apiClient.get<Safra[]>(`${apiConfig.endpoints.harvests}?propriedadeId=${propriedadeId}`);
+    // Novo modelo: 1:N - uma propriedade pode ter múltiplas safras
+    try {
+      return apiClient.get<Safra[]>(`${apiConfig.endpoints.harvests}/propriedade/${propriedadeId}`);
+    } catch (error: unknown) {
+      // Se retornar 404, significa que a propriedade não tem safras
+      if ((error as { status?: number })?.status === 404) {
+        return [];
+      }
+      throw error;
+    }
   },
 
   async create(data: CreateSafraData): Promise<Safra> {
@@ -27,7 +35,7 @@ export const safraService = {
     return apiClient.patch<Safra>(`${apiConfig.endpoints.harvests}/${id}`, data);
   },
 
-  async delete(id: string): Promise<void> {
+  delete: async (id: string): Promise<unknown> => {
     return apiClient.delete<void>(`${apiConfig.endpoints.harvests}/${id}`);
   },
 };

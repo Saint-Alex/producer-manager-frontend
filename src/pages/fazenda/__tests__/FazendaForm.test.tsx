@@ -5,6 +5,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
+import { cultivoService } from '../../../services/cultivoService';
+import { culturaService } from '../../../services/culturaService';
 import { propriedadeRuralService } from '../../../services/propriedadeRuralService';
 import { safraService } from '../../../services/safraService';
 import propriedadeReducer from '../../../store/propriedadeRuralSlice';
@@ -47,6 +49,27 @@ jest.mock('../../../services/safraService', () => ({
   },
 }));
 
+jest.mock('../../../services/culturaService', () => ({
+  culturaService: {
+    getAll: jest.fn(),
+    getById: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
+
+jest.mock('../../../services/cultivoService', () => ({
+  cultivoService: {
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+    getAll: jest.fn(),
+    getBySafra: jest.fn(),
+    getByPropriedade: jest.fn(),
+  },
+}));
+
 // Mock do react-router-dom
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -62,9 +85,11 @@ const mockedPropriedadeService = propriedadeRuralService as jest.Mocked<
   typeof propriedadeRuralService
 >;
 const mockedSafraService = safraService as jest.Mocked<typeof safraService>;
+const mockedCulturaService = culturaService as jest.Mocked<typeof culturaService>;
+const mockedCultivoService = cultivoService as jest.Mocked<typeof cultivoService>;
 
 // Helper para criar store de teste
-const createTestStore = (initialState: any = {}) => {
+const createTestStore = (initialState: Record<string, unknown> = {}) => {
   return configureStore({
     reducer: {
       propriedades: propriedadeReducer,
@@ -76,14 +101,15 @@ const createTestStore = (initialState: any = {}) => {
         currentPropriedade: null,
         loading: false,
         error: null,
-        ...initialState?.propriedades,
+        ...((initialState?.propriedades as object) || {}),
       },
       safras: {
         safras: [],
         currentSafra: null,
+        safrasByPropriedade: {},
         loading: false,
         error: null,
-        ...initialState?.safras,
+        ...((initialState?.safras as object) || {}),
       },
     },
   });
@@ -92,7 +118,7 @@ const createTestStore = (initialState: any = {}) => {
 // Helper para renderizar com providers
 const renderWithProviders = (
   component: React.ReactElement,
-  options: { initialState?: any } = {}
+  options: { initialState?: Record<string, unknown> } = {}
 ) => {
   const store = createTestStore(options.initialState);
 
@@ -126,6 +152,21 @@ const mockSafra = {
   updatedAt: '2024-01-01T00:00:00Z',
 };
 
+const mockCulturas = [
+  {
+    id: 'cultura-1',
+    nome: 'Soja',
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+  {
+    id: 'cultura-2',
+    nome: 'Milho',
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z',
+  },
+];
+
 describe('FazendaForm - Comprehensive Branch Coverage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -135,6 +176,16 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
     mockedSafraService.create.mockResolvedValue(mockSafra);
     mockedSafraService.update.mockResolvedValue(mockSafra);
     mockedSafraService.delete.mockResolvedValue(undefined);
+    mockedCulturaService.getAll.mockResolvedValue(mockCulturas);
+    mockedCultivoService.create.mockResolvedValue({
+      id: 'cultivo-1',
+      cultura: mockCulturas[0],
+      propriedadeRural: mockFazenda,
+      safra: mockSafra,
+      areaPlantada: 10,
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z',
+    });
   });
 
   describe('Validation Functions - All Branches', () => {
@@ -367,7 +418,7 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
 
       await waitFor(async () => {
         const select = screen.getByRole('combobox', { name: /Selecione uma cultura/ });
-        await user.selectOptions(select, 'Soja');
+        await user.selectOptions(select, 'cultura-1'); // Usar ID da cultura
       });
 
       await waitFor(() => {
@@ -386,7 +437,7 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
 
       await waitFor(async () => {
         const select = screen.getByRole('combobox', { name: /Selecione uma cultura/ });
-        await user.selectOptions(select, 'Soja');
+        await user.selectOptions(select, 'cultura-1'); // Usar ID da cultura
       });
 
       await waitFor(() => {
@@ -423,7 +474,11 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
         await user.type(screen.getByLabelText(/Nome da Safra/), 'Safra Teste');
 
         const select = screen.getByRole('combobox', { name: /Selecione uma cultura/ });
-        await user.selectOptions(select, 'Soja');
+        await user.selectOptions(select, 'cultura-1'); // Usar ID da cultura
+
+        // Adicionar área plantada
+        const areaInput = screen.getByLabelText(/Área \(ha\)/);
+        await user.type(areaInput, '10');
 
         const saveButton = screen.getByText('Adicionar');
         await user.click(saveButton);
@@ -433,6 +488,13 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
         expect(mockedSafraService.create).toHaveBeenCalledWith({
           nome: 'Safra Teste',
           ano: 2024,
+          propriedadeRuralId: '1',
+        });
+        expect(mockedCultivoService.create).toHaveBeenCalledWith({
+          culturaId: 'cultura-1',
+          propriedadeId: '1',
+          safraId: '1',
+          areaCultivada: 10,
         });
       });
     });
@@ -443,6 +505,8 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
       mockedSafraService.getByPropriedade.mockResolvedValue([mockSafra]);
 
       // Create custom render to avoid nested routers
+      const mockSafraWithProp = { ...mockSafra, propriedadeRural: { id: '1' } };
+
       const store = createTestStore({
         propriedades: {
           propriedades: [mockFazenda],
@@ -451,7 +515,7 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
           error: null,
         },
         safras: {
-          safras: [mockSafra],
+          safras: [mockSafraWithProp],
           loading: false,
           error: null,
         },
@@ -491,7 +555,11 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
 
       // Adiciona uma cultura para satisfazer a validação
       const culturaSelect = screen.getByLabelText('Selecione uma cultura');
-      await user.selectOptions(culturaSelect, 'Soja');
+      await user.selectOptions(culturaSelect, 'cultura-1'); // Usar ID
+
+      // Adicionar área plantada
+      const areaInput = screen.getByLabelText(/Área \(ha\)/);
+      await user.type(areaInput, '5');
 
       // Clica no botão atualizar
       const updateButton = screen.getByText('Atualizar');
@@ -505,11 +573,48 @@ describe('FazendaForm - Comprehensive Branch Coverage', () => {
 
     it('deve excluir safra', async () => {
       const user = userEvent.setup();
+      useParams.mockReturnValue({ propriedadeId: '1' }); // Mock params for edit mode
       mockedSafraService.getByPropriedade.mockResolvedValue([mockSafra]);
-      renderWithProviders(<FazendaForm />);
+
+      // Create custom render to avoid nested routers
+      const mockSafraWithProp = { ...mockSafra, propriedadeRural: { id: '1' } };
+
+      const store = createTestStore({
+        propriedades: {
+          propriedades: [mockFazenda],
+          currentPropriedade: mockFazenda,
+          loading: false,
+          error: null,
+        },
+        safras: {
+          safras: [mockSafraWithProp],
+          safrasByPropriedade: {
+            '1': [mockSafraWithProp],
+          },
+          loading: false,
+          error: null,
+        },
+      });
+
+      render(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={['/fazenda/edit/1']}>
+            <Routes>
+              <Route
+                path='/fazenda/edit/:propriedadeId'
+                element={
+                  <ThemeProvider theme={theme}>
+                    <FazendaForm />
+                  </ThemeProvider>
+                }
+              />
+            </Routes>
+          </MemoryRouter>
+        </Provider>
+      );
 
       await waitFor(async () => {
-        const deleteButton = screen.getByText('Excluir');
+        const deleteButton = screen.getByRole('button', { name: /Excluir/ });
         await user.click(deleteButton);
       });
 

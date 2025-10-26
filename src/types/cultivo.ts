@@ -14,14 +14,14 @@ export interface Cultivo {
 
 export interface CreateCultivoData {
   culturaId: string;
-  propriedadeRuralId: string;
+  propriedadeId: string;
   safraId: string;
-  areaPlantada: number;
+  areaCultivada: number;
 }
 
 export interface UpdateCultivoData {
   culturaId?: string;
-  propriedadeRuralId?: string;
+  propriedadeId?: string;
   safraId?: string;
-  areaPlantada?: number;
+  areaCultivada?: number;
 }

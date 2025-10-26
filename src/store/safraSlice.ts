@@ -1,12 +1,13 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { Safra, CreateSafraData } from '../types/safra';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { safraService } from '../services/safraService';
+import { CreateSafraData, Safra } from '../types/safra';
 
 interface SafraState {
   safras: Safra[];
   loading: boolean;
   error: string | null;
   currentSafra: Safra | null;
+  safrasByPropriedade: Record<string, Safra[]>; // Cache de safras por propriedade (array)
 }
 
 const initialState: SafraState = {
@@ -14,6 +15,7 @@ const initialState: SafraState = {
   loading: false,
   error: null,
   currentSafra: null,
+  safrasByPropriedade: {},
 };
 
 export const fetchSafras = createAsyncThunk('safras/fetchAll', async () => {
@@ -23,7 +25,8 @@ export const fetchSafras = createAsyncThunk('safras/fetchAll', async () => {
 export const fetchSafrasByPropriedade = createAsyncThunk(
   'safras/fetchByPropriedade',
   async (propriedadeId: string) => {
-    return await safraService.getByPropriedade(propriedadeId);
+    const safras = await safraService.getByPropriedade(propriedadeId);
+    return { propriedadeId, safras };
   }
 );
 
@@ -60,6 +63,9 @@ const safraSlice = createSlice({
     clearCurrentSafra: state => {
       state.currentSafra = null;
     },
+    clearSafrasByPropriedade: state => {
+      state.safrasByPropriedade = {};
+    },
   },
   extraReducers: builder => {
     builder
@@ -83,11 +89,15 @@ const safraSlice = createSlice({
       })
       .addCase(fetchSafrasByPropriedade.fulfilled, (state, action) => {
         state.loading = false;
-        state.safras = action.payload;
+        const { propriedadeId, safras } = action.payload;
+        if (!state.safrasByPropriedade) {
+          state.safrasByPropriedade = {};
+        }
+        state.safrasByPropriedade[propriedadeId] = safras;
       })
       .addCase(fetchSafrasByPropriedade.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || 'Erro ao buscar safras';
+        state.error = action.error.message || 'Erro ao buscar safra da propriedade';
       })
       // Fetch safra by id
       .addCase(fetchSafraById.pending, state => {
@@ -110,6 +120,17 @@ const safraSlice = createSlice({
       .addCase(createSafra.fulfilled, (state, action) => {
         state.loading = false;
         state.safras.push(action.payload);
+        // Atualizar o cache safrasByPropriedade se a safra tem propriedadeRural
+        if (action.payload.propriedadeRural?.id) {
+          if (!state.safrasByPropriedade) {
+            state.safrasByPropriedade = {};
+          }
+          const propriedadeId = action.payload.propriedadeRural.id;
+          if (!state.safrasByPropriedade[propriedadeId]) {
+            state.safrasByPropriedade[propriedadeId] = [];
+          }
+          state.safrasByPropriedade[propriedadeId].push(action.payload);
+        }
       })
       .addCase(createSafra.rejected, (state, action) => {
         state.loading = false;
@@ -129,6 +150,25 @@ const safraSlice = createSlice({
         if (state.currentSafra?.id === action.payload.id) {
           state.currentSafra = action.payload;
         }
+        // Atualizar o cache safrasByPropriedade se a safra tem propriedadeRural
+        if (action.payload.propriedadeRural?.id) {
+          if (!state.safrasByPropriedade) {
+            state.safrasByPropriedade = {};
+          }
+          const propriedadeId = action.payload.propriedadeRural.id;
+          if (!state.safrasByPropriedade[propriedadeId]) {
+            state.safrasByPropriedade[propriedadeId] = [];
+          }
+          // Atualizar a safra existente no array ou adicionar se não existir
+          const safraIndex = state.safrasByPropriedade[propriedadeId].findIndex(
+            s => s.id === action.payload.id
+          );
+          if (safraIndex !== -1) {
+            state.safrasByPropriedade[propriedadeId][safraIndex] = action.payload;
+          } else {
+            state.safrasByPropriedade[propriedadeId].push(action.payload);
+          }
+        }
       })
       .addCase(updateSafra.rejected, (state, action) => {
         state.loading = false;
@@ -145,6 +185,12 @@ const safraSlice = createSlice({
         if (state.currentSafra?.id === action.payload) {
           state.currentSafra = null;
         }
+        // Remover a safra do cache de safrasByPropriedade
+        Object.keys(state.safrasByPropriedade).forEach(propriedadeId => {
+          state.safrasByPropriedade[propriedadeId] = state.safrasByPropriedade[
+            propriedadeId
+          ].filter(safra => safra.id !== action.payload);
+        });
       })
       .addCase(deleteSafra.rejected, (state, action) => {
         state.loading = false;
@@ -153,5 +199,6 @@ const safraSlice = createSlice({
   },
 });
 
-export const { clearError, setCurrentSafra, clearCurrentSafra } = safraSlice.actions;
+export const { clearError, setCurrentSafra, clearCurrentSafra, clearSafrasByPropriedade } =
+  safraSlice.actions;
 export default safraSlice.reducer;

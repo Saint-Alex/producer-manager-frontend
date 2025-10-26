@@ -8,13 +8,16 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ActionButton, NotificationModal } from '../../components/shared';
-import { CULTURAS_COMUNS, ESTADOS_BRASILEIROS } from '../../constants';
+import { ESTADOS_BRASILEIROS } from '../../constants';
+import { cultivoService } from '../../services/cultivoService';
+import { culturaService } from '../../services/culturaService';
 import { AppDispatch, RootState } from '../../store';
 import {
   createPropriedade,
   fetchPropriedadeById,
   updatePropriedade,
 } from '../../store/propriedadeRuralSlice';
+import { Cultura } from '../../types/cultura';
 import { PropriedadeRuralFormData } from '../../types/propriedadeRural';
 import { Safra, SafraFormData } from '../../types/safra';
 import {
@@ -39,7 +42,22 @@ const FazendaForm: React.FC = () => {
   const { currentPropriedade, loading: propriedadeLoading } = useSelector(
     (state: RootState) => state.propriedades
   );
-  const { safras, loading: safrasLoading } = useSelector((state: RootState) => state.safras);
+  const {
+    safras,
+    loading: safrasLoading,
+    safrasByPropriedade,
+  } = useSelector((state: RootState) => state.safras);
+
+  // Filtrar safras da propriedade específica (relacionamento 1:N)
+  // Preferir o cache por propriedade quando disponível (safrasByPropriedade),
+  // caso contrário filtrar o array global de safras.
+  const safrasPropriedade =
+    (propriedadeId && safrasByPropriedade?.[propriedadeId]) ||
+    (safras || []).filter(
+      safra =>
+        safra.propriedadeRural?.id === propriedadeId ||
+        safra.propriedadeRural?.id === currentPropriedade?.id
+    );
 
   const [fazendaData, setFazendaData] = useState<PropriedadeRuralFormData>({
     nomeFazenda: '',
@@ -53,9 +71,11 @@ const FazendaForm: React.FC = () => {
   const [safraData, setSafraData] = useState<SafraFormData>({
     ano: '',
     nome: '',
+    propriedadeRuralId: '',
     culturasPlantadas: [],
   });
 
+  const [culturasDisponiveis, setCulturasDisponiveis] = useState<Cultura[]>([]);
   const [isAddingSafra, setIsAddingSafra] = useState(false);
   const [editingSafraId, setEditingSafraId] = useState<string | null>(null);
 
@@ -74,8 +94,25 @@ const FazendaForm: React.FC = () => {
   const isEditing = !!propriedadeId;
 
   useEffect(() => {
+    const loadCulturas = async () => {
+      try {
+        const culturas = await culturaService.getAll();
+        setCulturasDisponiveis(culturas);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Erro ao carregar culturas:', error);
+        showNotification('error', 'Erro', 'Erro ao carregar culturas disponíveis.');
+      }
+    };
+
+    loadCulturas();
+  }, []);
+
+  useEffect(() => {
     if (isEditing && propriedadeId) {
       dispatch(fetchPropriedadeById(propriedadeId));
+      // Buscar apenas as safras da propriedade em edição para evitar sobrescrever
+      // o estado global com uma chamada que retorna todas as safras.
       dispatch(fetchSafrasByPropriedade(propriedadeId));
     }
   }, [dispatch, isEditing, propriedadeId]);
@@ -180,6 +217,7 @@ const FazendaForm: React.FC = () => {
         }
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Erro ao salvar fazenda:', error);
       showNotification('error', 'Erro ao Salvar', 'Erro ao salvar a fazenda. Tente novamente.');
     }
@@ -195,7 +233,12 @@ const FazendaForm: React.FC = () => {
 
   const handleAddSafra = () => {
     setIsAddingSafra(true);
-    setSafraData({ ano: '', nome: '', culturasPlantadas: [] });
+    setSafraData({
+      ano: '',
+      nome: '',
+      propriedadeRuralId: propriedadeId || currentPropriedade?.id || '',
+      culturasPlantadas: [],
+    });
     setEditingSafraId(null);
   };
 
@@ -204,7 +247,14 @@ const FazendaForm: React.FC = () => {
     setSafraData({
       ano: safra.ano.toString(),
       nome: safra.nome,
-      culturasPlantadas: safra.cultivos?.map(c => c.cultura?.nome || '') || [],
+      propriedadeRuralId:
+        safra.propriedadeRural?.id || propriedadeId || currentPropriedade?.id || '',
+      culturasPlantadas:
+        safra.cultivos?.map(c => ({
+          culturaId: c.cultura?.id || '',
+          culturaNome: c.cultura?.nome || '',
+          areaPlantada: Number(c.areaPlantada) || 0,
+        })) || [],
     });
     setEditingSafraId(safra.id);
   };
@@ -217,19 +267,36 @@ const FazendaForm: React.FC = () => {
     }));
   };
 
-  const handleAddCultura = (cultura: string) => {
-    if (cultura && !safraData.culturasPlantadas.includes(cultura)) {
+  const handleAddCultura = (culturaId: string) => {
+    const cultura = culturasDisponiveis.find(c => c.id === culturaId);
+    if (cultura && !safraData.culturasPlantadas.some(c => c.culturaId === culturaId)) {
       setSafraData(prev => ({
         ...prev,
-        culturasPlantadas: [...prev.culturasPlantadas, cultura],
+        culturasPlantadas: [
+          ...prev.culturasPlantadas,
+          {
+            culturaId: cultura.id,
+            culturaNome: cultura.nome,
+            areaPlantada: 0,
+          },
+        ],
       }));
     }
   };
 
-  const handleRemoveCultura = (cultura: string) => {
+  const handleRemoveCultura = (culturaId: string) => {
     setSafraData(prev => ({
       ...prev,
-      culturasPlantadas: prev.culturasPlantadas.filter(c => c !== cultura),
+      culturasPlantadas: prev.culturasPlantadas.filter(c => c.culturaId !== culturaId),
+    }));
+  };
+
+  const handleUpdateAreaCultura = (culturaId: string, areaPlantada: number) => {
+    setSafraData(prev => ({
+      ...prev,
+      culturasPlantadas: prev.culturasPlantadas.map(c =>
+        c.culturaId === culturaId ? { ...c, areaPlantada } : c
+      ),
     }));
   };
 
@@ -239,7 +306,7 @@ const FazendaForm: React.FC = () => {
       return;
     }
 
-    if (!safraData.ano || !safraData.nome || safraData.culturasPlantadas.length === 0) {
+    if (!safraData.ano || !safraData.nome || (safraData.culturasPlantadas || []).length === 0) {
       showNotification(
         'error',
         'Erro',
@@ -248,14 +315,47 @@ const FazendaForm: React.FC = () => {
       return;
     }
 
+    // Validar áreas plantadas
+    const totalAreaPlantada = (safraData.culturasPlantadas || []).reduce((total, cultura) => {
+      const area = Number(cultura.areaPlantada) || 0;
+      return total + area;
+    }, 0);
+    const areaAgricultavel = parseFloat(fazendaData.areaAgricultavel) || 0;
+
+    if (totalAreaPlantada > areaAgricultavel) {
+      showNotification(
+        'error',
+        'Erro de Validação',
+        `A soma das áreas plantadas (${totalAreaPlantada} ha) não pode exceder a área agricultável (${areaAgricultavel} ha).`
+      );
+      return;
+    }
+
+    // Verificar se todas as culturas têm área > 0
+    const culturasComAreaZero = (safraData.culturasPlantadas || []).filter(c => {
+      const area = Number(c.areaPlantada) || 0;
+      return area <= 0;
+    });
+    if (culturasComAreaZero.length > 0) {
+      showNotification(
+        'error',
+        'Erro de Validação',
+        'Todas as culturas devem ter área plantada maior que zero.'
+      );
+      return;
+    }
+
     try {
       const safraDataToSave = {
         nome: safraData.nome,
         ano: parseInt(safraData.ano),
+        propriedadeRuralId: propriedadeId || currentPropriedade?.id || '',
       };
 
+      let safraResult: Safra;
+
       if (editingSafraId) {
-        await dispatch(
+        safraResult = await dispatch(
           updateSafra({
             id: editingSafraId,
             data: safraDataToSave,
@@ -263,14 +363,35 @@ const FazendaForm: React.FC = () => {
         ).unwrap();
         showNotification('success', 'Safra Atualizada', 'Safra foi atualizada com sucesso!');
       } else {
-        await dispatch(createSafra(safraDataToSave)).unwrap();
+        safraResult = await dispatch(createSafra(safraDataToSave)).unwrap();
         showNotification('success', 'Safra Adicionada', 'Safra foi adicionada com sucesso!');
       }
 
+      // Criar cultivos para a safra
+      for (const cultura of safraData.culturasPlantadas) {
+        await cultivoService.create({
+          culturaId: cultura.culturaId,
+          propriedadeId: propriedadeId || currentPropriedade?.id || '',
+          safraId: safraResult.id,
+          areaCultivada: cultura.areaPlantada,
+        });
+      }
+
       setIsAddingSafra(false);
-      setSafraData({ ano: '', nome: '', culturasPlantadas: [] });
+      setSafraData({
+        ano: '',
+        nome: '',
+        propriedadeRuralId: propriedadeId || currentPropriedade?.id || '',
+        culturasPlantadas: [],
+      });
       setEditingSafraId(null);
+
+      // Recarregar as safras para mostrar os cultivos
+      if (propriedadeId) {
+        dispatch(fetchSafrasByPropriedade(propriedadeId));
+      }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Erro ao salvar safra:', error);
       showNotification('error', 'Erro ao Salvar', 'Erro ao salvar a safra. Tente novamente.');
     }
@@ -285,6 +406,7 @@ const FazendaForm: React.FC = () => {
       await dispatch(deleteSafra(safraId)).unwrap();
       showNotification('success', 'Safra Removida', 'Safra foi removida com sucesso!');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Erro ao deletar safra:', error);
       showNotification('error', 'Erro ao Deletar', 'Erro ao deletar a safra. Tente novamente.');
     }
@@ -292,7 +414,12 @@ const FazendaForm: React.FC = () => {
 
   const handleCancelSafra = () => {
     setIsAddingSafra(false);
-    setSafraData({ ano: '', nome: '', culturasPlantadas: [] });
+    setSafraData({
+      ano: '',
+      nome: '',
+      propriedadeRuralId: propriedadeId || currentPropriedade?.id || '',
+      culturasPlantadas: [],
+    });
     setEditingSafraId(null);
   };
 
@@ -419,13 +546,15 @@ const FazendaForm: React.FC = () => {
                 }}
               >
                 <SectionTitle>Safras da Fazenda</SectionTitle>
-                <ActionButton
-                  variant='outlined-primary'
-                  onClick={handleAddSafra}
-                  disabled={safrasLoading}
-                >
-                  + Adicionar Safra
-                </ActionButton>
+                {!isAddingSafra && (
+                  <ActionButton
+                    variant='outlined-primary'
+                    onClick={handleAddSafra}
+                    disabled={safrasLoading}
+                  >
+                    + Adicionar Safra
+                  </ActionButton>
+                )}
               </div>
 
               {isAddingSafra && (
@@ -494,9 +623,9 @@ const FazendaForm: React.FC = () => {
                       <select
                         aria-label='Selecione uma cultura'
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                          const cultura = e.target.value;
-                          if (cultura) {
-                            handleAddCultura(cultura);
+                          const culturaId = e.target.value;
+                          if (culturaId) {
+                            handleAddCultura(culturaId);
                             e.target.value = '';
                           }
                         }}
@@ -510,59 +639,103 @@ const FazendaForm: React.FC = () => {
                         }}
                       >
                         <option value=''>Selecione uma cultura para adicionar</option>
-                        {CULTURAS_COMUNS.filter(
-                          cultura => !safraData.culturasPlantadas.includes(cultura)
-                        ).map(cultura => (
-                          <option key={cultura} value={cultura}>
-                            {cultura}
-                          </option>
-                        ))}
+                        {culturasDisponiveis
+                          .filter(
+                            cultura =>
+                              !safraData.culturasPlantadas.some(c => c.culturaId === cultura.id)
+                          )
+                          .map(cultura => (
+                            <option key={cultura.id} value={cultura.id}>
+                              {cultura.nome}
+                            </option>
+                          ))}
                       </select>
                     </div>
 
-                    {safraData.culturasPlantadas.length > 0 ? (
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '0.5rem',
-                          marginBottom: '1rem',
-                        }}
-                      >
-                        {safraData.culturasPlantadas.map(cultura => (
+                    {(safraData.culturasPlantadas || []).length > 0 ? (
+                      <div style={{ display: 'grid', gap: '1rem', marginBottom: '1rem' }}>
+                        {(safraData.culturasPlantadas || []).map(cultura => (
                           <div
-                            key={cultura}
+                            key={cultura.culturaId}
                             style={{
-                              backgroundColor: '#198754',
-                              color: 'white',
-                              padding: '0.5rem 0.75rem',
-                              borderRadius: '20px',
-                              fontSize: '0.9rem',
-                              display: 'flex',
+                              display: 'grid',
+                              gridTemplateColumns: '2fr 1fr auto',
+                              gap: '1rem',
                               alignItems: 'center',
-                              gap: '0.5rem',
+                              padding: '1rem',
+                              border: '1px solid #e0e0e0',
+                              borderRadius: '8px',
+                              backgroundColor: '#f8f9fa',
                             }}
                           >
-                            {cultura}
+                            <div>
+                              <strong>{cultura.culturaNome}</strong>
+                            </div>
+                            <div>
+                              <Label htmlFor={`area-${cultura.culturaId}`}>Área (ha) *</Label>
+                              <Input
+                                id={`area-${cultura.culturaId}`}
+                                type='number'
+                                value={cultura.areaPlantada}
+                                onChange={e =>
+                                  handleUpdateAreaCultura(
+                                    cultura.culturaId,
+                                    parseFloat(e.target.value) || 0
+                                  )
+                                }
+                                placeholder='0.00'
+                                min='0.01'
+                                step='0.01'
+                                style={{ marginTop: '0.25rem' }}
+                                required
+                              />
+                            </div>
                             <button
                               type='button'
-                              onClick={() => handleRemoveCultura(cultura)}
+                              onClick={() => handleRemoveCultura(cultura.culturaId)}
                               style={{
-                                background: 'none',
+                                background: '#dc3545',
                                 border: 'none',
                                 color: 'white',
                                 cursor: 'pointer',
                                 fontSize: '1.2rem',
                                 lineHeight: '1',
-                                padding: '0',
-                                marginLeft: '0.25rem',
+                                padding: '0.5rem',
+                                borderRadius: '4px',
+                                width: '2.5rem',
+                                height: '2.5rem',
                               }}
-                              title={`Remover ${cultura}`}
+                              title={`Remover ${cultura.culturaNome}`}
                             >
                               ×
                             </button>
                           </div>
                         ))}
+
+                        <div
+                          style={{
+                            marginTop: '0.5rem',
+                            padding: '0.75rem',
+                            backgroundColor: '#e7f3ff',
+                            borderRadius: '4px',
+                            fontSize: '0.9rem',
+                            color: '#0066cc',
+                          }}
+                        >
+                          <strong>
+                            Total área plantada:{' '}
+                            {(safraData.culturasPlantadas || [])
+                              .reduce((total, c) => {
+                                const area = Number(c.areaPlantada) || 0;
+                                return total + area;
+                              }, 0)
+                              .toFixed(2)}{' '}
+                            ha
+                          </strong>
+                          {fazendaData.areaAgricultavel && (
+                            <span> / {fazendaData.areaAgricultavel} ha disponíveis</span>
+                          )}
+                        </div>
                       </div>
                     ) : (
                       <p
@@ -600,13 +773,16 @@ const FazendaForm: React.FC = () => {
               <div>
                 {safrasLoading ? (
                   <p>Carregando safras...</p>
-                ) : !safras || safras.length === 0 ? (
-                  <p style={{ color: '#666', fontStyle: 'italic' }}>
-                    Nenhuma safra cadastrada para esta fazenda.
-                  </p>
+                ) : !safrasPropriedade || safrasPropriedade.length === 0 ? (
+                  <div style={{ color: '#666', fontStyle: 'italic' }}>
+                    <p>Nenhuma safra cadastrada para esta fazenda.</p>
+                    <p style={{ fontSize: '0.9em', marginTop: '0.5rem' }}>
+                      Clique em &quot;Adicionar Safra&quot; para cadastrar uma nova safra.
+                    </p>
+                  </div>
                 ) : (
                   <div style={{ display: 'grid', gap: '0.5rem' }}>
-                    {(safras || []).map(safra => (
+                    {safrasPropriedade.map(safra => (
                       <div
                         key={safra.id}
                         style={{

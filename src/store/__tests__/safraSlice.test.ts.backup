@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { safraService } from '../../services/safraService';
-import type { Safra } from '../../types/safra';
+import type { Safra, CreateSafraData } from '../../types/safra';
+import { TipoSafra } from '../../types/safra';
 import safraSlice, {
   clearCurrentSafra,
   clearError,
@@ -25,12 +26,18 @@ const createTestStore = () => {
 };
 
 // Helper para criar safra completa para testes
-const createMockSafra = (id: string, nome: string, ano: number): Safra => ({
+const createMockSafra = (id: string, nome: string, anoInicio: number): Safra => ({
   id,
   nome,
-  ano,
+  anoInicio,
+  anoFim: null,
+  tipo: TipoSafra.SAFRA,
+  culturaPrincipal: null,
+  dataInicio: null,
+  dataFim: null,
   createdAt: '2024-01-01T00:00:00Z',
   updatedAt: '2024-01-01T00:00:00Z',
+  propriedadeRural: null,
 });
 
 describe('safraSlice', () => {
@@ -49,7 +56,6 @@ describe('safraSlice', () => {
         loading: false,
         error: null,
         currentSafra: null,
-        safrasByPropriedade: {},
       });
     });
   });
@@ -146,15 +152,15 @@ describe('safraSlice', () => {
     });
 
     it('should handle fulfilled state', async () => {
-      const mockSafra = createMockSafra('1', 'Safra 2024', 2024);
+      const mockSafras = [createMockSafra('1', 'Safra 2024', 2024)];
 
-      mockedSafraService.getByPropriedade.mockResolvedValue([mockSafra]);
+      mockedSafraService.getByPropriedade.mockResolvedValue(mockSafras);
 
       await store.dispatch(fetchSafrasByPropriedade('prop123'));
 
       const state = store.getState().safras;
       expect(state.loading).toBe(false);
-      expect(state.safrasByPropriedade['prop123']).toEqual([mockSafra]);
+      expect(state.safras).toEqual(mockSafras);
       expect(mockedSafraService.getByPropriedade).toHaveBeenCalledWith('prop123');
     });
 
@@ -214,7 +220,7 @@ describe('safraSlice', () => {
     });
 
     it('should handle fulfilled state', async () => {
-      const createData = { nome: 'Safra 2024', ano: 2024, propriedadeRuralId: 'prop123' };
+      const createData: CreateSafraData = { nome: 'Safra 2024', anoInicio: 2024, tipo: TipoSafra.SAFRA };
       const mockSafra = createMockSafra('3', 'Safra 2024', 2024);
 
       mockedSafraService.create.mockResolvedValue(mockSafra);
@@ -228,7 +234,7 @@ describe('safraSlice', () => {
     });
 
     it('should handle rejected state', async () => {
-      const createData = { nome: 'Safra 2024', ano: 2024, propriedadeRuralId: 'prop123' };
+      const createData: CreateSafraData = { nome: 'Safra 2024', anoInicio: 2024, tipo: TipoSafra.SAFRA };
       mockedSafraService.create.mockRejectedValue(new Error('Ano já existe'));
 
       await store.dispatch(createSafra(createData));
@@ -261,7 +267,7 @@ describe('safraSlice', () => {
     });
 
     it('should handle fulfilled state - update in list', async () => {
-      const updateData = { ano: 2025 };
+      const updateData = { anoInicio: 2025 };
       const updatedSafra = createMockSafra('1', 'Safra 2024', 2025);
 
       mockedSafraService.update.mockResolvedValue(updatedSafra);
@@ -278,7 +284,7 @@ describe('safraSlice', () => {
       const currentSafra = createMockSafra('1', 'Safra 2024', 2024);
       store.dispatch(setCurrentSafra(currentSafra));
 
-      const updateData = { ano: 2025 };
+      const updateData = { anoInicio: 2025 };
       const updatedSafra = createMockSafra('1', 'Safra 2024', 2025);
 
       mockedSafraService.update.mockResolvedValue(updatedSafra);
@@ -290,7 +296,7 @@ describe('safraSlice', () => {
     });
 
     it('should handle fulfilled state - ignore if safra not found', async () => {
-      const updateData = { ano: 2025 };
+      const updateData = { anoInicio: 2025 };
       const updatedSafra = createMockSafra('999', 'Safra Nova', 2025);
 
       mockedSafraService.update.mockResolvedValue(updatedSafra);
@@ -303,7 +309,7 @@ describe('safraSlice', () => {
     });
 
     it('should handle rejected state', async () => {
-      const updateData = { ano: 2025 };
+      const updateData = { anoInicio: 2025 };
       mockedSafraService.update.mockRejectedValue(new Error('Ano inválido'));
 
       await store.dispatch(updateSafra({ id: '1', data: updateData }));

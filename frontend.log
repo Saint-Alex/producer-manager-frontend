@@ -1,0 +1,142 @@
+
+> producer-manager-frontend@1.0.0 start
+> webpack serve --mode development
+
+[dotenv@17.2.1] injecting env (0) from .env -- tip: 🔐 encrypt with Dotenvx: https://dotenvx.com
+<i> [webpack-dev-server] Project is running at:
+<i> [webpack-dev-server] Loopback: http://localhost:3000/, http://[::1]:3000/
+<i> [webpack-dev-server] On Your Network (IPv4): http://192.168.1.3:3000/
+<i> [webpack-dev-server] Content not from webpack is served from '/home/alexandre/project/pessoal/brain/producer-manager-frontend/public' directory
+<i> [webpack-dev-server] 404s will fallback to '/index.html'
+asset bundle.js 4.61 MiB [emitted] (name: main)
+asset index.html 500 bytes [emitted]
+orphan modules 287 KiB [orphan] 319 modules
+runtime modules 28.7 KiB 15 modules
+modules by path ./node_modules/ 3 MiB 669 modules
+modules by path ./src/ 325 KiB
+  modules by path ./src/pages/ 153 KiB 17 modules
+  modules by path ./src/components/ 83.7 KiB 14 modules
+  modules by path ./src/store/*.ts 42.5 KiB 6 modules
+  modules by path ./src/services/*.ts 28 KiB 5 modules
+  modules by path ./src/styles/ 12.1 KiB 3 modules
+  modules by path ./src/*.tsx 1.69 KiB
+    ./src/index.tsx 273 bytes [built] [code generated]
+    ./src/App.tsx 1.42 KiB [built] [code generated]
+  ./src/constants/index.ts 1.35 KiB [built] [code generated]
+  ./src/utils/validators.ts 2.05 KiB [built] [code generated]
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/__mocks__/safras.ts
+4:2-62:3
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/__mocks__/safras.ts(4,3)
+      TS2739: Type '{ id: string; nome: string; ano: number; dataInicio: string; dataFim: string; cultivos: { id: string; areaPlantada: number; cultura: { id: string; nome: string; createdAt: string; updatedAt: string; }; propriedadeRural: { ...; }; safra: any; createdAt: string; updatedAt: string; }[]; createdAt: string; updatedAt: st...' is missing the following properties from type 'Safra': anoInicio, tipo
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/__mocks__/safras.ts
+63:2-97:3
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/__mocks__/safras.ts(63,3)
+      TS2739: Type '{ id: string; nome: string; ano: number; dataInicio: string; dataFim: string; cultivos: { id: string; areaPlantada: number; cultura: { id: string; nome: string; createdAt: string; updatedAt: string; }; propriedadeRural: { ...; }; safra: any; createdAt: string; updatedAt: string; }[]; createdAt: string; updatedAt: st...' is missing the following properties from type 'Safra': anoInicio, tipo
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/ProducerRegister/ProducerRegister.tsx
+./src/pages/ProducerRegister/ProducerRegister.tsx 93:30-96:19
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/ProducerRegister/ProducerRegister.tsx(93,31)
+      TS2345: Argument of type '{ nome: string; ano: number; }' is not assignable to parameter of type 'CreateSafraData'.
+  Property 'anoInicio' is missing in type '{ nome: string; ano: number; }' but required in type 'CreateSafraData'.
+ @ ./src/pages/ProducerRegister/index.ts 1:0-69 1:0-69
+ @ ./src/pages/index.ts 2:0-58 2:0-58
+ @ ./src/App.tsx 5:0-57 13:201-209 13:415-435 13:501-521
+ @ ./src/index.tsx 4:0-24 6:52-55
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx
+./src/pages/fazenda/FazendaForm.tsx 53:60-57:3
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx(53,61)
+      TS2345: Argument of type '{ ano: string; nome: string; culturasPlantadas: undefined[]; }' is not assignable to parameter of type 'SafraFormData | (() => SafraFormData)'.
+  Type '{ ano: string; nome: string; culturasPlantadas: undefined[]; }' is missing the following properties from type 'SafraFormData': anoInicio, tipo
+ @ ./src/App.tsx 7:0-54 13:687-698 13:786-797
+ @ ./src/index.tsx 4:0-24 6:52-55
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx
+./src/pages/fazenda/FazendaForm.tsx 198:17-61
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx(198,18)
+      TS2345: Argument of type '{ ano: string; nome: string; culturasPlantadas: undefined[]; }' is not assignable to parameter of type 'SetStateAction<SafraFormData>'.
+  Type '{ ano: string; nome: string; culturasPlantadas: undefined[]; }' is missing the following properties from type 'SafraFormData': anoInicio, tipo
+ @ ./src/App.tsx 7:0-54 13:687-698 13:786-797
+ @ ./src/index.tsx 4:0-24 6:52-55
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx
+./src/pages/fazenda/FazendaForm.tsx 204:17-208:5
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx(204,18)
+      TS2345: Argument of type '{ ano: string; nome: string; culturasPlantadas: string[]; }' is not assignable to parameter of type 'SetStateAction<SafraFormData>'.
+  Type '{ ano: string; nome: string; culturasPlantadas: string[]; }' is missing the following properties from type 'SafraFormData': anoInicio, tipo
+ @ ./src/App.tsx 7:0-54 13:687-698 13:786-797
+ @ ./src/index.tsx 4:0-24 6:52-55
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx
+./src/pages/fazenda/FazendaForm.tsx 266:35-50
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx(266,36)
+      TS2345: Argument of type '{ nome: string; ano: number; }' is not assignable to parameter of type 'CreateSafraData'.
+  Property 'anoInicio' is missing in type '{ nome: string; ano: number; }' but required in type 'CreateSafraData'.
+ @ ./src/App.tsx 7:0-54 13:687-698 13:786-797
+ @ ./src/index.tsx 4:0-24 6:52-55
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx
+./src/pages/fazenda/FazendaForm.tsx 271:19-63
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx(271,20)
+      TS2345: Argument of type '{ ano: string; nome: string; culturasPlantadas: undefined[]; }' is not assignable to parameter of type 'SetStateAction<SafraFormData>'.
+  Type '{ ano: string; nome: string; culturasPlantadas: undefined[]; }' is missing the following properties from type 'SafraFormData': anoInicio, tipo
+ @ ./src/App.tsx 7:0-54 13:687-698 13:786-797
+ @ ./src/index.tsx 4:0-24 6:52-55
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx
+./src/pages/fazenda/FazendaForm.tsx 295:17-61
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/FazendaForm.tsx(295,18)
+      TS2345: Argument of type '{ ano: string; nome: string; culturasPlantadas: undefined[]; }' is not assignable to parameter of type 'SetStateAction<SafraFormData>'.
+  Type '{ ano: string; nome: string; culturasPlantadas: undefined[]; }' is missing the following properties from type 'SafraFormData': anoInicio, tipo
+ @ ./src/App.tsx 7:0-54 13:687-698 13:786-797
+ @ ./src/index.tsx 4:0-24 6:52-55
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/__tests__/FazendaForm.test.tsx
+135:48-57
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/__tests__/FazendaForm.test.tsx(135,49)
+      TS2345: Argument of type '{ id: string; nome: string; ano: number; createdAt: string; updatedAt: string; }' is not assignable to parameter of type 'Safra | Promise<Safra>'.
+  Type '{ id: string; nome: string; ano: number; createdAt: string; updatedAt: string; }' is missing the following properties from type 'Safra': anoInicio, tipo
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/__tests__/FazendaForm.test.tsx
+136:48-57
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/__tests__/FazendaForm.test.tsx(136,49)
+      TS2345: Argument of type '{ id: string; nome: string; ano: number; createdAt: string; updatedAt: string; }' is not assignable to parameter of type 'Safra | Promise<Safra>'.
+  Type '{ id: string; nome: string; ano: number; createdAt: string; updatedAt: string; }' is missing the following properties from type 'Safra': anoInicio, tipo
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/__tests__/FazendaForm.test.tsx
+443:61-70
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/__tests__/FazendaForm.test.tsx(443,62)
+      TS2739: Type '{ id: string; nome: string; ano: number; createdAt: string; updatedAt: string; }' is missing the following properties from type 'Safra': anoInicio, tipo
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/__tests__/FazendaForm.test.tsx
+508:61-70
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/pages/fazenda/__tests__/FazendaForm.test.tsx(508,62)
+      TS2739: Type '{ id: string; nome: string; ano: number; createdAt: string; updatedAt: string; }' is missing the following properties from type 'Safra': anoInicio, tipo
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/services/__tests__/safraService.test.ts
+23:8-17
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/services/__tests__/safraService.test.ts(23,9)
+      TS2739: Type '{ id: string; ano: number; nome: string; createdAt: string; updatedAt: string; }' is missing the following properties from type 'Safra': anoInicio, tipo
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/services/__tests__/safraService.test.ts
+33:4-39:5
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/services/__tests__/safraService.test.ts(33,5)
+      TS2739: Type '{ id: string; ano: number; nome: string; createdAt: string; updatedAt: string; }' is missing the following properties from type 'Safra': anoInicio, tipo
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/services/__tests__/safraService.test.ts
+176:10-20
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/services/__tests__/safraService.test.ts(176,11)
+      TS2741: Property 'anoInicio' is missing in type '{ ano: number; nome: string; }' but required in type 'CreateSafraData'.
+
+ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/services/__tests__/safraService.test.ts
+329:28-332:9
+[tsl] ERROR in /home/alexandre/project/pessoal/brain/producer-manager-frontend/src/services/__tests__/safraService.test.ts(329,29)
+      TS2345: Argument of type '{ ano: number; nome: string; }' is not assignable to parameter of type 'CreateSafraData'.
+  Property 'anoInicio' is missing in type '{ ano: number; nome: string; }' but required in type 'CreateSafraData'.
+
+17 errors have detailed information that is not shown.
+Use 'stats.errorDetails: true' resp. '--stats-error-details' to show it.
+
+webpack 5.100.2 compiled with 17 errors in 6443 ms

@@ -14,7 +14,9 @@ const PropriedadesPage: React.FC = () => {
 
   const { producers } = useSelector((state: RootState) => state.producers);
   const { propriedades, loading, error } = useSelector((state: RootState) => state.propriedades);
-  const { safras, loading: safrasLoading } = useSelector((state: RootState) => state.safras);
+  const { safrasByPropriedade, loading: safrasLoading } = useSelector(
+    (state: RootState) => state.safras
+  );
 
   const [confirmModal, setConfirmModal] = useState<{
     isOpen: boolean;
@@ -87,6 +89,7 @@ const PropriedadesPage: React.FC = () => {
         `Fazenda <strong>"${confirmModal.propriedadeName}"</strong> foi removida com sucesso!`
       );
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Erro ao deletar propriedade:', error);
       showNotification(
         'error',
@@ -107,9 +110,8 @@ const PropriedadesPage: React.FC = () => {
   };
 
   const getPropriedadeSafras = (propriedadeId: string) => {
-    return safras.filter(safra =>
-      safra.cultivos?.some(cultivo => cultivo.propriedadeRural?.id === propriedadeId)
-    );
+    // No novo modelo 1:N, uma propriedade pode ter múltiplas safras
+    return safrasByPropriedade[propriedadeId] || [];
   };
 
   const renderPropriedades = () => {
@@ -209,11 +211,12 @@ const PropriedadesPage: React.FC = () => {
                   }}
                 >
                   <h4 style={{ margin: 0, color: '#495057' }}>
-                    Safras da Fazenda{' '}
-                    {propriedadeSafras.length > 0 && `(${propriedadeSafras.length})`}
+                    Safras da Fazenda
+                    {propriedadeSafras.length > 0 &&
+                      ` (${propriedadeSafras.length} safra${propriedadeSafras.length > 1 ? 's' : ''})`}
                   </h4>
                   <span style={{ fontSize: '0.9rem', color: '#666', fontStyle: 'italic' }}>
-                    Para editar safras, clique em &quot;Editar&quot; acima
+                    Para editar safra, clique em &quot;Editar&quot; acima
                   </span>
                 </div>
 
@@ -267,7 +270,8 @@ const PropriedadesPage: React.FC = () => {
                                     color: '#2e7d32',
                                   }}
                                 >
-                                  {cultivo.cultura?.nome || 'Não especificada'}
+                                  {cultivo.cultura?.nome || 'Não especificada'} (
+                                  {cultivo.areaPlantada} ha)
                                 </span>
                               ))}
                             </div>
