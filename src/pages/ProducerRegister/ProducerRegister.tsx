@@ -73,15 +73,25 @@ const ProducerRegisterPage: React.FC = () => {
 
         for (const fazenda of formData.fazendas) {
           try {
+            // Validar dados da fazenda antes de enviar
+            if (
+              !fazenda.nomeFazenda?.trim() ||
+              !fazenda.cidade?.trim() ||
+              !fazenda.estado?.trim()
+            ) {
+              console.error('Dados da fazenda incompletos:', fazenda);
+              continue; // Pula fazenda com dados incompletos
+            }
+
             const propriedadeResult = await dispatch(
               createPropriedade({
                 produtorId,
                 nomeFazenda: fazenda.nomeFazenda,
                 cidade: fazenda.cidade,
                 estado: fazenda.estado,
-                areaTotal: fazenda.areaTotal.toString(),
-                areaAgricultavel: fazenda.areaAgricultavel.toString(),
-                areaVegetacao: fazenda.areaVegetacao.toString(),
+                areaTotal: fazenda.areaTotal?.toString() || '0',
+                areaAgricultavel: fazenda.areaAgricultavel?.toString() || '0',
+                areaVegetacao: fazenda.areaVegetacao?.toString() || '0',
               })
             ).unwrap();
 
@@ -100,7 +110,8 @@ const ProducerRegisterPage: React.FC = () => {
             }
           } catch (error) {
             // eslint-disable-next-line no-console
-            console.error('Erro ao criar fazenda:', error);
+            console.error('Erro ao criar fazenda:', fazenda.nomeFazenda, error);
+            // Não interromper o processo se uma fazenda falhar
           }
         }
       }

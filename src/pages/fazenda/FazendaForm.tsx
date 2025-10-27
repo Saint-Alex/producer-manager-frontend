@@ -7,7 +7,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ActionButton, NotificationModal } from '../../components/shared';
+import { ActionButton, BackButton, NotificationModal } from '../../components/shared';
 import { ESTADOS_BRASILEIROS } from '../../constants';
 import { cultivoService } from '../../services/cultivoService';
 import { culturaService } from '../../services/culturaService';
@@ -21,7 +21,6 @@ import { Cultura } from '../../types/cultura';
 import { PropriedadeRuralFormData } from '../../types/propriedadeRural';
 import { Safra, SafraFormData } from '../../types/safra';
 import {
-  BackButton,
   ButtonGroup,
   FormContainer,
   FormGroup,

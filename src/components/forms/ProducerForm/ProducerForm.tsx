@@ -76,6 +76,33 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
       newErrors.nome = 'Nome deve ter pelo menos 2 caracteres';
     }
 
+    // Validar fazendas se houverem
+    formData.fazendas.forEach((fazenda, index) => {
+      if (!fazenda.nomeFazenda.trim()) {
+        newErrors[`fazenda_${index}_nome`] = `Nome da fazenda ${index + 1} é obrigatório`;
+      }
+      if (!fazenda.cidade.trim()) {
+        newErrors[`fazenda_${index}_cidade`] = `Cidade da fazenda ${index + 1} é obrigatória`;
+      }
+      if (!fazenda.estado.trim()) {
+        newErrors[`fazenda_${index}_estado`] = `Estado da fazenda ${index + 1} é obrigatório`;
+      }
+      if (!fazenda.areaTotal || fazenda.areaTotal <= 0) {
+        newErrors[`fazenda_${index}_areaTotal`] =
+          `Área total da fazenda ${index + 1} deve ser maior que zero`;
+      }
+
+      // Validar se área agricultável + vegetação não excede área total
+      const areaTotal = Number(fazenda.areaTotal) || 0;
+      const areaAgricultavel = Number(fazenda.areaAgricultavel) || 0;
+      const areaVegetacao = Number(fazenda.areaVegetacao) || 0;
+
+      if (areaAgricultavel + areaVegetacao > areaTotal) {
+        newErrors[`fazenda_${index}_areas`] =
+          `A soma das áreas agricultável e vegetação da fazenda ${index + 1} não pode exceder a área total`;
+      }
+    });
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -141,9 +168,16 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
   ) => {
     setFormData(prev => ({
       ...prev,
-      fazendas: prev.fazendas.map((fazenda, index) =>
-        index === fazendaIndex ? { ...fazenda, [field]: value } : fazenda
-      ),
+      fazendas: prev.fazendas.map((fazenda, index) => {
+        if (index === fazendaIndex) {
+          // Converter para número quando necessário
+          if (field === 'areaTotal' || field === 'areaAgricultavel' || field === 'areaVegetacao') {
+            return { ...fazenda, [field]: parseFloat(value) || 0 };
+          }
+          return { ...fazenda, [field]: value };
+        }
+        return fazenda;
+      }),
     }));
   };
 
@@ -298,7 +332,7 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                       <Label>Área Total (ha) *</Label>
                       <Input
                         type='number'
-                        value={fazenda.areaTotal}
+                        value={fazenda.areaTotal || ''}
                         onChange={e =>
                           handleFazendaChange(fazendaIndex, 'areaTotal', e.target.value)
                         }
@@ -311,7 +345,7 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                       <Label>Área Agricultável (ha)</Label>
                       <Input
                         type='number'
-                        value={fazenda.areaAgricultavel}
+                        value={fazenda.areaAgricultavel || ''}
                         onChange={e =>
                           handleFazendaChange(fazendaIndex, 'areaAgricultavel', e.target.value)
                         }
@@ -324,7 +358,7 @@ export const ProducerForm: React.FC<ProducerFormProps> = ({
                       <Label>Área de Vegetação (ha)</Label>
                       <Input
                         type='number'
-                        value={fazenda.areaVegetacao}
+                        value={fazenda.areaVegetacao || ''}
                         onChange={e =>
                           handleFazendaChange(fazendaIndex, 'areaVegetacao', e.target.value)
                         }

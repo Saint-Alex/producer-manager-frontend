@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ActionButton, ConfirmModal, NotificationModal } from '../../components/shared';
+import { ActionButton, BackButton, ConfirmModal, NotificationModal } from '../../components/shared';
 import { AppDispatch, RootState } from '../../store';
 import { fetchProducers } from '../../store/producerSlice';
 import { deletePropriedade, fetchPropriedadesByProdutor } from '../../store/propriedadeRuralSlice';
 import { fetchSafrasByPropriedade } from '../../store/safraSlice';
+import { PageContainer, PageHeader, PageTitle, ContentSection } from './PropriedadesPage.styled';
 
 const PropriedadesPage: React.FC = () => {
   const { produtorId } = useParams<{ produtorId: string }>();
@@ -99,10 +100,6 @@ const PropriedadesPage: React.FC = () => {
     } finally {
       setConfirmModal({ isOpen: false, propriedadeId: '', propriedadeName: '' });
     }
-  };
-
-  const cancelDelete = () => {
-    setConfirmModal({ isOpen: false, propriedadeId: '', propriedadeName: '' });
   };
 
   const handleEditPropriedade = (id: string) => {
@@ -294,51 +291,26 @@ const PropriedadesPage: React.FC = () => {
   };
 
   return (
-    <>
-      <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '2rem',
-          }}
-        >
-          <button
-            onClick={() => navigate('/')}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#0066cc',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              textDecoration: 'underline',
-            }}
-          >
-            ← Voltar
-          </button>
-          <h1 style={{ margin: 0, color: '#495057' }}>
-            Fazendas de {currentProducer?.nome || 'Carregando...'}
-          </h1>
-          <ActionButton
-            variant='primary'
-            onClick={() => navigate(`/fazenda-register/${produtorId}`)}
-          >
-            Cadastrar Nova Fazenda
-          </ActionButton>
-        </div>
+    <PageContainer>
+      <PageHeader>
+        <BackButton onClick={() => navigate('/')}>← Voltar</BackButton>
+        <PageTitle>Fazendas de {currentProducer?.nome || 'Carregando...'}</PageTitle>
+        <ActionButton variant='primary' onClick={() => navigate(`/fazenda-register/${produtorId}`)}>
+          Cadastrar Nova Fazenda
+        </ActionButton>
+      </PageHeader>
 
-        <div>{renderPropriedades()}</div>
-      </div>
+      <ContentSection>{renderPropriedades()}</ContentSection>
 
       <ConfirmModal
         isOpen={confirmModal.isOpen}
         title='Confirmar Exclusão'
-        message={`<strong>ATENÇÃO:</strong> Tem certeza que deseja deletar a fazenda <strong>"${confirmModal.propriedadeName}"</strong>?
-
-Esta ação não pode ser desfeita e todas as safras associadas também serão removidas.`}
+        message={`Tem certeza que deseja excluir a fazenda <strong>${confirmModal.propriedadeName}</strong>? Esta ação não pode ser desfeita.`}
         onConfirm={confirmDelete}
-        onCancel={cancelDelete}
+        onCancel={() => setConfirmModal({ isOpen: false, propriedadeId: '', propriedadeName: '' })}
+        confirmText='Excluir'
+        cancelText='Cancelar'
+        variant='danger'
       />
 
       <NotificationModal
@@ -348,7 +320,7 @@ Esta ação não pode ser desfeita e todas as safras associadas também serão r
         message={notification.message}
         onClose={() => setNotification({ ...notification, isOpen: false })}
       />
-    </>
+    </PageContainer>
   );
 };
 

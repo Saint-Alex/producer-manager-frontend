@@ -26,28 +26,6 @@ export const PageHeader = styled.div`
   }
 `;
 
-export const BackButton = styled.button`
-  background: transparent;
-  border: 2px solid ${theme.colors.secondary.main};
-  color: ${theme.colors.secondary.main};
-  padding: 0.75rem 1.5rem;
-  border-radius: ${theme.borderRadius.md};
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${theme.colors.secondary.main};
-    color: white;
-    transform: translateY(-2px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
 export const PageTitle = styled.h1`
   color: ${theme.colors.primary.main};
   font-size: 2rem;
